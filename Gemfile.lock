@@ -156,11 +156,8 @@ DEPENDENCIES
   jquery-rails
   pg
   rails (= 4.2.1)
-<<<<<<< HEAD
-  ruby-oembed
-=======
   rails_12factor
->>>>>>> master
+  ruby-oembed
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   spring
