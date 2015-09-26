@@ -7,7 +7,7 @@
 # Ignore travis config file
 
 .travis.yml
-/config/secrets.yml
+#/config/secrets.yml
 /config/database.yml
 
 # Ignore bundler config.
