@@ -8,7 +8,7 @@
 
 .travis.yml
 #/config/secrets.yml
-/config/database.yml
+#/config/database.yml
 
 # Ignore bundler config.
 /.bundle
