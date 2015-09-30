@@ -6,7 +6,7 @@
 
 # Ignore travis config file
 
-.travis.yml
+#.travis.yml
 #/config/secrets.yml
 #/config/database.yml
 
