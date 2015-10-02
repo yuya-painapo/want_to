@@ -1,52 +1,42 @@
 <!DOCTYPE html>
-<html>
-  <body>
 <h2>result</h2>
 
-    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
-    <div id="player"></div>
-
-    <script>
-      // 2. This code loads the IFrame Player API code asynchronously.
-      var tag = document.createElement('script');
-
-      tag.src = "https://www.youtube.com/iframe_api";
-      var firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-      // 3. This function creates an <iframe> (and YouTube player)
-      //    after the API code downloads.
-      var player;
-      function onYouTubeIframeAPIReady() {
-        player = new YT.Player('player', {
-          height: '390',
-          width: '640',
-          videoId: 'M7lc1UVf-VE',
-          events: {
-            'onReady': onPlayerReady,
-            'onStateChange': onPlayerStateChange
-          }
-        });
-      }
-
-      // 4. The API will call this function when the video player is ready.
-      function onPlayerReady(event) {
-        event.target.playVideo();
-      }
-
-      // 5. The API calls this function when the player's state changes.
-      //    The function indicates that when playing a video (state=1),
-      //    the player should play for six seconds and then stop.
-      var done = false;
-      function onPlayerStateChange(event) {
-        if (event.data == YT.PlayerState.PLAYING && !done) {
-          setTimeout(stopVideo, 6000);
-          done = true;
-        }
-      }
-      function stopVideo() {
-        player.stopVideo();
-      }
-    </script>
-  </body>
-</html>
+    <script type="text/javascript" src=<%= "http://ext.nicovideo.jp/thumb_watch/"+@id %>></script><noscript><a href= <%="http://www.nicovideo.jp/watch/"+ @id %>>nicovideo</a></noscript>
+    <!--<script type="text/javascript" src="http://ext.nicovideo.jp/thumb_watch/sm11286859></script><noscript><a href="http://www.nicovideo.jp/watch/sm11286859">nicovideo</a></noscript>-->
+    <BODY>
+        <TABLE cellpadding="2" width="485" style="background-color : #c0c0c0;" cellspacing="0">
+            <THEAD style="background-color : #c0c0c0 ;color : white;">
+                <TR><TH>time</TH><TH align="left">comment</TH></TR>
+            </THEAD>
+            <TFOOT style="background-color : #c0c0c0 ;color : white;">
+                <TR>
+                    <TD colspan="2" align="right">&nbsp; total comments: <%= @comments.length %></TD>
+                </TR>
+            </TFOOT>
+            <TBODY>
+                <TR>
+                    <TD colspan="2">
+                        <DIV style="height:100px; overflow:auto;">
+                            <TABLE id="myTBL" width="485" style="background-color : white;">
+                                <colgroup span="1" width="140"></colgroup>
+                                <colgroup span="2" width="140"></colgroup>
+                                <TBODY>
+                                    <% @comments.each do |com| %>
+                                    <% if com['chat'].to_s.split(",").length == 9 then %>
+                                        <% text = com['chat'].to_s.split(",")[8] %> 
+                                    <% elsif com['chat'].to_s.split(",").length == 8 then %>
+                                        <% text = com['chat'].to_s.split(",")[7]%>
+                                    <!--<p><%= p text[13...-2] %></p> -->
+                                    <% else %>
+                                        <% next %>
+                                    <% end %>
+                                    <TR><TH>none</TH><TD><p><%= text[13...-2] %></p></TD></TR>
+                                    <% end %>
+                            </TBODY></TABLE>
+                        </DIV>  
+                    </TD>   
+                </TR>   
+            </TBODY>
+        </TABLE>
+    </BODY> 
+~              
