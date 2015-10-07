@@ -12,6 +12,7 @@ AllCops:
     - 'config/**/*'
     - 'script/**/*'
     - 'bin/**/*'
+  RunRailsCops: true
 
 # Offense count: 30
 # Configuration parameters: AllowURI, URISchemes.
@@ -22,3 +23,6 @@ Metrics/LineLength:
 Style/AsciiComments:
   Exclude:
     - '**/*.rb'
+
+Style/Documentation:
+  Enabled: false
