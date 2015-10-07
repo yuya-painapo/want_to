@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-	def index
+  def index
         @id = params[:id]
         if @id == nil then
             @id = "sm18391671" #sm25019253 #ebifly #sm9704169 #bond
@@ -7,7 +7,8 @@ class HomeController < ApplicationController
 
         cookie = login_nicovideo(ENV["NICOADD"], ENV["NICOPASS"])
         flv_info = get_flv_info(cookie, @id)
-        @comments = get_comments(flv_info, 10) # max 1000
-
+        flv_data = get_comments(flv_info, 10) # max 1000
+        chat = flv_data.select{ |data| data['chat'] }
+        @comments = chat.sort{ |a, b| a['chat']['vpos'] <=> b['chat']['vpos'] }
 	end
 end
