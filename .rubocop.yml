@@ -23,6 +23,3 @@ Metrics/LineLength:
 Style/AsciiComments:
   Exclude:
     - '**/*.rb'
-
-Style/Documentation:
-  Enabled: false
