@@ -16,13 +16,11 @@ def login_nicovideo(mail, pass)
 
   cookie = ''
   response['set-cookie'].split('; ').each do |st|
-    if idx=st.index('user_session_')
+    if idx = st.index('user_session_')
       cookie = "user_session=#{st[idx..-1]}"
       break
     end
   end
-
-  #p cookie
   return cookie
 end
 
@@ -41,18 +39,13 @@ def get_flv_info(cookie, video_id)
     stt = st.split('=')
     flv_info[stt[0].to_sym] = stt[1]
   end
-  flv_info[:ms] =~ /(http%3A%2F%2Fmsg\.nicovideo\.jp%2F)(.*?)(%2Fapi%2F)/
-  flv_info[:msg] = $2
 
-  #p flv_info[:msg]
   return flv_info
 end
 
 def get_comments(flv_info, res_form)
-  host = 'http://msg.nicovideo.jp'
-  path = "/#{flv_info[:msg]}/api.json/thread"
-
-  request = host + path + "?thread=" + flv_info[:thread_id] + "&version=20061206&res_form=-"+res_form.to_s
+  host = URI.unescape(flv_info[:ms])
+  request = host.gsub(/\/api\//, '/api.json/') + 'thread?thread=' + flv_info[:thread_id] + '&version=20061206&res_from=-' + res_form.to_s
 
   uri = URI.parse(request)
   json = Net::HTTP.get(uri)
