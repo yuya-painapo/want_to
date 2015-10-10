@@ -1,5 +1,9 @@
 class HomeController < ApplicationController
+  
   def index
+  end
+
+  def movie
         @id = params[:id]
         if @id == nil then
             @id = "sm18391671" #sm25019253 #ebifly #sm9704169 #bond

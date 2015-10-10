@@ -1,62 +1,170 @@
-<script src="http://d3js.org/d3.v3.js"></script>
-<h2>niconico</h2>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-<script type="text/javascript" src=<%= "http://ext.nicovideo.jp/thumb_watch/"+@id %>></script><noscript><a href= <%="http://www.nicovideo.jp/watch/"+ @id %>>nicovideo</a></noscript>
-<div style="width: 485px;">
-    <table style="background-color : #c0c0c0;">
-        <thead style="background-color: #c0c0c0; color: white; display: block;">
-            <tr>
-                <th style="width: 100px;">time</th>
-                <th align="left">comment</th>
-            </tr>
-        </thead>
-        <tbody style="height:300px; overflow:auto; display: block;">
-            <% @comments.each do |com| %>
-            <tr>
-                <td style="width: 100px;"><%= com['chat']['vpos'] %></td>
-                <td style="word-break: break-all"><%= com['chat']['content'] %></td>
-            </tr>
-            <% end %>
-        </tbody>
-        <tfoot style="background-color : #c0c0c0 ;color : white;">
-            <tr>
-                <td colspan="2" align="right">&nbsp; total comments: <%= @comments.length %></td>
-            </tr>
-        </tfoot>
-    </table>
-</div>
-<div id="chart"></div>
-<script type="text/javascript">
-    var dataset = [
-    <% @comments.each do |com| %>
-    <%= com['chat']['vpos'] %>, 
-    <% end %>
-    ];
-    var color = d3.scale.category10();  // あらかじめ用意されている色を使う
-    var svgWidth = 485; // SVG領域の横幅
-    var svgHeight = 300;    // SVG領域の縦幅
-    var yScale = 1;    // グラフの高さの倍率
-    var svg = d3.select("#chart").append("svg")
-        .attr("width", svgWidth).attr("height", svgHeight)
-    var histogram = d3.layout.histogram()   // ヒストグラム
-        .range([0, 20000])    //0〜20000の範囲
-        .bins([0, 2000, 4000, 6000, 8000, 10000, 12000, 14000, 16000 ,18000, 20000]); // 2000ごとに区切る
-    svg.selectAll("rect")   // 四角形を対象にする
-        .data(histogram(dataset))  // データを読み込む
-        .enter()
-        .append("rect") // 四角形を生成する
-        .attr("x", function(d, i){  // X座標を計算
-            return i * 48;
-        })
-        .attr("y", function(d){ // Y座標を計算
-            return svgHeight - d.y * yScale;
-        })
-        .attr("width", 45)  // 四角形の横幅
-        .attr("height", function(d){    // 四角形の高さ
-            return d.y * yScale;
-        })
-        .attr("fill", function(d,i){    // 色を指定する
-            return color(i);    // 色を返す
-        })
-        .on("click", function(d,i){ window.open("http://www.nicovideo.jp/watch/" + "<%= @id %>" + "?from=" + (i * 20)); });
-</script>
+    <title>niconico highlight(仮)</title>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#"><i class="fa fa-bolt"></i></a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li class="active"><a href="#f">Contact</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+
+	<div id="hello">
+	    <div class="container">
+	    	<div class="row">
+	    		<div class="col-lg-8 col-lg-offset-2 centered">
+	    			<h1>niconico highlight(仮)</h1>
+	    		</div><!-- /col-lg-8 -->
+	    	</div><!-- /row -->
+	    </div> <!-- /container -->
+	</div><!-- /hello -->
+	
+	<div id="green">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-5 centered">
+					<%= image_tag "iphone.png" %>
+				</div>
+				
+				<div class="col-lg-7 centered">
+					<h3>WHAT WE CAN DO?</h3>
+					<p>見てる人がniconicoできるようなハイライトを提供します。</p>
+                    <p>動画を見ている時に、"高まる"、"興奮する" ような瞬間がわかります。</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container">
+		<div class="row centered mt grid">
+			<h3>niconicoする！！</h3>
+			<div class="mt"></div>
+			<div class="col-lg-12">
+				<%= link_to image_tag "07.jpg", { :controller => :home, :action => :movie } %>
+			</div>
+		</div>
+		
+		<div class="row mt centered">
+			<div class="col-lg-7 col-lg-offset-1 mt">
+				<p class="lead">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever.</p>
+			</div>
+			
+			<div class="col-lg-3 mt">
+				<p><button type="button" class="btn btn-theme btn-lg">Email Me!</button></p>
+			</div>
+		</div>
+	</div>
+
+
+	<div id="skills">
+		<div class="container">
+			<div class="row centered">
+				<h3>OUR SKILLS</h3>
+				<div class="col-lg-3 mt">
+					<canvas id="javascript" height="130" width="130"></canvas>
+					<p>Javascript</p>
+					<br>
+					<script>
+						var doughnutData = [
+								{
+									value: 70,
+									color:"#74cfae"
+								},
+								{
+									value : 30,
+									color : "#3c3c3c"
+								}
+							];
+							var myDoughnut = new Chart(document.getElementById("javascript").getContext("2d")).Doughnut(doughnutData);
+					</script>
+				</div>
+				<div class="col-lg-3 mt">
+					<canvas id="bootstrap" height="130" width="130"></canvas>
+					<p>Bootstrap</p>
+					<br>
+					<script>
+						var doughnutData = [
+								{
+									value: 90,
+									color:"#74cfae"
+								},
+								{
+									value : 10,
+									color : "#3c3c3c"
+								}
+							];
+							var myDoughnut = new Chart(document.getElementById("bootstrap").getContext("2d")).Doughnut(doughnutData);
+					</script>
+				</div>
+				<div class="col-lg-3 mt">
+					<canvas id="wordpress" height="130" width="130"></canvas>
+					<p>Wordpress</p>
+					<br>
+					<script>
+						var doughnutData = [
+								{
+									value: 65,
+									color:"#74cfae"
+								},
+								{
+									value : 35,
+									color : "#3c3c3c"
+								}
+							];
+							var myDoughnut = new Chart(document.getElementById("wordpress").getContext("2d")).Doughnut(doughnutData);
+					</script>
+				</div>
+				<div class="col-lg-3 mt">
+					<canvas id="photoshop" height="130" width="130"></canvas>
+					<p>Photoshop</p>
+					<br>
+					<script>
+						var doughnutData = [
+								{
+									value: 50,
+									color:"#74cfae"
+								},
+								{
+									value : 50,
+									color : "#3c3c3c"
+								}
+							];
+							var myDoughnut = new Chart(document.getElementById("photoshop").getContext("2d")).Doughnut(doughnutData);
+					</script>
+				</div>
+			</div><!-- /row -->
+		</div><!-- /container -->
+	</div><!-- /skills -->
+	
+	<div id="f">
+		<div class="container">
+			<div class="row">
+				<p>Created <i class="fa fa-heart"></i> by tebiti.</p>
+			</div>
+		</div>
+	</div>
+  </body>
+</html>
