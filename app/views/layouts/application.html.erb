@@ -12,8 +12,30 @@
         <%= csrf_meta_tags %>
     </head>
     <body>
+        <!-- Fixed navbar -->
+        <div class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <h2>
+                        <%= link_to "niconico highlight(仮)", {:controller => :home, :action => :index} %>
+                    </h2>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="active"><a href="#f">Contact</a></li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </div>
 
-    <%= yield %>
+        <%= yield %>
 
+        <div id="f">
+            <div class="container">
+                <div class="row">
+                    <p>Created <i class="fa fa-heart"></i> by tebiti.</p>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
