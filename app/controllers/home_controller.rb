@@ -10,5 +10,12 @@ class HomeController < ApplicationController
         flv_data = get_comments(flv_info, 1000) # max 1000
         chat = flv_data.select{ |data| data['chat'] }
         @comments = chat.sort{ |a, b| a['chat']['vpos'] <=> b['chat']['vpos'] }
-	end
+
+        vpos_video_time = @comments[999]['chat']['vpos']
+        @m_division = 10
+        
+        @time_range = divide_equally(vpos_video_time, @m_division)
+        @block_com_num = get_comment_number(@time_range, @comments, @m_division)
+
+  end
 end
