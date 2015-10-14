@@ -75,7 +75,9 @@ class HomeController < ApplicationController
   end
 
   def search
-    if params[:q].match(/^sm[0-9]*$/)
+	if params[:q].empty? then
+		redirect_to action: 'movie', id: 'sm18391671'
+    elsif params[:q].match(/^sm[0-9]*$/)
       redirect_to action: 'movie', id: params[:q]
     else
 	  nico = NicoSearchSnapshot.new('niconico_highlight')
