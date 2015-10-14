@@ -39,10 +39,10 @@
     var svg = d3.select("#chart").append("svg")
         .attr("width", svgWidth).attr("height", svgHeight)
     var histogram = d3.layout.histogram()   // ヒストグラム
-        .range([0, <%= @comments[999]['chat']['vpos'] %>])    //0〜20000の範囲
+        .range([0, <%= @vpos_video_length %>])    //0〜20000の範囲
         .bins([0,
-    <% @time_range.each do |time| %>
-    <%= time %>,
+    <% @vpos_range.each do |vpos| %>
+    <%= vpos %>,
     <% end %>
     ]); // m分割による時間幅
     svg.selectAll("rect")   // 四角形を対象にする
@@ -62,14 +62,31 @@
         .attr("fill", function(d,i){    // 色を指定する
             return color(i);    // 色を返す
         })
-        .on("click", function(d,i){ window.open("http://www.nicovideo.jp/watch/" + "<%= @id %>" + "?from=" + (i * 20)); });
+        .on("click", function(d,i){
+            var player = document.getElementById('external_nico_0');
+            player.ext_setPlayheadTime(i*20);
+        });
+
+
+
 </script>
+<b>分割数 : </b>
+<%= @m_division %>
+<br>
 
-
+<b>ブロックごとのコメント数 :</b>
 <% @block_com_num.each do |com_num| %>
 <%= com_num %>
 <% end %>
 
+<br>
+<b>vposによる長さ :</b>
+<% @vpos_range.each do |vpos_range| %>
+<%= vpos_range %>
+<% end %>
 
-
-
+<br>
+<b>動画の長さ :</b>
+<% @video_time_range.each do |time_range| %>
+<%= time_range %>
+<% end %>
