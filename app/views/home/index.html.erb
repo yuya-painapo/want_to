@@ -32,6 +32,11 @@
     <%= com['chat']['vpos'] %>, 
     <% end %>
     ];
+    var time_watch = [
+    <% @time_watch.each do |time| %>
+    <%= time %>,
+    <% end %>
+    ];
     var color = d3.scale.category10();  // あらかじめ用意されている色を使う
     var svgWidth = 485; // SVG領域の横幅
     var svgHeight = 300;    // SVG領域の縦幅
@@ -64,7 +69,7 @@
         })
         .on("click", function(d,i){
             var player = document.getElementById('external_nico_0');
-            player.ext_setPlayheadTime(i*20);
+            player.ext_setPlayheadTime(time_watch[i]);
         });
 
 
@@ -75,6 +80,7 @@
 <br>
 
 <b>ブロックごとのコメント数 :</b>
+
 <% @block_com_num.each do |com_num| %>
 <%= com_num %>
 <% end %>
@@ -90,3 +96,11 @@
 <% @video_time_range.each do |time_range| %>
 <%= time_range %>
 <% end %>
+
+<br>
+<b>動画開始位置 :<b>
+<% @time_watch.each do |time| %>
+<%= time %>
+<% end %>
+
+

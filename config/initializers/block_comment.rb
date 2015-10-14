@@ -66,3 +66,18 @@ def from_vpos_to_time(time_range, m_division)
   end
   return v_time
 end
+
+
+def plus_time(time_range, m_division)
+  start_time = Array.new(m_division)
+  i = 0
+
+  time_range.each do |time|
+    start_time[i] = (time + 100)/100
+    i = i + 1  
+  end
+  start_time.unshift 0
+  start_time.pop 
+
+  return start_time
+end
