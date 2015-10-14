@@ -67,4 +67,25 @@ class HomeController < ApplicationController
         chat = flv_data.select{ |data| data['chat'] }
         @comments = chat.sort{ |a, b| a['chat']['vpos'] <=> b['chat']['vpos'] }
   end
+
+  def input_word
+  end
+
+  def search
+    if params[:q].match(/^sm[0-9]*$/)
+      redirect_to action: 'index', id: params[:q]
+    else
+	  nico = NicoSearchSnapshot.new('niconico_highlight')
+	  results = nico.search(params[:q], size: 15, search: [:tags_exact], sort_by: :comment_counter)
+	  
+	  if results.empty? then
+      	fail StandardError, '動画IDが渡されませんでした'
+	  #elsif results.size < 15 then
+	  #    seed = results.size
+	  #else
+	  end
+	  smID = results[rand(results.size)].cmsid
+	  redirect_to action: 'index', id: smID
+    end 
+  end
 end

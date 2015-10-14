@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
   get 'home/index'
   get '/:id' => 'home#index'
+  get 'home/input_word' => 'home#input_word'
+  post 'home/search'
 
   # You can have the root of your site routed with "root"
   root 'home#index'

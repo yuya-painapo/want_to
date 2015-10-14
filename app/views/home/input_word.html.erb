@@ -1,0 +1,5 @@
+<h2>niconico</h2>                                                                                    
+<%= form_tag(controller: "home", action: "search", method: "post") do %>                             
+    <%= text_field_tag(:q, "", placeholder: "sm* または keyword") %>                                 
+    <%= submit_tag("再生") %>                                                                        
+<% end %>   
