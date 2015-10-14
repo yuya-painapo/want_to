@@ -37,7 +37,10 @@
                     .attr("fill", function(d,i){    // 色を指定する
                         return color(i);    // 色を返す
                     })
-                    .on("click", function(d,i){ window.open("http://www.nicovideo.jp/watch/" + "<%= @id %>" + "?from=" + (i * 20)); });
+                    .on("click", function(d,i){
+                        var player = document.getElementById('external_nico_0');
+                        player.ext_setPlayheadTime(i * 20);
+                    });
             </script>
         </div>
     </div>
