@@ -42,27 +42,3 @@
         </div>
     </div>
 </div>
-
-<div class="container">
-    <table style="background-color : #c0c0c0;">
-        <thead style="background-color: #c0c0c0; color: white; display: block;">
-            <tr>
-                <th style="width: 100px;">time</th>
-                <th align="left">comment</th>
-            </tr>
-        </thead>
-        <tbody style="height:300px; overflow:auto; display: block;">
-            <% @comments.each do |com| %>
-            <tr>
-                <td style="width: 100px;"><%= com['chat']['vpos'] %></td>
-                <td style="word-break: break-all"><%= com['chat']['content'] %></td>
-            </tr>
-            <% end %>
-        </tbody>
-        <tfoot style="background-color : #c0c0c0 ;color : white;">
-            <tr>
-                <td colspan="2" align="right">&nbsp; total comments: <%= @comments.length %></td>
-            </tr>
-        </tfoot>
-    </table>
-</div>
