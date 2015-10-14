@@ -56,6 +56,9 @@ class HomeController < ApplicationController
   end
 
   def index
+  end
+
+  def movie
         @id = params[:id]
         if @id == nil then
             @id = "sm18391671" #sm25019253 #ebifly #sm9704169 #bond
@@ -73,7 +76,7 @@ class HomeController < ApplicationController
 
   def search
     if params[:q].match(/^sm[0-9]*$/)
-      redirect_to action: 'index', id: params[:q]
+      redirect_to action: 'movie', id: params[:q]
     else
 	  nico = NicoSearchSnapshot.new('niconico_highlight')
 	  results = nico.search(params[:q], size: 15, search: [:tags_exact], sort_by: :comment_counter)
@@ -85,7 +88,7 @@ class HomeController < ApplicationController
 	  #else
 	  end
 	  smID = results[rand(results.size)].cmsid
-	  redirect_to action: 'index', id: smID
+	  redirect_to action: 'movie', id: smID
     end 
   end
 end

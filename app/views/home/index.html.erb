@@ -1,65 +1,38 @@
-<script src="http://d3js.org/d3.v3.js"></script>
-<h2>niconico</h2>
-
-<script type="text/javascript" src=<%= "http://ext.nicovideo.jp/thumb_watch/"+@id %>></script><noscript><a href= <%="http://www.nicovideo.jp/watch/"+ @id %>>nicovideo</a></noscript>
-<div style="width: 485px;">
-    <table style="background-color : #c0c0c0;">
-        <thead style="background-color: #c0c0c0; color: white; display: block;">
-            <tr>
-                <th style="width: 100px;">time</th>
-                <th align="left">comment</th>
-            </tr>
-        </thead>
-        <tbody style="height:300px; overflow:auto; display: block;">
-            <% @comments.each do |com| %>
-            <tr>
-                <td style="width: 100px;"><%= com['chat']['vpos'] %></td>
-                <td style="word-break: break-all"><%= com['chat']['content'] %></td>
-            </tr>
-            <% end %>
-        </tbody>
-        <tfoot style="background-color : #c0c0c0 ;color : white;">
-            <tr>
-                <td colspan="2" align="right">&nbsp; total comments: <%= @comments.length %></td>
-            </tr>
-        </tfoot>
-    </table>
+<div id="green">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5 centered">
+                <%= image_tag "iphone.png" %>
+            </div>
+            
+            <div class="col-lg-7 centered">
+                <h3>WHAT WE CAN DO?</h3>
+                <p>見てる人がniconicoできるようなハイライトを提供します。</p>
+                <p>動画を見ている時に、"高まる"、"興奮する" ような瞬間がわかります。</p>
+            </div>
+        </div>
+    </div>
 </div>
-<div id="chart"></div>
-<script type="text/javascript">
-    var dataset = [
-    <% @comments.each do |com| %>
-    <%= com['chat']['vpos'] %>, 
-    <% end %>
-    ];
-    var color = d3.scale.category10();  // あらかじめ用意されている色を使う
-    var svgWidth = 485; // SVG領域の横幅
-    var svgHeight = 300;    // SVG領域の縦幅
-    var yScale = 1;    // グラフの高さの倍率
-    var svg = d3.select("#chart").append("svg")
-        .attr("width", svgWidth).attr("height", svgHeight)
-    var histogram = d3.layout.histogram()   // ヒストグラム
-        .range([0, 20000])    //0〜20000の範囲
-        .bins([0, 2000, 4000, 6000, 8000, 10000, 12000, 14000, 16000 ,18000, 20000]); // 2000ごとに区切る
-    svg.selectAll("rect")   // 四角形を対象にする
-        .data(histogram(dataset))  // データを読み込む
-        .enter()
-        .append("rect") // 四角形を生成する
-        .attr("x", function(d, i){  // X座標を計算
-            return i * 48;
-        })
-        .attr("y", function(d){ // Y座標を計算
-            return svgHeight - d.y * yScale;
-        })
-        .attr("width", 45)  // 四角形の横幅
-        .attr("height", function(d){    // 四角形の高さ
-            return d.y * yScale;
-        })
-        .attr("fill", function(d,i){    // 色を指定する
-            return color(i);    // 色を返す
-        })
-        .on("click", function(d,i){
-            var player = document.getElementById('external_nico_0');
-            player.ext_setPlayheadTime(i * 20);
-        });
-</script>
+
+<div class="container">
+    <div class="row centered mt grid">
+        <h3>niconicoする！！</h3>
+        <div class="mt"></div>
+        <div class="col-lg-12">
+            <%= link_to image_tag("07.jpg"), { :controller => :home, :action => :movie } %>
+        </div>
+    </div>
+    
+    <div class="row mt centered">
+		<%= form_tag(controller: "home", action: "search", method: "post") do %>                             
+            <div class="col-lg-7 col-lg-offset-1 mt">
+				<%= text_field_tag(:q, "", placeholder: "sm* または keyword") %>                                 
+            </div>
+            <div class="col-lg-3 mt">
+    				<%= submit_tag("再生") %>                                                                        
+			<%end%>
+            </div>
+        </form>
+    </div>
+</div>
+
