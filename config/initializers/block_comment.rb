@@ -58,24 +58,21 @@ def from_vpos_to_time(time_range, m_division)
   i = 0
 
   time_range.each do |time| 
-    sec = time / 100
+    sec = (time + 100) / 100
     min = sec / 60
     ss = sprintf("%02d", sec % 60)
     v_time[i] = min.to_s + ':' + ss.to_s
     i = i + 1  
   end
+  v_time.unshift 0
+  v_time.pop 
+  
   return v_time
 end
 
 
-def plus_time(time_range, m_division)
-  start_time = Array.new(m_division)
-  i = 0
-
-  time_range.each do |time|
-    start_time[i] = (time + 100)/100
-    i = i + 1  
-  end
+def plus_time(time_range)
+  start_time = time_range.map { |i| (i + 100) / 100 }
   start_time.unshift 0
   start_time.pop 
 

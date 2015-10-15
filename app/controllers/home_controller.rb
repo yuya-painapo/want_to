@@ -11,16 +11,13 @@ class HomeController < ApplicationController
         chat = flv_data.select{ |data| data['chat'] }
         @comments = chat.sort{ |a, b| a['chat']['vpos'] <=> b['chat']['vpos'] }
 
-        if params[:num] == nil then
-           params[:num] = '10' 
-        end
-
+        params[:num] ||= '10'
         @vpos_video_length = nicovideo_length(@id) 
         @m_division = params[:num].to_i
         @vpos_range = divide_equally(@vpos_video_length, @m_division)
         @video_time_range = from_vpos_to_time(@vpos_range,@m_division)
         @block_com_num = get_comment_number(@vpos_range, @comments, @m_division)        
-        @time_watch = plus_time(@vpos_range,@m_division)
+        @time_watch = plus_time(@vpos_range)
  
   end
 end
