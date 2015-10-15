@@ -76,7 +76,7 @@ class HomeController < ApplicationController
 
   def search
 	if params[:q].empty? then
-		 flash[:notice] = '盛り上がってる動画が見つからないよぉ'
+		 flash[:notice] = '盛り上がってる動画が見つからないの'
 	 	 redirect_to action: 'index'
     elsif params[:q].match(/^sm[0-9]*$/) then
       redirect_to action: 'movie', id: params[:q]
@@ -88,7 +88,7 @@ class HomeController < ApplicationController
 	  	smID = results[rand(results.size)].cmsid
 	  	redirect_to action: 'movie', id: smID
 	  else
-		 flash[:notice] = '盛り上がってる動画が見つからないよぉ'
+		 flash[:notice] = '盛り上がってる動画が見つからないの'
 	 	 redirect_to action: 'index'
 	  end
   end
