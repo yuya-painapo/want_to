@@ -44,9 +44,9 @@ class HomeController < ApplicationController
     return flv_info
   end
   
-  def get_comments(flv_info, res_form)
+  def get_comments(flv_info, res_from)
     host = URI.unescape(flv_info[:ms])
-    request = host.gsub(/\/api\//, '/api.json/') + 'thread?thread=' + flv_info[:thread_id] + '&version=20061206&res_from=-' + res_form.to_s
+    request = host.gsub(/\/api\//, '/api.json/') + 'thread?thread=' + flv_info[:thread_id] + '&version=20061206&res_from=-' + res_from.to_s
   
     uri = URI.parse(request)
     json = Net::HTTP.get(uri)
