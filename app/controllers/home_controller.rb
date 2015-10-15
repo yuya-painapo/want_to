@@ -75,22 +75,20 @@ class HomeController < ApplicationController
   end
 
   def search
-	if params[:q].empty? then
-		redirect_to action: 'movie', id: 'sm18391671'
-    elsif params[:q].match(/^sm[0-9]*$/)
+   if params[:q].match(/^sm[0-9]*$/) then
       redirect_to action: 'movie', id: params[:q]
     else
 	  nico = NicoSearchSnapshot.new('niconico_highlight')
 	  results = nico.search(params[:q], size: 15, search: [:tags_exact], sort_by: :comment_counter)
 	  
-	  if results.empty? then
-      	fail StandardError, '動画IDが渡されませんでした'
+	  if !results.empty? then
+	  	smID = results[rand(results.size)].cmsid
+	  	redirect_to action: 'movie', id: smID
+      	#fail StandardError, '動画IDが渡されませんでした'
 	  #elsif results.size < 15 then
 	  #    seed = results.size
 	  #else
 	  end
-	  smID = results[rand(results.size)].cmsid
-	  redirect_to action: 'movie', id: smID
-    end 
+	  redirect_to 'index', :notice => '���킟��������' 
   end
 end
