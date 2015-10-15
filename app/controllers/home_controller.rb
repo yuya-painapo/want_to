@@ -75,7 +75,10 @@ class HomeController < ApplicationController
   end
 
   def search
-   if params[:q].match(/^sm[0-9]*$/) then
+	if params[:q].empty? then
+		 flash[:notice] = '盛り上がってる動画が見つからないよぉ'
+	 	 redirect_to action: 'index'
+    elsif params[:q].match(/^sm[0-9]*$/) then
       redirect_to action: 'movie', id: params[:q]
     else
 	  nico = NicoSearchSnapshot.new('niconico_highlight')
@@ -84,11 +87,10 @@ class HomeController < ApplicationController
 	  if !results.empty? then
 	  	smID = results[rand(results.size)].cmsid
 	  	redirect_to action: 'movie', id: smID
-      	#fail StandardError, '動画IDが渡されませんでした'
-	  #elsif results.size < 15 then
-	  #    seed = results.size
-	  #else
+	  else
+		 flash[:notice] = '盛り上がってる動画が見つからないよぉ'
+	 	 redirect_to action: 'index'
 	  end
-	  redirect_to 'index', :notice => '���킟��������' 
+  end
   end
 end
