@@ -17,6 +17,13 @@
 <div class="container">
     <div class="row centered mt grid">
         <h3>niconicoする！！</h3>
+
+		<% if flash[:notice] %>
+		  <div class="alert alert-success">
+		    <%= flash[:notice] %>
+		  </div>
+		<% end %>
+
         <div class="mt"></div>
         <div class="col-lg-12">
             <%= link_to image_tag("07.jpg"), { :controller => :home, :action => :movie } %>
@@ -24,19 +31,13 @@
     </div>
     
     <div class="row mt centered">
-        <form action="#" method="POST">
+		<%= form_tag(controller: "home", action: "search", method: "post") do %>                             
             <div class="col-lg-7 col-lg-offset-1 mt">
-                <p class="lead">
-                    <input class="form-control" type="text" name="" value="" placeholder="検索したい単語を入力してください。">
-                </p>
+				<%= text_field_tag(:q, "", class: "form-control", placeholder: "sm* または keyword") %>                                 
             </div>
             <div class="col-lg-3 mt">
-                <p>
-                    <button type="button" class="btn btn-theme btn-lg">
-                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                        検索!
-                    </button>
-                </p>
+    				<%= submit_tag("再生", class: "btn btn-theme btn-lg") %>                                                                        
+			<%end%>
             </div>
         </form>
     </div>

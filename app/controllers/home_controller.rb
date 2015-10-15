@@ -70,4 +70,27 @@ class HomeController < ApplicationController
         chat = flv_data.select{ |data| data['chat'] }
         @comments = chat.sort{ |a, b| a['chat']['vpos'] <=> b['chat']['vpos'] }
   end
+
+  def input_word
+  end
+
+  def search
+	if params[:q].empty? then
+		 flash[:notice] = 'キーワードが入力されていません'
+	 	 redirect_to action: 'index'
+    elsif params[:q].match(/^sm[0-9]*$/) then
+      redirect_to action: 'movie', id: params[:q]
+    else
+	  nico = NicoSearchSnapshot.new('niconico_highlight')
+	  results = nico.search(params[:q], size: 15, search: [:tags_exact], sort_by: :comment_counter)
+	  
+	  if !results.empty? then
+	  	smID = results[rand(results.size)].cmsid
+	  	redirect_to action: 'movie', id: smID
+	  else
+		 flash[:notice] = "keyword : #{params[:q]} だと動画が見つからないよ！"
+	 	 redirect_to action: 'index'
+	  end
+  end
+  end
 end

@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
   get 'home/index'
+  post 'home/search'
+
   get 'home/movie'
   get 'home/movie/:id' => 'home#movie'
 
