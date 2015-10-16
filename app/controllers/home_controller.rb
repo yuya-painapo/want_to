@@ -78,7 +78,7 @@ class HomeController < ApplicationController
 	if params[:q].empty? then
 		 flash[:notice] = 'キーワードが入力されていません'
 	 	 redirect_to action: 'index'
-    elsif params[:q].match(/^sm[0-9]*$/) then
+    elsif params[:q].match(/^sm[0-9]+$/) then
       redirect_to action: 'movie', id: params[:q]
     else
 	  nico = NicoSearchSnapshot.new('niconico_highlight')
