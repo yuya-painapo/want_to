@@ -66,6 +66,15 @@ class HomeController < ApplicationController
 
         cookie = login_nicovideo(ENV["NICOADD"], ENV["NICOPASS"])
         flv_info = get_flv_info(cookie, @id)
+
+        if flv_info[:error]
+          msg = '指定された動画取得時にエラーが発生しました。動画ID = ' + @id
+          logger.info msg + ", flv_info = " + flv_info.inspect
+          flash[:notice] = msg
+          redirect_to action: 'index'
+          return
+        end
+
         flv_data = get_comments(flv_info, 1000) # max 1000
         chat = flv_data.select{ |data| data['chat'] }
         @comments = chat.sort{ |a, b| a['chat']['vpos'] <=> b['chat']['vpos'] }
