@@ -8,3 +8,15 @@ end
 step 'トップ画面が表示されていること' do
   expect(page).to have_content '見てる人がniconicoできるようなハイライトを提供します。'
 end
+
+step ':name に :word と入力する' do |name, word|
+  fill_in name, with: word
+end
+
+step ':name ボタンをクリックする' do |name|
+  click_on name
+end
+
+step ':movie_id の再生画面が表示されていること' do |movie_id|
+  expect(current_path).to eq "/home/movie/#{movie_id}"
+end
