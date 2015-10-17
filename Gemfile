@@ -50,3 +50,9 @@ group :development, :test do
   gem 'spring'
 end
 
+group :test do
+  gem 'rspec-rails', '~> 3.0'
+  gem 'turnip', '~> 1.3'
+  gem 'capybara', '~> 2.5'
+  gem 'poltergeist', '~> 1.7'
+end
