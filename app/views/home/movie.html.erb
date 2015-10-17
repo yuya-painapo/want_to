@@ -1,0 +1,47 @@
+<div class="container" style="padding-top: 50px;">
+    <div class="row">
+        <div class="col-lg-6 centered">
+            <script type="text/javascript" src=<%= "http://ext.nicovideo.jp/thumb_watch/"+@id %>></script><noscript><a href= <%="http://www.nicovideo.jp/watch/"+ @id %>>nicovideo</a></noscript>
+        </div>
+        <div class="col-lg-6 centered">
+            <div id="chart"></div>
+            <script type="text/javascript">
+                var dataset = [
+                <% @comments.each do |com| %>
+                <%= com['chat']['vpos'] %>, 
+                <% end %>
+                ];
+                var color = d3.scale.category10();  // あらかじめ用意されている色を使う
+                var svgWidth = 485; // SVG領域の横幅
+                var svgHeight = 300;    // SVG領域の縦幅
+                var yScale = 1;    // グラフの高さの倍率
+                var svg = d3.select("#chart").append("svg")
+                    .attr("width", svgWidth).attr("height", svgHeight)
+                var histogram = d3.layout.histogram()   // ヒストグラム
+                    .range([0, 20000])    //0〜20000の範囲
+                    .bins([0, 2000, 4000, 6000, 8000, 10000, 12000, 14000, 16000 ,18000, 20000]); // 2000ごとに区切る
+                svg.selectAll("rect")   // 四角形を対象にする
+                    .data(histogram(dataset))  // データを読み込む
+                    .enter()
+                    .append("rect") // 四角形を生成する
+                    .attr("x", function(d, i){  // X座標を計算
+                        return i * 48;
+                    })
+                    .attr("y", function(d){ // Y座標を計算
+                        return svgHeight - d.y * yScale;
+                    })
+                    .attr("width", 45)  // 四角形の横幅
+                    .attr("height", function(d){    // 四角形の高さ
+                        return d.y * yScale;
+                    })
+                    .attr("fill", function(d,i){    // 色を指定する
+                        return color(i);    // 色を返す
+                    })
+                    .on("click", function(d,i){
+                        var player = document.getElementById('external_nico_0');
+                        player.ext_setPlayheadTime(i * 20);
+                    });
+            </script>
+        </div>
+    </div>
+</div>

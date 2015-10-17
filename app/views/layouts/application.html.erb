@@ -1,14 +1,41 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>WantTo</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>niconico highlight(仮)</title>
+        <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+        <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+        <%= csrf_meta_tags %>
+    </head>
+    <body>
+        <!-- Fixed navbar -->
+        <div class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <h2>
+                        <%= link_to "niconico highlight(仮)", {:controller => :home, :action => :index} %>
+                    </h2>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="active"><a href="#f">Contact</a></li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </div>
 
-<%= yield %>
+        <%= yield %>
 
-</body>
+        <div id="f">
+            <div class="container">
+                <div class="row">
+                    <p>Created <i class="fa fa-heart"></i> by tebiti.</p>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>
