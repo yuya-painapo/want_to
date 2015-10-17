@@ -56,6 +56,7 @@ class HomeController < ApplicationController
   end
 
   def index
+    @q = params[:q]
   end
 
   def movie
@@ -71,7 +72,7 @@ class HomeController < ApplicationController
           msg = '指定された動画取得時にエラーが発生しました。動画ID = ' + @id
           logger.info msg + ", flv_info = " + flv_info.inspect
           flash[:notice] = msg
-          redirect_to action: 'index'
+          redirect_to action: 'index', q: @id
           return
         end
 
@@ -98,7 +99,7 @@ class HomeController < ApplicationController
 	  	redirect_to action: 'movie', id: smID
 	  else
 		 flash[:notice] = "keyword : #{params[:q]} だと動画が見つからないよ！"
-	 	 redirect_to action: 'index'
+		 redirect_to action: 'index', q: params[:q]
 	  end
   end
   end
