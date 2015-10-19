@@ -6,7 +6,7 @@ step 'トップ画面を表示する' do
 end
 
 step 'トップ画面が表示されていること' do
-  expect(page).to have_content '見てる人がniconicoできるようなハイライトを提供します。'
+  expect(current_path).to satisfy { |p| ['/', '/home/index'].include?(p) }
 end
 
 step ':name に :word と入力する' do |name, word|
