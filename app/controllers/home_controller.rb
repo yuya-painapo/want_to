@@ -67,7 +67,7 @@ class HomeController < ApplicationController
         cookie = login_nicovideo(ENV["NICOADD"], ENV["NICOPASS"])
         flv_info = get_flv_info(cookie, @id)
 
-        if flv_info[:error]
+        if flv_info.key? :error
           msg = '指定された動画取得時にエラーが発生しました。動画ID = ' + @id
           logger.info msg + ", flv_info = " + flv_info.inspect
           flash[:notice] = msg
