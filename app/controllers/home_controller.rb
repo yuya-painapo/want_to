@@ -57,6 +57,7 @@ class HomeController < ApplicationController
   end
   
   def index
+    session[:q] = nil
   end
   
   def movie
@@ -87,12 +88,16 @@ class HomeController < ApplicationController
     @block_com_num = get_comment_number(@vpos_range, @comments, @m_division)        
     @time_watch = plus_time(@vpos_range)
 
+    @search_word = session[:q]
+
   end
   
   def input_word
   end
   
   def search
+    # セッションに検索キーワードを格納
+    session[:q] = params[:q]
     if params[:q].empty? then
       flash[:notice] = 'キーワードが入力されていません'
       redirect_to action: 'index'
