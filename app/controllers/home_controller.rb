@@ -80,7 +80,7 @@ class HomeController < ApplicationController
     chat = flv_data.select{ |data| data['chat'] }
     @comments = chat.sort{ |a, b| a['chat']['vpos'] <=> b['chat']['vpos'] }
     params[:num] ||= '10'
-    @vpos_video_length = nicovideo_length(@id) 
+    @vpos_video_length, @video_title, @video_desc = nicovideo_length(@id) 
     @m_division = params[:num].to_i
     @vpos_range = divide_equally(@vpos_video_length, @m_division)
     @video_time_range = from_vpos_to_time(@vpos_range,@m_division)
