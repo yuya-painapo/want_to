@@ -1,5 +1,6 @@
 # encoding: utf-8
 # language: ja
+@moviepage
 機能: 再生画面を開く
   シナリオ: sm9の再生画面にアクセスする
     もし sm9 の再生画面を表示する
@@ -14,5 +15,3 @@
     もし sm9 の再生画面を表示する
     ならば sm9 の再生画面が表示されていること
     かつ 要素 "script[@src='http://ext.nicovideo.jp/thumb_watch/sm9']" が存在すること
-
-
