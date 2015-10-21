@@ -57,6 +57,9 @@ class HomeController < ApplicationController
   
     return comments
   end
+
+  def index
+  end
   
   def movie
     @id = params[:id]
@@ -85,7 +88,6 @@ class HomeController < ApplicationController
     @video_time_range = from_vpos_to_time(@vpos_range,@m_division)
     @block_com_num = get_comment_number(@vpos_range, @comments, @m_division)        
     @time_watch = plus_time(@vpos_range)
-
   end
   
   def search
@@ -115,7 +117,8 @@ class HomeController < ApplicationController
                 msg = "keyword : #{params[:q]} だと削除されている動画しか見つからないよ！"
                 logger.info msg + "削除されている動画にしかヒットしない"
                 flash[:notice] = msg
-                redirect_to action: 'index' #break
+                render action: 'index'
+				return
             end 
 		end
         redirect_to action: 'movie', id: smID
