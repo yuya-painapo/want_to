@@ -20,5 +20,5 @@ step ':name の値が :value であること' do |name, value|
 end
 
 step '要素 :selector が存在すること' do |selector|
-  page.has_xpath?(selector)
+  expect(page.has_css?(selector, visible: :all)).to eq true
 end

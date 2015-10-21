@@ -9,9 +9,9 @@
   シナリオ: sm9の再生画面にアクセスし、グラフが表示されていることを確認する
     もし sm9 の再生画面を表示する
     ならば sm9 の再生画面が表示されていること
-    かつ 要素 "div[@id='chart']/svg/rect" が存在すること
+    かつ 要素 "div#chart svg rect" が存在すること
 
   シナリオ: sm9の再生画面にアクセスし、動画プレイヤーが表示されていることを確認する
     もし sm9 の再生画面を表示する
     ならば sm9 の再生画面が表示されていること
-    かつ 要素 "script[@src='http://ext.nicovideo.jp/thumb_watch/sm9']" が存在すること
+    かつ 要素 "script[src='http://ext.nicovideo.jp/thumb_watch/sm9']" が存在すること
