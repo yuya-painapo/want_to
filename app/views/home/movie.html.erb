@@ -90,13 +90,13 @@
 
 <br>
 <b>ブロックごとの動画開始位置 :</b>
-<% @video_time_range.each do |time_range| %>
-<%= time_range %>
+<% @start_time.each do |time| %>
+<%= time %>
 <% end %>
 
 <br>
-<b>ハイライトとしての動画開始位置 :</b>
-<% @highlights_place.each do |place| %>
-<%= place %>
+<b>ハイライト該当箇所 :</b>
+<% @highlights_place.each do |start, finish| %>
+<%= start.to_s + '~' + finish.to_s %> ,
 <% end %>
 

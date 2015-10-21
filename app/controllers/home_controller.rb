@@ -83,14 +83,13 @@ class HomeController < ApplicationController
     @vpos_video_length = nicovideo_length(@id) 
     @m_division = params[:num].to_i
     @vpos_range = divide_equally(@vpos_video_length, @m_division)
-    @video_time_range = from_vpos_to_time(@vpos_range,@m_division)
+    @start_time, @finish_time = from_vpos_to_time(@vpos_range,@m_division)
     @block_com_num = get_comment_number(@vpos_range, @comments, @m_division)        
     @time_watch = plus_time(@vpos_range)
 
     @threshold = get_threshold(@block_com_num)
-    @highlights_place = get_highlight_place(@threshold,@block_com_num,@video_time_range)
-
-
+    @highlights_place = get_highlight_place(@threshold,@block_com_num,@start_time,@finish_time)    
+    
   end
   
   def input_word
