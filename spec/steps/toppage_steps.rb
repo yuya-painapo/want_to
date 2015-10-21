@@ -1,6 +1,4 @@
 # coding: utf-8
-require 'rails_helper'
-
 step 'トップ画面を表示する' do
   visit '/'
 end
