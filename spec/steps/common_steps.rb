@@ -22,4 +22,3 @@ end
 step '要素 :selector が存在すること' do |selector|
   page.has_xpath?(selector)
 end
-
