@@ -3,6 +3,8 @@ class HomeController < ApplicationController
   require 'net/https'
   require 'uri'
   require 'json'
+  require 'active_support'
+  require 'active_support/core_ext'
   
   def login_nicovideo(mail, pass)
     host = 'secure.nicovideo.jp'
@@ -56,9 +58,6 @@ class HomeController < ApplicationController
     return comments
   end
   
-  def index
-  end
-  
   def movie
     @id = params[:id]
     if @id == nil then
@@ -72,7 +71,7 @@ class HomeController < ApplicationController
       msg = '指定された動画取得時にエラーが発生しました。動画ID = ' + @id
       logger.info msg + ", flv_info = " + flv_info.inspect
       flash[:notice] = msg
-      redirect_to action: 'index'
+      render action: 'index'
       return
     end
     
@@ -89,26 +88,52 @@ class HomeController < ApplicationController
 
   end
   
-  def input_word
-  end
-  
   def search
     if params[:q].empty? then
       flash[:notice] = 'キーワードが入力されていません'
-      redirect_to action: 'index'
+      render action: 'index'
     elsif params[:q].match(/^sm[0-9]+$/) then
       redirect_to action: 'movie', id: params[:q]
     else
       nico = NicoSearchSnapshot.new('niconico_highlight')
       results = nico.search(params[:q], size: 15, search: [:tags_exact], sort_by: :comment_counter)
+
+      sm_list = []
+      results.each do |r| 
+          if r.cmsid =~ /^sm/
+              sm_list << r
+          end 
+      end
       
       if !results.empty? then
-        smID = results[rand(results.size)].cmsid
+        smID = sm_list[rand(sm_list.size)].cmsid
+		counter = 0
+		while foo_check(smID) == 'fail' do
+          smID = sm_list[rand(sm_list.size)].cmsid
+		  counter += 1
+            if counter == 20 then
+                msg = "keyword : #{params[:q]} だと削除されている動画しか見つからないよ！"
+                logger.info msg + "削除されている動画にしかヒットしない"
+                flash[:notice] = msg
+                redirect_to action: 'index' #break
+            end 
+		end
         redirect_to action: 'movie', id: smID
       else
         flash[:notice] = "keyword : #{params[:q]} だと動画が見つからないよ！"
-        redirect_to action: 'index'
+        render action: 'index'
       end
     end
+  end
+
+  def foo_check(check)
+	request = "http://ext.nicovideo.jp/api/getthumbinfo/#{check}"
+
+    uri = URI.parse(request)
+    xml = Net::HTTP.get(uri)
+    json = Hash.from_xml(xml).to_json
+    check_Foo = JSON.parse(json,{:symbolize_names => true})
+
+    return check_Foo[:nicovideo_thumb_response][:status]
   end
 end
