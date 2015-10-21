@@ -10,13 +10,15 @@ def nicovideo_length (video_id)
   xml = Net::HTTP.get(uri)
   doc = REXML::Document.new(xml)
   video_length = doc.elements['nicovideo_thumb_response/thumb/length'].text
+  video_title = doc.elements['nicovideo_thumb_response/thumb/title'].text
+  video_desc = doc.elements['nicovideo_thumb_response/thumb/description'].text
 
   minutes = video_length[/(.*):(.*)/,1]
   seconds = video_length[/(.*):(.*)/,2]
   total_seconds = minutes.to_i*60 + seconds.to_i
   vpos_seconds = total_seconds*100 + 99
 
-  return (vpos_seconds)
+  return vpos_seconds, video_title, video_desc
 end
 
 
