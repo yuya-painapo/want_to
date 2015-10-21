@@ -1,6 +1,7 @@
 language: ruby
 rvm:
 - 2.2.2
+script: bundle exec rspec spec
 deploy:
   provider: heroku
   api_key:
