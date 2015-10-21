@@ -77,6 +77,12 @@
 <%= @m_division %>
 <br>
 
+<b>閾値 : </b>
+<%= @threshold %>
+<br>
+
+
+
 <b>ブロックごとのコメント数 :</b>
 <% @block_com_num.each do |com_num| %>
 <%= com_num %>
@@ -87,3 +93,10 @@
 <% @video_time_range.each do |time_range| %>
 <%= time_range %>
 <% end %>
+
+<br>
+<b>ハイライトとしての動画開始位置 :</b>
+<% @highlights_place.each do |place| %>
+<%= place %>
+<% end %>
+

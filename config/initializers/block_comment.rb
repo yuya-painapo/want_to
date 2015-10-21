@@ -78,3 +78,30 @@ def plus_time(time_range)
 
   return start_time
 end
+
+
+def get_threshold(array)
+  avg = array.inject(0.0){|r,i| r+=i }/array.size
+  variance = array.inject(0.0){|r,i| r+=(i.to_i-avg)**2 }/array.size
+  standard_deviation = Math.sqrt(variance)
+  value = avg + standard_deviation
+
+  return value
+end
+
+
+def get_highlight_place(threshold,com_num,time)
+  select_num = []
+  select_place = []
+  com_num.length.times do |i|
+    if com_num[i] > threshold
+      select_num.push i
+    end
+  end
+
+  select_num.length.times do |i|
+    select_place.push time[select_num[i]]
+  end
+
+  return select_place
+end

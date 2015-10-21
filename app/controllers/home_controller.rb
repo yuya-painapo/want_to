@@ -87,6 +87,10 @@ class HomeController < ApplicationController
     @block_com_num = get_comment_number(@vpos_range, @comments, @m_division)        
     @time_watch = plus_time(@vpos_range)
 
+    @threshold = get_threshold(@block_com_num)
+    @highlights_place = get_highlight_place(@threshold,@block_com_num,@video_time_range)
+
+
   end
   
   def input_word
