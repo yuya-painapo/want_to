@@ -57,7 +57,7 @@ class HomeController < ApplicationController
   end
   
   def index
-    session[:q] = nil
+    @q = session[:q]
   end
   
   def movie
@@ -73,7 +73,7 @@ class HomeController < ApplicationController
       msg = '指定された動画取得時にエラーが発生しました。動画ID = ' + @id
       logger.info msg + ", flv_info = " + flv_info.inspect
       flash[:notice] = msg
-      redirect_to action: 'index'
+      redirect_to action: 'index', q: @id
       return
     end
     
@@ -88,7 +88,7 @@ class HomeController < ApplicationController
     @block_com_num = get_comment_number(@vpos_range, @comments, @m_division)        
     @time_watch = plus_time(@vpos_range)
 
-    @search_word = session[:q]
+    @q = session[:q]
 
   end
   
@@ -112,7 +112,7 @@ class HomeController < ApplicationController
         redirect_to action: 'movie', id: smID
       else
         flash[:notice] = "keyword : #{params[:q]} だと動画が見つからないよ！"
-        redirect_to action: 'index'
+        redirect_to action: 'index', q: params[:q]
       end
     end
   end

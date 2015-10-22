@@ -33,7 +33,7 @@
     <div class="row mt centered">
         <%= form_tag(controller: "home", action: "search", method: "post") do %>
             <div class="col-lg-7 col-lg-offset-1 mt">
-                <%= text_field_tag(:q, "", class: "form-control", placeholder: "sm* または keyword") %>
+                <%= text_field_tag(:q, @q, class: "form-control", placeholder: "sm* または keyword") %>
             </div>
             <div class="col-lg-3 mt">
                 <%= submit_tag("再生", class: "btn btn-theme btn-lg") %>
