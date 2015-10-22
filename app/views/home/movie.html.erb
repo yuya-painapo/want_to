@@ -73,7 +73,15 @@
                           .scale(d3.scale.linear().domain([0, time_watch[<%= @m_division %> - 1]]).range([0, chart_width]))
                           .orient("bottom")
                           .tickSize(6, -chart_height)
-                          .tickFormat(function(d) { return d + "秒"; });
+                          .tickFormat(function(d) { 
+                            var value = "";
+                            var second = d % 60;
+                            var minute = (d - second) / 60;
+                            if (minute > 0) {
+                                value += minute + "分";
+                            }
+                            return value + second + "秒"; 
+                          });
             var yAxis = d3.svg.axis()
                           .ticks(5)
                           .scale(d3.scale.linear().domain([0, comment_max]).range([chart_height, 0]))
