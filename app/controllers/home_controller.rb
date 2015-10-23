@@ -49,7 +49,7 @@ class HomeController < ApplicationController
   
   def get_comments(flv_info, res_from)
     host = URI.unescape(flv_info[:ms])
-    request = host.gsub(/\/api\//, '/api.json/') + 'thread?thread=' + flv_info[:thread_id] + '&version=20061206&res_from=-' + res_from.to_s
+    request = "#{host.gsub(/\/api\//, '/api.json/')}thread?thread=#{flv_info[:thread_id]}&version=20061206&res_from=-#{res_from.to_s}"
     
     uri = URI.parse(request)
     json = Net::HTTP.get(uri)
@@ -63,16 +63,14 @@ class HomeController < ApplicationController
   
   def movie
     @id = params[:id]
-    if @id == nil then
-      @id = "sm18391671"
-    end 
-    
+    @id = "sm18391671" if @id.nil?
+
     cookie = login_nicovideo(ENV["NICOADD"], ENV["NICOPASS"])
     flv_info = get_flv_info(cookie, @id)
     
     if flv_info[:error]
-      msg = '指定された動画取得時にエラーが発生しました。動画ID = ' + @id
-      logger.info msg + ", flv_info = " + flv_info.inspect
+      msg = "指定された動画取得時にエラーが発生しました。動画ID = #{@id}"
+      logger.info "#{msg}, flv_info = #{flv_info.inspect}"
       flash[:notice] = msg
       render action: 'index'
       return
@@ -91,25 +89,33 @@ class HomeController < ApplicationController
   end
   
   def search
-    if params[:q].empty? then
+	check_q = foo_check(params[:q])
+    if params[:q].empty?
       flash[:notice] = 'キーワードが入力されていません'
       render action: 'index'
-    elsif params[:q].match(/^sm[0-9]+$/) then
-      redirect_to action: 'movie', id: params[:q]
+	elsif check_q[:thumb].has_key?(:ch_id)
+      flash[:notice] = "動画ID : #{params[:q]} はチャンネル動画なのでniconicoで課金して見てね！"
+      render action: 'index'
+    elsif params[:q].match(/^sm[0-9]+$/)
+	  if check_q[:thumb][:embeddable] == "0"
+        flash[:notice] = "動画ID : #{params[:q]} はniconico公式でのみ視聴可能です！"
+        render action: 'index'
+	  else
+        redirect_to action: 'movie', id: params[:q]
+	  end
     else
       nico = NicoSearchSnapshot.new('niconico_highlight')
       results = nico.search(params[:q], size: 15, search: [:tags_exact], sort_by: :comment_counter)
 
       sm_list = []
       results.each do |r| 
-		  p r.cmsid
-          thumb = foo_check(r.cmsid)
-          if !thumb.has_key?(:error) && r.cmsid =~ /^sm/ && thumb[:thumb][:embeddable] == "1" 
-              sm_list << r.cmsid
-          end 
+        thumb = foo_check(r.cmsid)
+        if !thumb.has_key?(:error) && r.cmsid =~ /^sm/ && thumb[:thumb][:embeddable] == "1" 
+            sm_list << r.cmsid
+        end 
       end 
       
-      unless results.empty? then
+      unless results.empty?
         smID = sm_list[rand(sm_list.size)]
         redirect_to action: 'movie', id: smID
       else
@@ -125,8 +131,8 @@ class HomeController < ApplicationController
     uri = URI.parse(request)
     xml = Net::HTTP.get(uri)
     json = Hash.from_xml(xml).to_json
-    check_Foo = JSON.parse(json,{:symbolize_names => true})
+    checked = JSON.parse(json,{:symbolize_names => true})
 
-    return check_Foo[:nicovideo_thumb_response]
+    return checked[:nicovideo_thumb_response]
   end
 end
