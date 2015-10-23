@@ -17,6 +17,10 @@ step ':name ボタンをクリックする' do |name|
   click_on name
 end
 
+step ':movie_id の再生画面を表示する' do |movie_id|
+  visit "/home/movie/#{movie_id}"
+end
+
 step ':movie_id の再生画面が表示されていること' do |movie_id|
   expect(current_path).to eq "/home/movie/#{movie_id}"
 end
