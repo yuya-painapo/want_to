@@ -64,7 +64,7 @@ class HomeController < ApplicationController
   def movie
     @id = params[:id]
     if @id == nil then
-      @id = "sm18391671" #sm25019253 #ebifly #sm9704169 #bond
+      @id = "sm18391671"
     end 
     
     cookie = login_nicovideo(ENV["NICOADD"], ENV["NICOPASS"])
@@ -102,25 +102,15 @@ class HomeController < ApplicationController
 
       sm_list = []
       results.each do |r| 
-          if r.cmsid =~ /^sm/
-              sm_list << r
+		  p r.cmsid
+          thumb = foo_check(r.cmsid)
+          if !thumb.has_key?(:error) && r.cmsid =~ /^sm/ && thumb[:thumb][:embeddable] == "1" 
+              sm_list << r.cmsid
           end 
-      end
+      end 
       
-      if !results.empty? then
-        smID = sm_list[rand(sm_list.size)].cmsid
-		counter = 0
-		while foo_check(smID) == 'fail' do
-          smID = sm_list[rand(sm_list.size)].cmsid
-		  counter += 1
-            if counter == 20 then
-                msg = "keyword : #{params[:q]} だと削除されている動画しか見つからないよ！"
-                logger.info msg + "削除されている動画にしかヒットしない"
-                flash[:notice] = msg
-                render action: 'index'
-				return
-            end 
-		end
+      unless results.empty? then
+        smID = sm_list[rand(sm_list.size)]
         redirect_to action: 'movie', id: smID
       else
         flash[:notice] = "keyword : #{params[:q]} だと動画が見つからないよ！"
@@ -137,6 +127,6 @@ class HomeController < ApplicationController
     json = Hash.from_xml(xml).to_json
     check_Foo = JSON.parse(json,{:symbolize_names => true})
 
-    return check_Foo[:nicovideo_thumb_response][:status]
+    return check_Foo[:nicovideo_thumb_response]
   end
 end
