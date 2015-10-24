@@ -89,25 +89,33 @@ class HomeController < ApplicationController
   end
   
   def search
-	check_q = foo_check(params[:q]) if params[:q].match(/^[a-z]|[0-9]+$/)
     if params[:q].empty?
       flash[:notice] = 'キーワードが入力されていません'
       redirect_to action: 'index'
-	elsif !check_q.nil? && check_q[:thumb] && check_q[:thumb].has_key?(:ch_id)
+	  return
+	end
+
+	check_q = get_nicovideo_thumb_response(params[:q]) if params[:q].match(/^[a-z]|[0-9]+$/)
+	if check_q.try(:[], :thumb) && check_q[:thumb].has_key?(:ch_id)
       flash[:notice] = "動画ID : #{params[:q]} はチャンネル動画なのでniconicoで課金して見てね！"
       redirect_to action: 'index'
+	  return
     elsif params[:q].match(/^sm[0-9]+$/)
 	  if check_q[:thumb] && check_q[:thumb][:embeddable] == "0"
         flash[:notice] = "動画ID : #{params[:q]} はniconico公式でのみ視聴可能です！"
         redirect_to action: 'index'
+		return
 	  elsif check_q[:error] && check_q[:error].has_value?("NOT_FOUND")
         flash[:notice] = "動画ID : #{params[:q]} は見つかりません。動画は存在しないか、削除された可能性があります"
         redirect_to action: 'index'
+		return
 	  elsif check_q[:error] && check_q[:error].has_value?("DELETED")
         flash[:notice] = "動画ID : #{params[:q]} は削除、非公開設定、配信停止の為、視聴できません"
         redirect_to action: 'index'
+		return
 	  else
         redirect_to action: 'movie', id: params[:q]
+		return
 	  end
 	else
 
@@ -116,8 +124,8 @@ class HomeController < ApplicationController
 
       sm_list = []
       results.each do |r| 
-        thumb = foo_check(r.cmsid)
-        if !thumb.has_key?(:error) && r.cmsid =~ /^sm/ && thumb[:thumb][:embeddable] == "1" 
+        thumb = get_nicovideo_thumb_response(r.cmsid)
+        if thumb.has_key?(:error).present? && r.cmsid =~ /^sm/ && thumb[:thumb][:embeddable] == "1" 
             sm_list << r.cmsid
         end 
       end 
@@ -125,21 +133,23 @@ class HomeController < ApplicationController
       unless results.empty?
         smID = sm_list[rand(sm_list.size)]
         redirect_to action: 'movie', id: smID
+		return
       else
         flash[:notice] = "keyword : #{params[:q]} だと動画が見つからないよ！"
         redirect_to action: 'index'
+		return
       end
     end
   end
 
-  def foo_check(check)
+  def get_nicovideo_thumb_response(check)
 	request = "http://ext.nicovideo.jp/api/getthumbinfo/#{check}"
 
     uri = URI.parse(request)
     xml = Net::HTTP.get(uri)
     json = Hash.from_xml(xml).to_json
-    checked = JSON.parse(json,{:symbolize_names => true})
+    thumb_info = JSON.parse(json,{:symbolize_names => true})
 
-    return checked[:nicovideo_thumb_response]
+    return thumb_info[:nicovideo_thumb_response]
   end
 end
