@@ -76,6 +76,14 @@ class HomeController < ApplicationController
       redirect_to action: 'index', q: @id
       return
     end
+
+    if flv_info.has_key? :deleted
+      msg = '指定された動画は削除されています。動画ID = ' + @id
+      logger.info msg + ", flv_info = " + flv_info.inspect
+      flash[:notice] = msg
+      redirect_to action: 'index', q: @id
+      return 
+    end
     
     flv_data = get_comments(flv_info, 1000) # max 1000
     chat = flv_data.select{ |data| data['chat'] }
