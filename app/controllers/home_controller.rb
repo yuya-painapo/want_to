@@ -59,11 +59,13 @@ class HomeController < ApplicationController
   end
 
   def index
+    @q = params[:q]
   end
   
   def movie
     @id = params[:id]
     @id = "sm18391671" if @id.nil?
+	movie_thumb_info = get_nicovideo_thumb_response(@id)
 
     cookie = login_nicovideo(ENV["NICOADD"], ENV["NICOPASS"])
     flv_info = get_flv_info(cookie, @id)
@@ -72,20 +74,30 @@ class HomeController < ApplicationController
       msg = "指定された動画取得時にエラーが発生しました。動画ID = #{@id}"
       logger.info "#{msg}, flv_info = #{flv_info.inspect}"
       flash[:notice] = msg
-      render action: 'index'
+      redirect_to action: 'index', q: @id
       return
+    end
+
+    if flv_info.has_key? :deleted
+      msg = "指定された動画は削除されています。動画ID = #{@id}"
+      logger.info msg + ", flv_info = " + flv_info.inspect
+      flash[:notice] = msg
+      redirect_to action: 'index', q: @id
+      return 
     end
     
     flv_data = get_comments(flv_info, 1000) # max 1000
     chat = flv_data.select{ |data| data['chat'] }
     @comments = chat.sort{ |a, b| a['chat']['vpos'] <=> b['chat']['vpos'] }
     params[:num] ||= '10'
-    @vpos_video_length = nicovideo_length(@id) 
+    @vpos_video_length = time_to_vpos(movie_thumb_info[:thumb][:length])
     @m_division = params[:num].to_i
     @vpos_range = divide_equally(@vpos_video_length, @m_division)
-    @video_time_range = from_vpos_to_time(@vpos_range,@m_division)
+    @start_time, @finish_time = from_vpos_to_time(@vpos_range,@m_division)
     @block_com_num = get_comment_number(@vpos_range, @comments, @m_division)        
     @time_watch = plus_time(@vpos_range)
+    @threshold = get_threshold(@block_com_num)
+    @highlights_place = get_highlight_place(@threshold,@block_com_num,@start_time,@finish_time)    
   end
   
   def search
@@ -95,23 +107,23 @@ class HomeController < ApplicationController
 	  return
 	end
 
-	check_q = get_nicovideo_thumb_response(params[:q]) if params[:q].match(/^[a-z]|[0-9]+$/)
-	if check_q.try(:[], :thumb) && check_q[:thumb].has_key?(:ch_id)
+	thumb_info = get_nicovideo_thumb_response(params[:q]) if params[:q].match(/^[a-z]|[0-9]+$/)
+	if thumb_info.try(:[], :thumb) && thumb_info[:thumb].has_key?(:ch_id)
       flash[:notice] = "動画ID : #{params[:q]} はチャンネル動画なのでniconicoで課金して見てね！"
-      redirect_to action: 'index'
+      redirect_to action: 'index', q: params[:q]
 	  return
     elsif params[:q].match(/^sm[0-9]+$/)
-	  if check_q[:thumb] && check_q[:thumb][:embeddable] == "0"
+	  if thumb_info[:thumb] && thumb_info[:thumb][:embeddable] == "0"
         flash[:notice] = "動画ID : #{params[:q]} はniconico公式でのみ視聴可能です！"
-        redirect_to action: 'index'
+        redirect_to action: 'index', q: params[:q]
 		return
-	  elsif check_q[:error] && check_q[:error].has_value?("NOT_FOUND")
+	  elsif thumb_info[:error] && thumb_info[:error].has_value?("NOT_FOUND")
         flash[:notice] = "動画ID : #{params[:q]} は見つかりません。動画は存在しないか、削除された可能性があります"
-        redirect_to action: 'index'
+        redirect_to action: 'index', q: params[:q]
 		return
-	  elsif check_q[:error] && check_q[:error].has_value?("DELETED")
+	  elsif thumb_info[:error] && thumb_info[:error].has_value?("DELETED")
         flash[:notice] = "動画ID : #{params[:q]} は削除、非公開設定、配信停止の為、視聴できません"
-        redirect_to action: 'index'
+        redirect_to action: 'index', q: params[:q]
 		return
 	  else
         redirect_to action: 'movie', id: params[:q]
@@ -136,20 +148,19 @@ class HomeController < ApplicationController
 		return
       else
         flash[:notice] = "keyword : #{params[:q]} だと動画が見つからないよ！"
-        redirect_to action: 'index'
-		return
+        redirect_to action: 'index', q: params[:q]
       end
     end
   end
 
-  def get_nicovideo_thumb_response(check)
-	request = "http://ext.nicovideo.jp/api/getthumbinfo/#{check}"
+  def get_nicovideo_thumb_response(id_info)
+	request = "http://ext.nicovideo.jp/api/getthumbinfo/#{id_info}"
 
     uri = URI.parse(request)
     xml = Net::HTTP.get(uri)
     json = Hash.from_xml(xml).to_json
-    thumb_info = JSON.parse(json,{:symbolize_names => true})
+    nico_thumb_info = JSON.parse(json,{:symbolize_names => true})
 
-    return thumb_info[:nicovideo_thumb_response]
+    return nico_thumb_info[:nicovideo_thumb_response]
   end
 end
