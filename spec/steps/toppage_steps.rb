@@ -24,3 +24,7 @@ end
 step 'メッセージ :message が表示されていること' do |message|
   expect(page).to have_content message
 end
+
+step ':name の値が :value であること' do |name, value|
+  expect(page.find(name).value).to eq value
+end

@@ -10,6 +10,18 @@
         <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
         <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
         <%= csrf_meta_tags %>
+        <style>
+            .axis text {
+                font: 10px sans-serif;
+            }
+
+            .axis path,
+            .axis line {
+                fill: none;
+                -webkit-text-stroke-color: #000;
+                -webkit-text-stroke-width: 2;
+            }
+        </style>
     </head>
     <body>
         <!-- Fixed navbar -->
