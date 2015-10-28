@@ -7,6 +7,10 @@ step ':name ボタンをクリックする' do |name|
   click_on name
 end
 
+step 'トップ画面が表示されていること' do
+  expect(current_path).to satisfy { |p| ['/', '/home/index'].include?(p) }
+end
+
 step ':movie_id の再生画面が表示されていること' do |movie_id|
   expect(current_path).to eq "/home/movie/#{movie_id}"
 end
