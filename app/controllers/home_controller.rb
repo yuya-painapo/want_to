@@ -76,6 +76,14 @@ class HomeController < ApplicationController
       redirect_to :back
       return
     end
+
+    if flv_info.has_key? :deleted
+      msg = '指定された動画は削除されています。動画ID = ' + @id
+      logger.info msg + ", flv_info = " + flv_info.inspect
+      flash[:notice] = msg
+      redirect_to :back
+      return 
+    end
     
     flv_data = get_comments(flv_info, 1000) # max 1000
     chat = flv_data.select{ |data| data['chat'] }
@@ -84,12 +92,14 @@ class HomeController < ApplicationController
     @vpos_video_length = nicovideo_length(@id) 
     @m_division = params[:num].to_i
     @vpos_range = divide_equally(@vpos_video_length, @m_division)
-    @video_time_range = from_vpos_to_time(@vpos_range,@m_division)
+    @start_time, @finish_time = from_vpos_to_time(@vpos_range,@m_division)
     @block_com_num = get_comment_number(@vpos_range, @comments, @m_division)        
     @time_watch = plus_time(@vpos_range)
 
     @q = session[:q]
-
+    @threshold = get_threshold(@block_com_num)
+    @highlights_place = get_highlight_place(@threshold,@block_com_num,@start_time,@finish_time)    
+    
   end
   
   def input_word

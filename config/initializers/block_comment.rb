@@ -54,20 +54,30 @@ end
 
 
 def from_vpos_to_time(time_range, m_division)
-  v_time = Array.new(m_division)
+  start_time = Array.new(m_division)
+  end_time = Array.new(m_division)
   i = 0
 
   time_range.each do |time| 
     sec = (time + 100) / 100
     min = sec / 60
     ss = sprintf("%02d", sec % 60)
-    v_time[i] = min.to_s + ':' + ss.to_s
+    start_time[i] = min.to_s + ':' + ss.to_s
     i = i + 1  
   end
-  v_time.unshift 0
-  v_time.pop 
-  
-  return v_time
+  start_time.unshift 0
+  start_time.pop 
+
+  i = 0
+  time_range.each do |time|
+    sec = time / 100
+    min = sec / 60
+    ss = sprintf("%02d", sec % 60)
+    end_time[i] = min.to_s + ':' + ss.to_s
+    i = i + 1
+  end
+
+  return start_time,end_time
 end
 
 
@@ -78,3 +88,30 @@ def plus_time(time_range)
 
   return start_time
 end
+
+
+def get_threshold(block_com_num)
+  avg = block_com_num.inject(0.0){|r,i| r+=i }/block_com_num.size
+  variance = block_com_num.inject(0.0){|r,i| r+=(i.to_i-avg)**2 }/block_com_num.size
+  standard_deviation = Math.sqrt(variance)
+  value = avg + standard_deviation
+
+  return value
+end
+
+
+def get_highlight_place(threshold,com_num,start_time,finish_time)
+  start = []
+  finish = []
+  com_num.length.times do |i|
+    if com_num[i] > threshold
+      start.push start_time[i]
+      finish.push finish_time[i]
+    end
+  end
+  start_finish = start.zip(finish)
+  
+  return start_finish
+end
+
+

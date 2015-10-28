@@ -14,7 +14,7 @@
             <script type="text/javascript">
             var svgWidth = 520; // SVG領域の横幅
             var svgHeight = 360;    // SVG領域の縦幅
-            var margin = {top: 20, right: 40, bottom: 20, left: 40};
+            var margin = {top: 20, right: 40, bottom: 40, left: 50};
             var chart_width = svgWidth - margin.left - margin.right;
             var chart_height = svgHeight - margin.top - margin.bottom;
 
@@ -79,7 +79,15 @@
                           .scale(d3.scale.linear().domain([0, time_watch[<%= @m_division %> - 1]]).range([0, chart_width]))
                           .orient("bottom")
                           .tickSize(6, -chart_height)
-                          .tickFormat(function(d) { return d + "秒"; });
+                          .tickFormat(function(d) { 
+                            var value = "";
+                            var second = d % 60;
+                            var minute = (d - second) / 60;
+                            if (minute > 0) {
+                                value += minute + "分";
+                            }
+                            return value + second + "秒"; 
+                          });
             var yAxis = d3.svg.axis()
                           .ticks(5)
                           .scale(d3.scale.linear().domain([0, comment_max]).range([chart_height, 0]))
@@ -89,14 +97,18 @@
             svg.append("g")
                .attr("class", "x axis")
                .attr("transform", "translate(0, " + chart_height + ")")
-               .call(xAxis);
+               .call(xAxis)
+               .append("text")
+               .attr("y", 35)
+               .attr("x", 200)
+               .style("text-anchor", "middle")
+               .text("経過時間 / 分秒");
 
             svg.append("g")
                .attr("class", "y axis")
                .call(yAxis)
                .append("text")
-               .attr("y", -10)
-               .attr("x", 10)
+               .style("text-anchor", "end")
                .text("盛り上がり")
 
 
@@ -121,14 +133,25 @@
     <%= @m_division %>
     <br>
 
+
+    <b>閾値 : </b>
+    <%= @threshold %>
+    <br>
+
     <b>ブロックごとのコメント数 :</b>
     <% @block_com_num.each do |com_num| %>
-        <%= com_num %>
+    <%= com_num %>
     <% end %>
 
     <br>
     <b>ブロックごとの動画開始位置 :</b>
-    <% @video_time_range.each do |time_range| %>
-        <%= time_range %>
+    <% @start_time.each do |time| %>
+    <%= time %>
     <% end %>
+
+    <br>
+    <b>ハイライト該当箇所 :</b>
+    <% @highlights_place.each do |start, finish| %>
+    <%= start.to_s + '~' + finish.to_s %> ,
+<% end %>
 <% end %>
