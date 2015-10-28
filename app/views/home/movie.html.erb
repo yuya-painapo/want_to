@@ -70,9 +70,10 @@
                     
                 });
             var xAxis = d3.svg.axis()
-                          .scale(d3.scale.linear().domain([0, time_watch[<%= @m_division %> - 1]]).range([0, chart_width]))
+                          .scale(d3.scale.linear().domain([0, <%= @vpos_video_length/100 %>*0.9]).range([0, chart_width*0.9]))
                           .orient("bottom")
                           .tickSize(6, -chart_height)
+                          .ticks(5)
                           .tickFormat(function(d) { 
                             var value = "";
                             var second = d % 60;
@@ -88,15 +89,25 @@
                           .orient("left")
                           .tickSize(6, -chart_width);
 
-            svg.append("g")
+            var xSVG = svg.append("g")
                .attr("class", "x axis")
                .attr("transform", "translate(0, " + chart_height + ")")
-               .call(xAxis)
-               .append("text")
+               .call(xAxis);
+               xSVG.append("text")
                .attr("y", 35)
                .attr("x", 200)
                .style("text-anchor", "middle")
                .text("経過時間 / 分秒");
+               var Lsecond = <%= @vpos_video_length/100 % 60 %>;
+               var Lminute = (<%= @vpos_video_length/100 %> - Lsecond) / 60;
+               if (Lminute > 0) {
+                   Lminute += "分";
+               } else Lminute = "分";
+               xSVG.append("text")
+               .attr("y", 16)
+               .attr("x", 450)
+               .style("text-anchor", "end")
+               .text(Lminute + Lsecond + "秒");
 
             svg.append("g")
                .attr("class", "y axis")
@@ -136,6 +147,6 @@
     <br>
     <b>ハイライト該当箇所 :</b>
     <% @highlights_place.each do |start, finish| %>
-    <%= start.to_s + '~' + finish.to_s %> ,
+    <%= start.to_s + '~' + finish.to_s %> 
 <% end %>
 <% end %>

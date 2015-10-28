@@ -28,6 +28,8 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 # To use nicovideo snapshot api
 gem 'nico_search_snapshot'
+# To scraping niconico tag ranking. Read more. https://github.com/sparklemotion/nokogiri
+gem 'nokogiri'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

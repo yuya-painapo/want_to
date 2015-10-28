@@ -224,6 +224,7 @@ DEPENDENCIES
   jquery-rails
   jquery-turbolinks
   nico_search_snapshot
+  nokogiri
   pg
   poltergeist (~> 1.7)
   rails (= 4.2.1)
