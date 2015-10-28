@@ -216,6 +216,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   nico_search_snapshot
+  nokogiri
   pg
   poltergeist (~> 1.7)
   rails (= 4.2.1)
