@@ -139,13 +139,14 @@ class HomeController < ApplicationController
       sm_list = []
       results.each do |r| 
         thumb = get_nicovideo_thumb_response(r.cmsid)
-        if thumb.has_key?(:error).present? && r.cmsid =~ /^sm/ && thumb[:thumb][:embeddable] == "1" 
+        if !thumb.has_key?(:error).present? && r.cmsid =~ /^sm/ && thumb[:thumb][:embeddable] == "1" 
             sm_list << r.cmsid
         end 
       end 
       
       unless results.empty?
         smID = sm_list[rand(sm_list.size)]
+		logger.info smID
         redirect_to action: 'movie', id: smID
 		return
       else
