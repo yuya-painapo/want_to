@@ -73,7 +73,7 @@ class HomeController < ApplicationController
       msg = '指定された動画取得時にエラーが発生しました。動画ID = ' + @id
       logger.info msg + ", flv_info = " + flv_info.inspect
       flash[:notice] = msg
-      redirect_to action: 'index', q: @id
+      redirect_to :back
       return
     end
     
@@ -100,7 +100,7 @@ class HomeController < ApplicationController
     session[:q] = params[:q]
     if params[:q].empty? then
       flash[:notice] = 'キーワードが入力されていません'
-      redirect_to action: 'index'
+      redirect_to :back
     elsif params[:q].match(/^sm[0-9]+$/) then
       redirect_to action: 'movie', id: params[:q]
     else
@@ -112,7 +112,7 @@ class HomeController < ApplicationController
         redirect_to action: 'movie', id: smID
       else
         flash[:notice] = "keyword : #{params[:q]} だと動画が見つからないよ！"
-        redirect_to action: 'index', q: params[:q]
+        redirect_to :back
       end
     end
   end
