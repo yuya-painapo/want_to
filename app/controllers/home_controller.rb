@@ -59,14 +59,14 @@ class HomeController < ApplicationController
   end
 
   def index
-    @q = session[:q]
+    @q = params[:q]
+    @trendtag = get_nico_trend_tag
+    logger.info @trendtag
   end
   
   def movie
     @id = params[:id]
-    if @id == nil then
-      @id = "sm18391671"# if @id.nil?
-    end
+    @id = "sm18391671" if @id.nil?
     movie_thumb_info = get_nicovideo_thumb_response(@id)
 
     cookie = login_nicovideo(ENV["NICOADD"], ENV["NICOPASS"])
@@ -170,13 +170,14 @@ class HomeController < ApplicationController
       sm_list = []
       results.each do |r| 
         thumb = get_nicovideo_thumb_response(r.cmsid)
-        if thumb.has_key?(:error).present? && r.cmsid =~ /^sm/ && thumb[:thumb][:embeddable] == "1" 
-            sm_list << r.cmsid
+        if !thumb.has_key?(:error).present? && r.cmsid =~ /^sm/ && thumb[:thumb][:embeddable] == "1" 
+          sm_list << r.cmsid
         end 
       end 
       
       unless results.empty?
         smID = sm_list[rand(sm_list.size)]
+        logger.info smID
         redirect_to action: 'movie', id: smID
         return
       else
@@ -199,5 +200,27 @@ class HomeController < ApplicationController
     nico_thumb_info = JSON.parse(json,{:symbolize_names => true})
 
     return nico_thumb_info[:nicovideo_thumb_response]
+  end
+  
+  def get_nico_trend_tag
+    url = 'http://www.nicovideo.jp/trendtag?ref=top_trendtagpage'
+    
+    charset = nil 
+    html = open(url) do |f| 
+      charset = f.charset
+      f.read
+    end
+    
+    doc = Nokogiri::HTML.parse(html, nil, charset)
+    tagRank = Hash.new
+
+    getTagRank = doc.css("div#tagRanking")
+    getTagRank.xpath('//h2[@class="no02"]').each do |node|
+        rank = node.css('span').inner_text.to_i
+        tag = node.css('a').inner_text
+        tagRank.store(rank, tag)
+    end
+    
+    return tagRank
   end
 end
