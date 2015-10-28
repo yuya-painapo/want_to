@@ -22,6 +22,14 @@
                 -webkit-text-stroke-width: 2;
             }
         </style>
+        <script type="text/javascript">
+         var _on = function(jquery_selector) { $(jquery_selector).addClass("active").removeClass("inactive"); }
+         var _off = function(jquery_selector) { $(jquery_selector).addClass("inactive").removeClass("active"); }
+         $(function() {
+             $("#howtouse").hover(function() {_on("#howtouse");}, function() {_off("#howtouse")});
+             $("#contact").hover(function() {_on("#contact");}, function() {_off("#contact")});
+         });
+        </script>
     </head>
     <body>
         <!-- Fixed navbar -->
@@ -34,7 +42,8 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="active"><a href="#f">Contact</a></li>
+                        <li id="howtouse" class="inactive"><a href="#">このページの使い方</a></li>
+                        <li id="contact" class="inactive"><a href="#f">Contact</a></li>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>
