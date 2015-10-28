@@ -16,4 +16,5 @@
 //= require d3.v3
 //= require chart
 //= require turbolinks
+//= require introjs
 //= require_tree .

@@ -28,6 +28,7 @@
          $(function() {
              $("#howtouse").hover(function() {_on("#howtouse");}, function() {_off("#howtouse")});
              $("#contact").hover(function() {_on("#contact");}, function() {_off("#contact")});
+             $("#howtouse").click(function() {introJs().start();});
          });
         </script>
     </head>
@@ -42,7 +43,7 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li id="howtouse" class="inactive"><a href="#">このページの使い方</a></li>
+                        <li id="howtouse" class="inactive"><a href="#dummy_text">このページの使い方</a></li>
                         <li id="contact" class="inactive"><a href="#f">Contact</a></li>
                     </ul>
                 </div><!--/.nav-collapse -->
