@@ -66,7 +66,6 @@ class HomeController < ApplicationController
     @id = params[:id]
     @id = "sm18391671" if @id.nil?
 	movie_thumb_info = get_nicovideo_thumb_response(@id)
-
     cookie = login_nicovideo(ENV["NICOADD"], ENV["NICOPASS"])
     flv_info = get_flv_info(cookie, @id)
     
