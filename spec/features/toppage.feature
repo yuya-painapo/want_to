@@ -1,5 +1,6 @@
 # encoding: utf-8
 # language: ja
+@toppage
 機能: トップ画面を開く
   シナリオ: トップ画面にアクセスする
     もし トップ画面を表示する
