@@ -18,15 +18,15 @@
     <div class="row centered mt grid">
         <h3>niconicoする！！</h3>
 
-		<% if flash[:notice] %>
-		    <div class="alert alert-success">
-		    <%= flash[:notice] %>
-		    </div>
-		<% end %>
+        <% if flash[:notice] %>
+          <div class="alert alert-success">
+            <%= flash[:notice] %>
+          </div>
+        <% end %>
 
         <div class="mt"></div>
         <div class="col-lg-12">
-			<%= link_to image_tag("07.jpg"), {:controller => :home, :action => :movie}, data:{no_turbolink: true}%>
+            <%= link_to image_tag("07.jpg"), {:controller => :home, :action => :movie}, data:{no_turbolink: true}%>
         </div>
 
         <h3>トレンドタグ</h3>
@@ -52,14 +52,13 @@
         </div>
     
     <div class="row mt centered">
-		<%= form_tag(controller: "home", action: "search", method: "post") do %>                             
+        <%= form_tag(controller: "home", action: "search", method: "post") do %>
             <div class="col-lg-7 col-lg-offset-1 mt">
-				<%= text_field_tag(:q, @q, class: "form-control", placeholder: "sm* または keyword") %>                                 
+                <%= text_field_tag(:q, @q, class: "form-control", placeholder: "sm* または keyword") %>
             </div>
             <div class="col-lg-3 mt">
-    				<%= submit_tag("再生", class: "btn btn-theme btn-lg") %>
-			<%end%>
+                <%= submit_tag("再生", class: "btn btn-theme btn-lg") %>
             </div>
-        </form>
+        <%end%>
     </div>
 </div>
