@@ -59,7 +59,7 @@ class HomeController < ApplicationController
   end
 
   def index
-    @q = params[:q]
+    @q = session[:q]
     @trendtag = get_nico_trend_tag
     logger.info @trendtag
   end
@@ -76,11 +76,7 @@ class HomeController < ApplicationController
       msg = "指定された動画取得時にエラーが発生しました。動画ID = #{@id}"
       logger.info "#{msg}, flv_info = #{flv_info.inspect}"
       flash[:notice] = msg
-      begin
-        redirect_to :back
-      rescue ActionController::RedirectBackError
-        redirect_to :root
-      end
+      redirect_to :back
       return
     end
 
@@ -88,11 +84,7 @@ class HomeController < ApplicationController
       msg = "指定された動画は削除されています。動画ID = #{@id}"
       logger.info msg + ", flv_info = " + flv_info.inspect
       flash[:notice] = msg
-      begin
-        redirect_to :back
-      rescue ActionController::RedirectBackError
-        redirect_to :root
-      end
+      redirect_to :back
       return
     end
     
@@ -117,47 +109,27 @@ class HomeController < ApplicationController
     session[:q] = params[:q]
     if params[:q].empty?
       flash[:notice] = 'キーワードが入力されていません'
-      begin
-        redirect_to :back
-      rescue ActionController::RedirectBackError
-        redirect_to :root
-      end
+      redirect_to :back
       return
     end
 
     thumb_info = get_nicovideo_thumb_response(params[:q]) if params[:q].match(/^[a-z]|[0-9]+$/)
     if thumb_info.try(:[], :thumb) && thumb_info[:thumb].has_key?(:ch_id)
       flash[:notice] = "動画ID : #{params[:q]} はチャンネル動画なのでniconicoで課金して見てね！"
-      begin
-        redirect_to :back
-      rescue ActionController::RedirectBackError
-        redirect_to :root
-      end
+      redirect_to :back
       return
     elsif params[:q].match(/^sm[0-9]+$/)
       if thumb_info[:thumb] && thumb_info[:thumb][:embeddable] == "0"
         flash[:notice] = "動画ID : #{params[:q]} はniconico公式でのみ視聴可能です！"
-        begin
-          redirect_to :back
-        rescue ActionController::RedirectBackError
-          redirect_to :root
-        end
+        redirect_to :back
         return
       elsif thumb_info[:error] && thumb_info[:error].has_value?("NOT_FOUND")
         flash[:notice] = "動画ID : #{params[:q]} は見つかりません。動画は存在しないか、削除された可能性があります"
-        begin
-          redirect_to :back
-        rescue ActionController::RedirectBackError
-          redirect_to :root
-        end
+        redirect_to :back
         return
       elsif thumb_info[:error] && thumb_info[:error].has_value?("DELETED")
         flash[:notice] = "動画ID : #{params[:q]} は削除、非公開設定、配信停止の為、視聴できません"
-        begin
-          redirect_to :back
-        rescue ActionController::RedirectBackError
-          redirect_to :root
-        end
+        redirect_to :back
         return
       else
         redirect_to action: 'movie', id: params[:q]
@@ -182,11 +154,7 @@ class HomeController < ApplicationController
         return
       else
         flash[:notice] = "keyword : #{params[:q]} だと動画が見つからないよ！"
-        begin
-          redirect_to :back
-        rescue ActionController::RedirectBackError
-          redirect_to :root
-        end
+        redirect_to :back
       end
     end
   end
