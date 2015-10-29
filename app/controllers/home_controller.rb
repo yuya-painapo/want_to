@@ -61,7 +61,8 @@ class HomeController < ApplicationController
   def index
     @q = params[:q]
     @trendtag = get_nico_trend_tag
-	logger.info @trendtag
+    logger.info @trendtag
+
   end
   
   def movie
@@ -179,8 +180,7 @@ class HomeController < ApplicationController
     doc = Nokogiri::HTML.parse(html, nil, charset)
     tagRank = Hash.new
 
-    getTagRank = doc.css("div#tagRanking")
-    getTagRank.xpath('//h2[@class="no02"]').each do |node|
+	doc.css('div#tagRanking/div.box/h2').each do |node|
         rank = node.css('span').inner_text.to_i
         tag = node.css('a').inner_text
         tagRank.store(rank, tag)
