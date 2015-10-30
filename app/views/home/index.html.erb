@@ -4,7 +4,7 @@
             <div class="col-lg-7 col-lg-offset-1 mt" data-step="1" data-intro="ここにキーワードを入力します。">
                 <%= text_field_tag(:q, @q, class: "form-control", placeholder: "sm* または keyword") %>
             </div>
-            <div class="col-lg-3 mt" data-step="2" data-intro="このボタンをクリックします。">
+            <div class="col-lg-3 mt" data-step="2" data-intro="このボタンをクリックすると、動画を再生します。">
                 <%= submit_tag("再生", class: "btn btn-theme btn-lg") %>
             </div>
         <%end%>
@@ -17,8 +17,8 @@
           </div>
         <% end %>
 
-        <h3>トレンドタグ</h3>
-        <div class="container">
+        <div class="container" data-step="3" data-intro="トレンドタグをクリックすることで、動画を再生することもできます。">
+            <h3>トレンドタグ</h3>
             <div class="table-responsive">
                 <table class="table table-hover table-striped">
                     <thead>
