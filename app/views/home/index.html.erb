@@ -53,7 +53,7 @@
     
     <div class="row mt centered">
         <%= form_tag(controller: "home", action: "search", method: "post") do %>
-            <div class="col-lg-7 col-lg-offset-1 mt" data-step="1" data-intro="ここにキーワードを入力します。">
+            <div class="col-lg-7 col-lg-offset-1 mt" id="intro-start" data-step="1" data-intro="ここにキーワードを入力します。">
                 <%= text_field_tag(:q, @q, class: "form-control", placeholder: "sm* または keyword") %>
             </div>
             <div class="col-lg-3 mt" data-step="2" data-intro="このボタンをクリックします。">
