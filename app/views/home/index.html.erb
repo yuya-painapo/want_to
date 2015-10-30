@@ -18,47 +18,47 @@
     <div class="row centered mt grid">
         <h3>niconicoする！！</h3>
 
-		<% if flash[:notice] %>
-		  <div class="alert alert-success">
-		    <%= flash[:notice] %>
-		  </div>
-		<% end %>
+        <% if flash[:notice] %>
+          <div class="alert alert-success">
+            <%= flash[:notice] %>
+          </div>
+        <% end %>
 
         <div class="mt"></div>
         <div class="col-lg-12">
-            <%= link_to image_tag("07.jpg"), { :controller => :home, :action => :movie } %>
+            <%= link_to image_tag("07.jpg"), {:controller => :home, :action => :movie}, data:{no_turbolink: true}%>
         </div>
 
         <h3>トレンドタグ</h3>
         <div class="container">
-        <div class="table-responsive">
-        <table class="table table-hover ">
-          <thead>
-            <tr>
-              <th>ranking</th>
-              <th>tag name</th>
-            </tr>
-          </thead>
-          <tbody>
-          <% for num in 1..10 do %>
-            <tr id="TagRanking">
-              <td><%=num%></td>
-              <td><a href=<%="/home/search/#{@trendtag[num]}"%>><%= @trendtag[num]%></a></td>
-            </tr>
-          <%end%>
-          </tbody>
-        </table>
+            <div class="table-responsive">
+                <table class="table table-hover ">
+                    <thead>
+                        <tr>
+                            <th>Ranking</th>
+                            <th>Tag name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <% for num in 1..10 do %>
+                        <tr id="TagRanking">
+                            <td><%=num%></td>
+                            <td><a href=<%="/home/search/#{@trendtag[num]}"%> data-no-turbolink="1"><%= @trendtag[num]%></a></td>
+                        </tr>
+                    <%end%>
+                    </tbody>
+                </table>
+            </div>
         </div>
     
     <div class="row mt centered">
-		<%= form_tag(controller: "home", action: "search", method: "post") do %>                             
+        <%= form_tag(controller: "home", action: "search", method: "post") do %>
             <div class="col-lg-7 col-lg-offset-1 mt" data-step="1" data-intro="ここにキーワードを入力します。">
-				<%= text_field_tag(:q, @q, class: "form-control", placeholder: "sm* または keyword") %>                                 
+                <%= text_field_tag(:q, @q, class: "form-control", placeholder: "sm* または keyword") %>
             </div>
             <div class="col-lg-3 mt" data-step="2" data-intro="このボタンをクリックします。">
-    				<%= submit_tag("再生", class: "btn btn-theme btn-lg") %>
-			<%end%>
+                <%= submit_tag("再生", class: "btn btn-theme btn-lg") %>
             </div>
-        </form>
+        <%end%>
     </div>
 </div>
