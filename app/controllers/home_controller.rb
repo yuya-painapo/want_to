@@ -87,7 +87,7 @@ class HomeController < ApplicationController
       redirect_to :back
       return
     end
-    
+        
     flv_data = get_comments(flv_info, 1000) # max 1000
     chat = flv_data.select{ |data| data['chat'] }
     @comments = chat.sort{ |a, b| a['chat']['vpos'] <=> b['chat']['vpos'] }
