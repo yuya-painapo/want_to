@@ -3,6 +3,8 @@ class HomeController < ApplicationController
   require 'net/https'
   require 'uri'
   require 'json'
+  require 'active_support'
+  require 'active_support/core_ext'
   
   def login_nicovideo(mail, pass)
     host = 'secure.nicovideo.jp'
@@ -47,7 +49,7 @@ class HomeController < ApplicationController
   
   def get_comments(flv_info, res_from)
     host = URI.unescape(flv_info[:ms])
-    request = host.gsub(/\/api\//, '/api.json/') + 'thread?thread=' + flv_info[:thread_id] + '&version=20061206&res_from=-' + res_from.to_s
+    request = "#{host.gsub(/\/api\//, '/api.json/')}thread?thread=#{flv_info[:thread_id]}&version=20061206&res_from=-#{res_from.to_s}"
     
     uri = URI.parse(request)
     json = Net::HTTP.get(uri)
@@ -55,72 +57,137 @@ class HomeController < ApplicationController
   
     return comments
   end
-  
+
   def index
-    @q = params[:q]
+    @q = session[:q]
+    @trendtag = get_nico_trend_tag
+    logger.info @trendtag
   end
   
   def movie
     @id = params[:id]
-    if @id == nil then
-      @id = "sm18391671" #sm25019253 #ebifly #sm9704169 #bond
-    end 
-    
+    @id = "sm18391671" if @id.nil?
+    movie_thumb_info = get_nicovideo_thumb_response(@id)
+
     cookie = login_nicovideo(ENV["NICOADD"], ENV["NICOPASS"])
     flv_info = get_flv_info(cookie, @id)
     
     if flv_info[:error]
-      msg = '指定された動画取得時にエラーが発生しました。動画ID = ' + @id
-      logger.info msg + ", flv_info = " + flv_info.inspect
+      msg = "指定された動画取得時にエラーが発生しました。動画ID = #{@id}"
+      logger.info "#{msg}, flv_info = #{flv_info.inspect}"
       flash[:notice] = msg
-      redirect_to action: 'index', q: @id
+      redirect_to :back
       return
     end
 
     if flv_info.has_key? :deleted
-      msg = '指定された動画は削除されています。動画ID = ' + @id
+      msg = "指定された動画は削除されています。動画ID = #{@id}"
       logger.info msg + ", flv_info = " + flv_info.inspect
       flash[:notice] = msg
-      redirect_to action: 'index', q: @id
-      return 
+      redirect_to :back
+      return
     end
-    
+        
     flv_data = get_comments(flv_info, 1000) # max 1000
     chat = flv_data.select{ |data| data['chat'] }
     @comments = chat.sort{ |a, b| a['chat']['vpos'] <=> b['chat']['vpos'] }
     params[:num] ||= '10'
-    @vpos_video_length = nicovideo_length(@id) 
+    @vpos_video_length = time_to_vpos(movie_thumb_info[:thumb][:length])
     @m_division = params[:num].to_i
     @vpos_range = divide_equally(@vpos_video_length, @m_division)
     @start_time, @finish_time = from_vpos_to_time(@vpos_range,@m_division)
-    @block_com_num = get_comment_number(@vpos_range, @comments, @m_division)        
+    @block_com_num = get_comment_number(@vpos_range, @comments, @m_division)
     @time_watch = plus_time(@vpos_range)
-
     @threshold = get_threshold(@block_com_num)
-    @highlights_place = get_highlight_place(@threshold,@block_com_num,@start_time,@finish_time)    
-    
-  end
-  
-  def input_word
+    @highlights_place = get_highlight_place(@threshold,@block_com_num,@start_time,@finish_time)
+
+    @q = session[:q]
   end
   
   def search
-    if params[:q].empty? then
+    # セッションに検索キーワードを格納
+    session[:q] = params[:q]
+    if params[:q].empty?
       flash[:notice] = 'キーワードが入力されていません'
-      redirect_to action: 'index'
-    elsif params[:q].match(/^sm[0-9]+$/) then
-      redirect_to action: 'movie', id: params[:q]
+      redirect_to :back
+      return
+    end
+
+    thumb_info = get_nicovideo_thumb_response(params[:q]) if params[:q].match(/^[a-z]|[0-9]+$/)
+    if thumb_info.try(:[], :thumb) && thumb_info[:thumb].has_key?(:ch_id)
+      flash[:notice] = "動画ID : #{params[:q]} はチャンネル動画なのでniconicoで課金して見てね！"
+      redirect_to :back
+      return
+    elsif params[:q].match(/^sm[0-9]+$/)
+      if thumb_info[:thumb] && thumb_info[:thumb][:embeddable] == "0"
+        flash[:notice] = "動画ID : #{params[:q]} はniconico公式でのみ視聴可能です！"
+        redirect_to :back
+        return
+      elsif thumb_info[:error] && thumb_info[:error].has_value?("NOT_FOUND")
+        flash[:notice] = "動画ID : #{params[:q]} は見つかりません。動画は存在しないか、削除された可能性があります"
+        redirect_to :back
+        return
+      elsif thumb_info[:error] && thumb_info[:error].has_value?("DELETED")
+        flash[:notice] = "動画ID : #{params[:q]} は削除、非公開設定、配信停止の為、視聴できません"
+        redirect_to :back
+        return
+      else
+        redirect_to action: 'movie', id: params[:q]
+        return
+      end
     else
       nico = NicoSearchSnapshot.new('niconico_highlight')
       results = nico.search(params[:q], size: 15, search: [:tags_exact], sort_by: :comment_counter)
+
+      sm_list = []
+      results.each do |r| 
+        thumb = get_nicovideo_thumb_response(r.cmsid)
+        if !thumb.has_key?(:error).present? && r.cmsid =~ /^sm/ && thumb[:thumb][:embeddable] == "1" 
+          sm_list << r.cmsid
+        end 
+      end 
       
-      if !results.empty? then
-        smID = results[rand(results.size)].cmsid
+      unless results.empty?
+        smID = sm_list[rand(sm_list.size)]
+        logger.info smID
         redirect_to action: 'movie', id: smID
+        return
       else
         flash[:notice] = "keyword : #{params[:q]} だと動画が見つからないよ！"
-        redirect_to action: 'index', q: params[:q]
+        redirect_to :back
       end
     end
+  end
+
+  def get_nicovideo_thumb_response(id_info)
+    request = "http://ext.nicovideo.jp/api/getthumbinfo/#{id_info}"
+
+    uri = URI.parse(request)
+    xml = Net::HTTP.get(uri)
+    json = Hash.from_xml(xml).to_json
+    nico_thumb_info = JSON.parse(json,{:symbolize_names => true})
+
+    return nico_thumb_info[:nicovideo_thumb_response]
+  end
+  
+  def get_nico_trend_tag
+    url = 'http://www.nicovideo.jp/trendtag?ref=top_trendtagpage'
+    
+    charset = nil 
+    html = open(url) do |f| 
+      charset = f.charset
+      f.read
+    end
+    
+    doc = Nokogiri::HTML.parse(html, nil, charset)
+    tagRank = Hash.new
+
+	doc.css('div#tagRanking/div.box/h2').each do |node|
+        rank = node.css('span').inner_text.to_i
+        tag = node.css('a').inner_text
+        tagRank.store(rank, tag)
+    end
+    
+    return tagRank
   end
 end

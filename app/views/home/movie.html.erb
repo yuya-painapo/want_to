@@ -15,12 +15,29 @@ span#tooltip{
 <span id="tooltip"></span>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 
-<div class="container" style="padding-top: 50px;">
-    <div class="row">
-        <div class="col-lg-6 centered">
+<div class="container">
+    <div class="row mt centered">
+        <% if flash[:notice] %>
+          <div class="alert alert-info">
+            <%= flash[:notice] %>
+          </div>
+        <% end %>
+        <%= form_tag(controller: "home", action: "search", method: "post") do %>
+            <div class="col-lg-7 col-lg-offset-1 mt">
+                <%= text_field_tag(:q, @q, class: "form-control input-lg", placeholder: "sm* または keyword") %>
+            </div>
+            <div class="col-lg-3 mt">
+                <%= submit_tag("再生", class: "btn btn-theme btn-lg") %>
+            </div>
+        <%end%>
+    </div>
+    <hr>
+    <div class="row center mt">
+        
+        <div class="col-lg-6 centered" data-step="1" data-intro="ここが動画再生エリアです">
             <script type="text/javascript" src=<%= "http://ext.nicovideo.jp/thumb_watch/"+@id %>></script><noscript><a href= <%="http://www.nicovideo.jp/watch/"+ @id %>>nicovideo</a></noscript>
         </div>
-        <div class="col-lg-6 centered">
+        <div class="col-lg-6 centered" data-step="2" data-intro="ここに盛り上がりグラフが表示されます。動画を読み込んでからクリックすると、その位置から再生します。">
             <div id="chart"></div>
             <script type="text/javascript">
             var svgWidth = 520; // SVG領域の横幅
@@ -117,9 +134,10 @@ span#tooltip{
                 
 	      
             var xAxis = d3.svg.axis()
-                          .scale(d3.scale.linear().domain([0, time_watch[<%= @m_division %> - 1]]).range([0, chart_width]))
+                          .scale(d3.scale.linear().domain([0, <%= @vpos_video_length/100 %>*0.9]).range([0, chart_width*0.9]))
                           .orient("bottom")
                           .tickSize(6, -chart_height)
+                          .ticks(5)
                           .tickFormat(function(d) { 
                             var value = "";
                             var second = d % 60;
@@ -135,15 +153,25 @@ span#tooltip{
                           .orient("left")
                           .tickSize(6, -chart_width);
 
-            svg.append("g")
+            var xSVG = svg.append("g")
                .attr("class", "x axis")
                .attr("transform", "translate(0, " + chart_height + ")")
-               .call(xAxis)
-               .append("text")
+               .call(xAxis);
+               xSVG.append("text")
                .attr("y", 35)
                .attr("x", 200)
                .style("text-anchor", "middle")
                .text("経過時間 / 分秒");
+               var Lsecond = <%= @vpos_video_length/100 % 60 %>;
+               var Lminute = (<%= @vpos_video_length/100 %> - Lsecond) / 60;
+               if (Lminute > 0) {
+                   Lminute += "分";
+               } else Lminute = "分";
+               xSVG.append("text")
+               .attr("y", 16)
+               .attr("x", 450)
+               .style("text-anchor", "end")
+               .text(Lminute + Lsecond + "秒");
 
             svg.append("g")
                .attr("class", "y axis")
@@ -151,7 +179,6 @@ span#tooltip{
                .append("text")
                .style("text-anchor", "end")
                .text("盛り上がり")
-
 
             </script>
         </div>
@@ -183,6 +210,6 @@ span#tooltip{
     <br>
     <b>ハイライト該当箇所 :</b>
     <% @highlights_place.each do |start, finish| %>
-    <%= start.to_s + '~' + finish.to_s %> ,
+    <%= start.to_s + '~' + finish.to_s %> 
 <% end %>
 <% end %>
