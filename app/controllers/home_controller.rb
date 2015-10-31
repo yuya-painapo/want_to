@@ -100,6 +100,7 @@ class HomeController < ApplicationController
     @time_watch = plus_time(@vpos_range)
     @threshold = get_threshold(@block_com_num)
     @highlights_place = get_highlight_place(@threshold,@block_com_num,@start_time,@finish_time)
+    @video_title = movie_thumb_info[:thumb][:title]
 
     @q = session[:q]
   end
