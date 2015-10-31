@@ -32,8 +32,10 @@ span#tooltip{
         <%end%>
     </div>
     <hr>
-    <div class="row center mt">
-        
+    <div class="row centered">
+        <H2><%=@video_title%></H2>
+    </div>
+    <div class="row centered">
         <div class="col-lg-6 centered" data-step="1" data-intro="ここが動画再生エリアです">
             <script type="text/javascript" src=<%= "http://ext.nicovideo.jp/thumb_watch/"+@id %>></script><noscript><a href= <%="http://www.nicovideo.jp/watch/"+ @id %>>nicovideo</a></noscript>
         </div>
@@ -185,7 +187,6 @@ span#tooltip{
         </div>
     </div>
 </div>
-
 
 <% if Rails.env.development? %>
     <b>分割数 : </b>
