@@ -59,13 +59,20 @@ class HomeController < ApplicationController
   end
 
   def index
-    @q = params[:q]
+    @q = session[:q]
+    @trendtag = get_nico_trend_tag
+    logger.info @trendtag
   end
   
   def movie
     @id = params[:id]
     @id = "sm18391671" if @id.nil?
+<<<<<<< HEAD
 	movie_thumb_info = get_nicovideo_thumb_response(@id)
+=======
+    movie_thumb_info = get_nicovideo_thumb_response(@id)
+
+>>>>>>> b9bd06e0b567ac722001cfa8175c594f90079014
     cookie = login_nicovideo(ENV["NICOADD"], ENV["NICOPASS"])
     flv_info = get_flv_info(cookie, @id)
     
@@ -73,7 +80,7 @@ class HomeController < ApplicationController
       msg = "指定された動画取得時にエラーが発生しました。動画ID = #{@id}"
       logger.info "#{msg}, flv_info = #{flv_info.inspect}"
       flash[:notice] = msg
-      redirect_to action: 'index', q: @id
+      redirect_to :back
       return
     end
 
@@ -81,8 +88,8 @@ class HomeController < ApplicationController
       msg = "指定された動画は削除されています。動画ID = #{@id}"
       logger.info msg + ", flv_info = " + flv_info.inspect
       flash[:notice] = msg
-      redirect_to action: 'index', q: @id
-      return 
+      redirect_to :back
+      return
     end
     
     flv_data = get_comments(flv_info, 1000) # max 1000
@@ -93,67 +100,71 @@ class HomeController < ApplicationController
     @m_division = params[:num].to_i
     @vpos_range = divide_equally(@vpos_video_length, @m_division)
     @start_time, @finish_time = from_vpos_to_time(@vpos_range,@m_division)
-    @block_com_num = get_comment_number(@vpos_range, @comments, @m_division)        
+    @block_com_num = get_comment_number(@vpos_range, @comments, @m_division)
     @time_watch = plus_time(@vpos_range)
     @threshold = get_threshold(@block_com_num)
-    @highlights_place = get_highlight_place(@threshold,@block_com_num,@start_time,@finish_time)    
+    @highlights_place = get_highlight_place(@threshold,@block_com_num,@start_time,@finish_time)
+
+    @q = session[:q]
   end
   
   def search
+    # セッションに検索キーワードを格納
+    session[:q] = params[:q]
     if params[:q].empty?
       flash[:notice] = 'キーワードが入力されていません'
-      redirect_to action: 'index'
-	  return
-	end
+      redirect_to :back
+      return
+    end
 
-	thumb_info = get_nicovideo_thumb_response(params[:q]) if params[:q].match(/^[a-z]|[0-9]+$/)
-	if thumb_info.try(:[], :thumb) && thumb_info[:thumb].has_key?(:ch_id)
+    thumb_info = get_nicovideo_thumb_response(params[:q]) if params[:q].match(/^[a-z]|[0-9]+$/)
+    if thumb_info.try(:[], :thumb) && thumb_info[:thumb].has_key?(:ch_id)
       flash[:notice] = "動画ID : #{params[:q]} はチャンネル動画なのでniconicoで課金して見てね！"
-      redirect_to action: 'index', q: params[:q]
-	  return
+      redirect_to :back
+      return
     elsif params[:q].match(/^sm[0-9]+$/)
-	  if thumb_info[:thumb] && thumb_info[:thumb][:embeddable] == "0"
+      if thumb_info[:thumb] && thumb_info[:thumb][:embeddable] == "0"
         flash[:notice] = "動画ID : #{params[:q]} はniconico公式でのみ視聴可能です！"
-        redirect_to action: 'index', q: params[:q]
-		return
-	  elsif thumb_info[:error] && thumb_info[:error].has_value?("NOT_FOUND")
+        redirect_to :back
+        return
+      elsif thumb_info[:error] && thumb_info[:error].has_value?("NOT_FOUND")
         flash[:notice] = "動画ID : #{params[:q]} は見つかりません。動画は存在しないか、削除された可能性があります"
-        redirect_to action: 'index', q: params[:q]
-		return
-	  elsif thumb_info[:error] && thumb_info[:error].has_value?("DELETED")
+        redirect_to :back
+        return
+      elsif thumb_info[:error] && thumb_info[:error].has_value?("DELETED")
         flash[:notice] = "動画ID : #{params[:q]} は削除、非公開設定、配信停止の為、視聴できません"
-        redirect_to action: 'index', q: params[:q]
-		return
-	  else
+        redirect_to :back
+        return
+      else
         redirect_to action: 'movie', id: params[:q]
-		return
-	  end
-	else
-
+        return
+      end
+    else
       nico = NicoSearchSnapshot.new('niconico_highlight')
       results = nico.search(params[:q], size: 15, search: [:tags_exact], sort_by: :comment_counter)
 
       sm_list = []
       results.each do |r| 
         thumb = get_nicovideo_thumb_response(r.cmsid)
-        if thumb.has_key?(:error).present? && r.cmsid =~ /^sm/ && thumb[:thumb][:embeddable] == "1" 
-            sm_list << r.cmsid
+        if !thumb.has_key?(:error).present? && r.cmsid =~ /^sm/ && thumb[:thumb][:embeddable] == "1" 
+          sm_list << r.cmsid
         end 
       end 
       
       unless results.empty?
         smID = sm_list[rand(sm_list.size)]
+        logger.info smID
         redirect_to action: 'movie', id: smID
-		return
+        return
       else
         flash[:notice] = "keyword : #{params[:q]} だと動画が見つからないよ！"
-        redirect_to action: 'index', q: params[:q]
+        redirect_to :back
       end
     end
   end
 
   def get_nicovideo_thumb_response(id_info)
-	request = "http://ext.nicovideo.jp/api/getthumbinfo/#{id_info}"
+    request = "http://ext.nicovideo.jp/api/getthumbinfo/#{id_info}"
 
     uri = URI.parse(request)
     xml = Net::HTTP.get(uri)
@@ -161,5 +172,26 @@ class HomeController < ApplicationController
     nico_thumb_info = JSON.parse(json,{:symbolize_names => true})
 
     return nico_thumb_info[:nicovideo_thumb_response]
+  end
+  
+  def get_nico_trend_tag
+    url = 'http://www.nicovideo.jp/trendtag?ref=top_trendtagpage'
+    
+    charset = nil 
+    html = open(url) do |f| 
+      charset = f.charset
+      f.read
+    end
+    
+    doc = Nokogiri::HTML.parse(html, nil, charset)
+    tagRank = Hash.new
+
+	doc.css('div#tagRanking/div.box/h2').each do |node|
+        rank = node.css('span').inner_text.to_i
+        tag = node.css('a').inner_text
+        tagRank.store(rank, tag)
+    end
+    
+    return tagRank
   end
 end
