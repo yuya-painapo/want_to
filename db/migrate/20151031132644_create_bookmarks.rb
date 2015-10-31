@@ -4,7 +4,7 @@ class CreateBookmarks < ActiveRecord::Migration
       t.string :smid, null: false
       t.integer :start_vpos, null: false
       t.text :comment
-      t.text :tag
+      # t.text :tag
       t.timestamps null: false
     end
   end
