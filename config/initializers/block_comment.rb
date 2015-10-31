@@ -1,16 +1,4 @@
-require 'net/https'
-require 'uri'
-require 'rexml/document'
-
-def nicovideo_length (video_id)
-  host = 'http://ext.nicovideo.jp'
-  path = "/api/getthumbinfo/#{video_id}"
-  request = host + path
-  uri = URI.parse(request)
-  xml = Net::HTTP.get(uri)
-  doc = REXML::Document.new(xml)
-  video_length = doc.elements['nicovideo_thumb_response/thumb/length'].text
-
+def time_to_vpos(video_length)
   minutes = video_length[/(.*):(.*)/,1]
   seconds = video_length[/(.*):(.*)/,2]
   total_seconds = minutes.to_i*60 + seconds.to_i
@@ -18,7 +6,6 @@ def nicovideo_length (video_id)
 
   return vpos_seconds
 end
-
 
 def divide_equally(n, m)
   block = Array.new(m, n / m)
@@ -37,7 +24,6 @@ def divide_equally(n, m)
   return time_range
 end
 
-
 def get_comment_number(time_range, comments, m_division)
   com_num = Array.new(m_division,0)
   
@@ -51,7 +37,6 @@ def get_comment_number(time_range, comments, m_division)
   end
   return com_num
 end
-
 
 def from_vpos_to_time(time_range, m_division)
   start_time = Array.new(m_division)
@@ -80,7 +65,6 @@ def from_vpos_to_time(time_range, m_division)
   return start_time,end_time
 end
 
-
 def plus_time(time_range)
   start_time = time_range.map { |i| (i + 100) / 100 }
   start_time.unshift 0
@@ -88,7 +72,6 @@ def plus_time(time_range)
 
   return start_time
 end
-
 
 def get_threshold(block_com_num)
   avg = block_com_num.inject(0.0){|r,i| r+=i }/block_com_num.size
@@ -98,7 +81,6 @@ def get_threshold(block_com_num)
 
   return value
 end
-
 
 def get_highlight_place(threshold,com_num,start_time,finish_time)
   start = []
@@ -113,5 +95,3 @@ def get_highlight_place(threshold,com_num,start_time,finish_time)
   
   return start_finish
 end
-
-

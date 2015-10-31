@@ -11,6 +11,11 @@
  * file per style scope.
  *
  *= require bootstrap.min
+ *= require introjs
  *= require_tree .
  *= require_self
  */
+
+.introjs-helperNumberLayer {
+    box-sizing: content-box;
+}
