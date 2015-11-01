@@ -23,6 +23,10 @@ step ':movie_id の :n 分割再生画面が表示されていること' do |mov
   expect(current_path).to eq "/home/movie/#{movie_id}/#{n}"
 end
 
+step ':movie_id 以外のの再生画面が表示されていること' do |movie_id|
+  expect(current_path).not_to eq "/home/movie/#{movie_id}"
+end
+
 step 'メッセージ :message が表示されていること' do |message|
   expect(page).to have_content message
 end
