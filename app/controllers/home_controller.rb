@@ -191,4 +191,15 @@ class HomeController < ApplicationController
     
     return tagRank
   end
+
+  def create
+    smid = params[:smid]
+    start_vpos = params[:start_vpos]
+    comment = 'comment'
+    @bookmark = Bookmark.new(smid: smid, start_vpos: start_vpos, comment: comment)
+    @bookmark.save
+    respond_to do |format|
+      format.js
+    end
+  end
 end
