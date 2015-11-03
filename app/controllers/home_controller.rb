@@ -196,8 +196,9 @@ class HomeController < ApplicationController
     smid = params[:smid]
     start_vpos = params[:start_vpos]
     comment = 'comment'
-    @bookmark = Bookmark.new(smid: smid, start_vpos: start_vpos, comment: comment)
-    @bookmark.save
+    bookmark = Bookmark.new(smid: smid, start_vpos: start_vpos, comment: comment)
+    bookmark.save
+    @bookmarks = [bookmark]
     respond_to do |format|
       format.js
     end
