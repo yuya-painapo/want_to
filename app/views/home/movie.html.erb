@@ -47,6 +47,7 @@ span#tooltip{
             var margin = {top: 20, right: 40, bottom: 40, left: 50};
             var chart_width = svgWidth - margin.left - margin.right;
             var chart_height = svgHeight - margin.top - margin.bottom;
+	    var ymax_position = 1.25  //
 
             var time_watch = [
             <% @time_watch.each do |time| %>
@@ -69,15 +70,10 @@ span#tooltip{
             var comment_max = Math.max.apply(null, block_com_num); // コメントの最大値
             var color = d3.scale.category10();  // あらかじめ用意されている色を使う
 
-            var yScale = (function (height, num_max) {
-                         if (height < num_max) {
-                            magnification = height/num_max;
-                         }
-                         else {
-                            magnification = 1;
-                         }
+            var yScale = (function (height, num_max, rate) {
+                         magnification = height/num_max/rate;
                          return magnification;
-                         }(chart_height - 10, comment_max)); // グラフの高さの倍率
+                         }(chart_height, comment_max, ymax_position)); // グラフの高さの倍率
             var tooltip = d3.select("#tooltip")
 
             var svg = d3.select("#chart").append("svg")
@@ -151,7 +147,7 @@ span#tooltip{
                           });
             var yAxis = d3.svg.axis()
                           .ticks(5)
-                          .scale(d3.scale.linear().domain([0, comment_max]).range([chart_height, 0]))
+                          .scale(d3.scale.linear().domain([0, comment_max*ymax_position]).range([chart_height, 0]))
                           .orient("left")
                           .tickSize(6, -chart_width);
 
@@ -181,7 +177,7 @@ span#tooltip{
                .append("text")
                .attr("y", -10)
                .style("text-anchor", "end")
-               .text("盛り上がり")
+               .text("コメント数")
 
             </script>
         </div>
