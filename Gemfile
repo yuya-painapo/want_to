@@ -30,6 +30,11 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'nico_search_snapshot'
 # To scraping niconico tag ranking. Read more. https://github.com/sparklemotion/nokogiri
 gem 'nokogiri'
+# User Authorization
+gem 'devise'
+gem 'cancancan'
+# form helper
+gem 'enum_help'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

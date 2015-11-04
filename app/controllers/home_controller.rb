@@ -138,7 +138,7 @@ class HomeController < ApplicationController
       end
     else
       nico = NicoSearchSnapshot.new('niconico_highlight')
-      results = nico.search(params[:q], size: 15, search: [:tags_exact], sort_by: :comment_counter)
+      results = nico.search(params[:q], size: 30, search: [:tags_exact], sort_by: :comment_counter)
 
       sm_list = []
       results.each do |r| 
