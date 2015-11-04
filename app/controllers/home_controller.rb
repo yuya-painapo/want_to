@@ -197,6 +197,7 @@ class HomeController < ApplicationController
     start_vpos = params[:start_vpos]
     comment = 'comment'
     bookmark = Bookmark.new(smid: smid, start_vpos: start_vpos, comment: comment)
+    bookmark.user_id = current_user.id
     bookmark.save
     @bookmarks = [bookmark]
     respond_to do |format|
