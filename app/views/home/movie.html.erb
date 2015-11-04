@@ -70,6 +70,10 @@ span#tooltip{
             var comment_max = Math.max.apply(null, block_com_num); // コメントの最大値
             var color = d3.scale.category10();  // あらかじめ用意されている色を使う
 
+            var line = d3.svg.line()
+                         .x(function(d, i) { return i * svgWidth;})
+                         .y(function(d) { return chart_height - d * yScale; });
+
             var yScale = (function (height, num_max, rate) {
                          magnification = height/num_max/rate;
                          return magnification;
@@ -177,7 +181,14 @@ span#tooltip{
                .append("text")
                .attr("y", -10)
                .style("text-anchor", "end")
-               .text("コメント数")
+               .text("コメント数");
+
+            svg.append("path")
+               .attr("d", line([<%= @threshold %>, <%= @threshold %>]))
+               .attr("stroke", "black")
+               .attr("stroke-width", 3)
+               .attr("stroke-dasharray", "5, 2")
+               .attr("fill", "none");
 
             </script>
         </div>
