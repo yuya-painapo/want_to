@@ -1,6 +1,6 @@
 <% @bookmarks.each do |bookmark| %>
 <li>
-    <a href="javascript:void(0); return false;" data-vpos="<%= bookmark.start_vpos %>">
+    <a href="#" data-vpos="<%= bookmark.start_vpos %>">
         再生位置：<%= bookmark.start_vpos %>, コメント: <%= bookmark.comment %>
     </a>
 </li>
