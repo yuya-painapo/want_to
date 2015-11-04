@@ -28,6 +28,7 @@
          $(function() {
              $("#howtouse").hover(function() {_on("#howtouse");}, function() {_off("#howtouse")});
              $("#contact").hover(function() {_on("#contact");}, function() {_off("#contact")});
+             $("#user").hover(function() {_on("#user");}, function() {_off("#user")});
              $("#howtouse").click(function() {introJs().start();});
          });
         </script>
@@ -38,24 +39,45 @@
             <div class="container">
                 <div class="navbar-header">
                     <h2>
-                        <%= link_to "niconico highlight(仮)", {:controller => :home, :action => :index} %>
+                        <% if user_signed_in? %> 
+                        <%= link_to "niconico highlight(仮)", 'home/index' %>
+                        <% else %>
+                        <%= link_to "niconico highlight(仮)", '/' %>
+                        <% end %>
                     </h2>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li id="howtouse" class="inactive"><a href="javascript:void(0);return false;">このページの使い方</a></li>
                         <li id="contact" class="inactive"><a href="#f">Contact</a></li>
+                        <% if user_signed_in? %> 
+						    <li id="user" class="inactive"><%= link_to 'プロフィール変更', edit_user_registration_path %></li>
+						    <li id="user" class="inactive"><%= link_to "ログアウト", destroy_user_session_path %></li>
+                        <% else %>
+                            <li id="user" class="inactive"><%= link_to "サインイン", new_user_registration_path %></li>
+                            <li id="user" class="inactive"><%= link_to "ログイン", new_user_session_path %></li>
+                        <% end %>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>
         </div>
-
+		<div class="container">
+		<% flash.each do |key, value| %>
+			  <% status = key == :notice ? "success" : "danger" %>
+		  <%= content_tag(:div, value, style: "margin-top: 20px", class: "alert alert-#{status}") %>
+	    <% end %>
+	    </div>
+		
         <%= yield %>
 
         <div id="f">
             <div class="container">
                 <div class="row">
-                    <p>Created <i class="fa fa-heart"></i> by tebiti.</p>
+                    <% if user_signed_in? %> 
+                    <p> Logged in as <strong><%= current_user.email %></strong> Created <i class="fa fa-heart"></i> by tebiti.</p>
+                    <% else %>
+					<p> Created <i class="fa fa-heart"></i> by tebiti.</p>
+                    <% end %>
                 </div>
             </div>
         </div>
