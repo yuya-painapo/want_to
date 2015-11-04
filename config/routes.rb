@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get 'home/movie'
   get 'home/movie/:id' => 'home#movie'
   get 'home/movie/:id/:num' => 'home#movie'
+  get 'home/about'
 
   # You can have the root of your site routed with "root"
   root 'home#index'
