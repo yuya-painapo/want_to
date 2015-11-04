@@ -1,10 +1,5 @@
 <div class="container">
     <div class="row mt centered">
-        <% if flash[:notice] %>
-          <div class="alert alert-info">
-            <%= flash[:notice] %>
-          </div>
-        <% end %>
         <%= form_tag(controller: "home", action: "search", method: "post") do %>
             <div class="col-lg-7 col-lg-offset-1 mt" data-step="1" data-intro="ここにキーワードを入力します。">
                 <%= text_field_tag(:q, @q, class: "form-control input-lg", placeholder: "sm* または keyword") %>
