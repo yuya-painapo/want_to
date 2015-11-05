@@ -5,6 +5,9 @@ class HomeController < ApplicationController
   require 'json'
   require 'active_support'
   require 'active_support/core_ext'
+  include SessionAction
+
+  before_action :require_login
   
   def login_nicovideo(mail, pass)
     host = 'secure.nicovideo.jp'

@@ -32,7 +32,10 @@ gem 'nico_search_snapshot'
 gem 'nokogiri'
 # User Authorization
 gem 'devise'
+gem 'devise-bootstrap-views'
 gem 'cancancan'
+gem 'devise-i18n'
+gem 'devise-i18n-views'
 # form helper
 gem 'enum_help'
 
