@@ -87,7 +87,7 @@ class HomeController < ApplicationController
       redirect_to :back
       return
     end
-    
+        
     flv_data = get_comments(flv_info, 1000) # max 1000
     chat = flv_data.select{ |data| data['chat'] }
     @comments = chat.sort{ |a, b| a['chat']['vpos'] <=> b['chat']['vpos'] }
@@ -100,6 +100,7 @@ class HomeController < ApplicationController
     @time_watch = plus_time(@vpos_range)
     @threshold = get_threshold(@block_com_num)
     @highlights_place = get_highlight_place(@threshold,@block_com_num,@start_time,@finish_time)
+    @video_title = movie_thumb_info[:thumb][:title]
 
     @q = session[:q]
   end

@@ -4,7 +4,7 @@ def time_to_vpos(video_length)
   total_seconds = minutes.to_i*60 + seconds.to_i
   vpos_seconds = total_seconds*100 + 99
 
-  return (vpos_seconds)
+  return vpos_seconds
 end
 
 def divide_equally(n, m)

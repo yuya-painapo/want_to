@@ -7,8 +7,12 @@ step ':name ボタンをクリックする' do |name|
   click_on name
 end
 
-step 'トップ画面が表示されていること' do
-  expect(current_path).to satisfy { |p| ['/', '/home/index'].include?(p) }
+step '動画検索画面が表示されていること' do
+  expect(current_path).to satisfy { |p| ['/home/index'].include?(p) }
+end
+
+step '遠隔技術動画が表示されていること' do
+  expect(current_path).to satisfy { |p| ['/home/movie/sm20652382', '/home/movie/sm20628576'].include?(p) }
 end
 
 step '遠隔技術動画が表示されていること' do
