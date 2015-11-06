@@ -195,8 +195,7 @@ class HomeController < ApplicationController
   def create
     smid = params[:smid]
     start_vpos = params[:start_vpos]
-    comment = 'comment'
-    bookmark = Bookmark.new(smid: smid, start_vpos: start_vpos, comment: comment)
+    bookmark = Bookmark.new(smid: smid, start_vpos: start_vpos)
     bookmark.user_id = current_user.id
     bookmark.save
     @bookmarks = [bookmark]
