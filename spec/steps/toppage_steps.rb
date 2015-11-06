@@ -53,9 +53,9 @@ steps_for :toppage do
   
   step 'サインインする' do
    user = User.new(
-                     :email => "signup@test.com",
-                     :password => "signup1234",
-                     :password_confirmation => "signup1234"
+                     :email => "test@test.com",
+                     :password => "test1234",
+                     :password_confirmation => "test1234"
                      )
    user.save
 
