@@ -32,4 +32,40 @@ steps_for :toppage do
   step ':name の値が :value であること' do |name, value|
     expect(page.find(name).value).to eq value
   end
+
+  step 'ログインする' do 
+   user = User.new(
+                     :email => "test@test.com",
+                     :password => "test1234",
+                     :password_confirmation => "test1234"
+                     )
+   user.save
+   #Capybara.app_host = "http://localhost:3000"
+
+   visit '/users/sign_in'
+
+   fill_in 'user[email]',    with: user.email
+   fill_in 'user[password]', with: user.password
+
+   click_button 'Sign in'
+   expect(page).to have_content 'Signed in successfully.'
+  end
+  
+  step 'サインインする' do
+   user = User.new(
+                     :email => "signup@test.com",
+                     :password => "signup1234",
+                     :password_confirmation => "signup1234"
+                     )
+   user.save
+
+   visit '/users/sign_up'
+	 
+   fill_in 'user[email]',    with: user.email
+   fill_in 'user[password]', with: user.password
+   fill_in 'user[password_confirmation]', with: user.password_confirmation
+
+   click_button 'Sign up'
+   expect(page).to have_content 'Signed in successfully.'
+  end
 end

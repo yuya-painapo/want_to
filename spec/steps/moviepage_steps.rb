@@ -12,4 +12,22 @@ steps_for :moviepage do
   step '動画検索画面が表示されていること' do
     expect(current_path).to satisfy { |p| ['/home/index'].include?(p) }
   end
+
+  step 'ログインする' do 
+   user = User.new(
+                     :email => "test@test.com",
+                     :password => "test1234",
+                     :password_confirmation => "test1234"
+                     )
+   user.save
+   #Capybara.app_host = "http://localhost:3000"
+
+   visit '/users/sign_in'
+
+   fill_in 'user[email]',    with: user.email
+   fill_in 'user[password]', with: user.password
+
+   click_button 'Sign in'
+   expect(page).to have_content 'Signed in successfully.'
+  end
 end
