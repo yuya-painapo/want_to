@@ -51,13 +51,12 @@ steps_for :toppage do
    expect(page).to have_content 'Signed in successfully.'
   end
   
-  step 'サインインする' do
+  step 'サインアップする' do
    user = User.new(
-                     :email => "test@test.com",
-                     :password => "test1234",
-                     :password_confirmation => "test1234"
+                     :email => "signup@test.com",
+                     :password => "signup1234",
+                     :password_confirmation => "signup1234"
                      )
-   user.save
 
    visit '/users/sign_up'
 	 
@@ -66,6 +65,6 @@ steps_for :toppage do
    fill_in 'user[password_confirmation]', with: user.password_confirmation
 
    click_button 'Sign up'
-   expect(page).to have_content 'Signed in successfully.'
+   expect(page).to have_content 'You have signed up successfully.'
   end
 end
