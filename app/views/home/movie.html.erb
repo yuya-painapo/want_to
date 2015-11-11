@@ -12,6 +12,21 @@ span#tooltip{
   opacity: 1;
 }
 </style>
+<script>
+    $(function() {
+        $(document).on('click', '#btnCreate', function() {
+            try {
+                $('#vpos').val(function() {
+                    var player = document.getElementById('external_nico_0');
+                    return player.ext_getPlayheadTime() * 100;
+                });
+            } catch (e) {
+                alert("再生ボタンを押してください。");
+                return false;
+            }
+        });
+    });
+</script>
 <span id="tooltip"></span>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 
@@ -195,6 +210,13 @@ span#tooltip{
             </script>
         </div>
     </div>
+    <div class="row mt centered">
+        <%= form_tag({:controller => 'home', :action => 'create'}, :remote => true, :class => 'form-ajax') do %>
+        <%= hidden_field_tag :smid, @id %>
+        <%= hidden_field_tag :start_vpos, 0, :id => 'vpos' %>
+        <%= submit_tag('ふせんをつける', :class => 'btn btn-primary btn-sm', :id => 'btnCreate') %>
+        <% end %>
+    </div>
 </div>
 
 <% if Rails.env.development? %>
@@ -222,5 +244,9 @@ span#tooltip{
     <b>ハイライト該当箇所 :</b>
     <% @highlights_place.each do |start, finish| %>
     <%= start.to_s + '~' + finish.to_s %> 
-<% end %>
+    <% end %>
+
+    <br>
+    <b>ふせん</b>
+    <div id="bookmark"></div>
 <% end %>
