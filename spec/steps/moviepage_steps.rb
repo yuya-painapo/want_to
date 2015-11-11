@@ -19,15 +19,13 @@ steps_for :moviepage do
 	   :password => "hoge1234",
 	   :password_confirmation => "hoge1234")
    user.save
-   #Capybara.app_host = "http://localhost:3000"
 
    visit '/users/sign_in'
 
    fill_in 'user[email]',    with: user.email
    fill_in 'user[password]', with: user.password
 
-   click_button 'Sign in'
-   expect(page).to have_content 'Signed in successfully.'
+   click_button 'ログイン'
   end
 
   step ':model_name のテストデータを作成する' do |model_name|

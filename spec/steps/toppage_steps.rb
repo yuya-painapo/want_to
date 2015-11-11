@@ -39,19 +39,16 @@ steps_for :toppage do
 	   :password => "hoge1234",
 	   :password_confirmation => "hoge1234")
    user.save
-   #Capybara.app_host = "http://localhost:3000"
 
    visit '/users/sign_in'
 
    fill_in 'user[email]',    with: user.email
    fill_in 'user[password]', with: user.password
 
-   click_button 'Sign in'
-   expect(page).to have_content 'Signed in successfully.'
+   click_button 'ログイン'
   end
   
   step 'サインアップする' do
-   #@user = create(:user)
    user = User.new(
 	   :email => "hogehuga@test.com",
 	   :password => "hogehuga1234",
@@ -63,8 +60,7 @@ steps_for :toppage do
    fill_in 'user[password]', with: user.password
    fill_in 'user[password_confirmation]', with: user.password_confirmation
 
-   click_button 'Sign up'
-   expect(page).to have_content 'You have signed up successfully.'
+   click_button 'アカウント登録'
   end
 
   step ':model_name のテストデータを作成する' do |model_name|
