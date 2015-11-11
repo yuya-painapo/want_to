@@ -7,8 +7,25 @@ ja:
         password: "パスワード"
         password_confirmation: "確認用パスワード"
         remember_me: "ログインを記憶"
+      bookmark:
+        smid: 動画ID
+        start_vpos: 再生開始位置
+        comment: コメント
     models:
       user: "ユーザ"
+      bookmark: ふせん
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              blank: を入力してください。
+              invalid: は正しく入力してください。
+            password:
+              blank: を入力してください。
+              too_short: が短すぎます。
+            password_confirmation:
+              confirmation: が一致していません。
   devise:
     confirmations:
       new:
