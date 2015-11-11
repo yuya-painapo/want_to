@@ -25,6 +25,16 @@ span#tooltip{
                 return false;
             }
         });
+        $(document).on('click', 'a.bookmark' ,function() {
+            var player = document.getElementById('external_nico_0');
+            try {
+                player.ext_setPlayheadTime($(this).data('vpos') / 100);
+                return false;
+            } catch (e) {
+                alert("再生ボタンを押してください。");
+                return false;
+            }
+        });
     });
 </script>
 <span id="tooltip"></span>
@@ -260,6 +270,8 @@ span#tooltip{
     <% end %>
 
     <br>
-    <b>ふせん</b>
-    <div id="bookmark"></div>
 <% end %>
+<b>ふせん</b>
+<div id="bookmark">
+    <%= render partial: 'home/bookmark', collections: @bookmarks %>
+</div>
