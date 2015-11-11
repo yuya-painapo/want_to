@@ -22,7 +22,7 @@ ja:
         action: "パスワード変更"
         greeting: "こんにちは、%{recipient}さん!"
         instruction: "誰かがパスワードの再設定を希望しました。次のリンクでパスワードの再設定が出来ます。"
-        instruction_2: "あなたが希望したのではないのなら、このメールは無視してください。"
+        instruction_2: "このメールに覚えがなければ、無視してください。"
         instruction_3: "上のリンクにアクセスして新しいパスワードを設定するまで、パスワードは変更されません。"
       unlock_instructions:
         action: "アカウントのロック解除"
@@ -45,7 +45,7 @@ ja:
         currently_waiting_confirmation_for_email: "%{email} の確認待ち"
         leave_blank_if_you_don_t_want_to_change_it: "空欄のままなら変更しません"
         title: "%{resource}編集"
-        unhappy: "気に入りません"
+        unhappy: "気に入らないのなら..."
         update: "更新"
         we_need_your_current_password_to_confirm_your_changes: "変更を反映するには現在のパスワードを入力してください"
       new:
