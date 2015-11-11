@@ -29,6 +29,7 @@
              $("#howtouse").hover(function() {_on("#howtouse");}, function() {_off("#howtouse")});
              $("#contact").hover(function() {_on("#contact");}, function() {_off("#contact")});
              $("#user").hover(function() {_on("#user");}, function() {_off("#user")});
+             $("#session").hover(function() {_on("#session");}, function() {_off("#session")});
              $("#howtouse").click(function() {introJs().start();});
          });
         </script>
@@ -49,24 +50,27 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li id="howtouse" class="inactive"><a href="javascript:void(0);return false;">このページの使い方</a></li>
+                        <li id="about" class="inactive"> <%= link_to "About", home_about_path %></li>
                         <li id="contact" class="inactive"><a href="#f">Contact</a></li>
                         <% if user_signed_in? %> 
 						    <li id="user" class="inactive"><%= link_to 'プロフィール変更', edit_user_registration_path %></li>
-						    <li id="user" class="inactive"><%= link_to "ログアウト", destroy_user_session_path %></li>
+						    <li id="session" class="inactive"><%= link_to "ログアウト", destroy_user_session_path %></li>
                         <% else %>
                             <li id="user" class="inactive"><%= link_to "サインイン", new_user_registration_path %></li>
-                            <li id="user" class="inactive"><%= link_to "ログイン", new_user_session_path %></li>
+                            <li id="session" class="inactive"><%= link_to "ログイン", new_user_session_path %></li>
                         <% end %>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>
         </div>
-		<div class="container">
-		<% flash.each do |key, value| %>
-			  <% status = key == :notice ? "success" : "danger" %>
-		  <%= content_tag(:div, value, style: "margin-top: 20px", class: "alert alert-#{status}") %>
-	    <% end %>
-	    </div>
+        <div class="container">
+            <% flash.each do |key, value| %>
+                <div class="alert alert-<%= status = key == "notice" ? "success" : "danger" %> fade in", style="margin-top: 20px">
+                    <a class="close" data-dismiss="alert">x</a>
+                    <%= value %>
+                </div>
+            <% end %>
+        </div>
 		
         <%= yield %>
 

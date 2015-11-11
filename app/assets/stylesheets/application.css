@@ -14,6 +14,7 @@
  *= require introjs
  *= require_tree .
  *= require_self
+ *= require devise_bootstrap_views
  */
 
 .introjs-helperNumberLayer {

@@ -15,6 +15,10 @@ step '遠隔技術動画が表示されていること' do
   expect(current_path).to satisfy { |p| ['/home/movie/sm20652382', '/home/movie/sm20628576'].include?(p) }
 end
 
+step '遠隔技術動画が表示されていること' do
+  expect(current_path).to satisfy { |p| ['/home/movie/sm20652382', '/home/movie/sm20628576'].include?(p) }
+end
+
 step ':movie_id の再生画面が表示されていること' do |movie_id|
   expect(current_path).to eq "/home/movie/#{movie_id}"
 end

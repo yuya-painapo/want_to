@@ -32,4 +32,42 @@ steps_for :toppage do
   step ':name の値が :value であること' do |name, value|
     expect(page.find(name).value).to eq value
   end
+
+  step 'ログインする' do 
+   user = User.new(
+	   :email => "hoge@test.com",
+	   :password => "hoge1234",
+	   :password_confirmation => "hoge1234")
+   user.save
+
+   visit '/users/sign_in'
+
+   fill_in 'user[email]',    with: user.email
+   fill_in 'user[password]', with: user.password
+
+   click_button 'ログイン'
+  end
+  
+  step 'サインアップする' do
+   user = User.new(
+	   :email => "hogehuga@test.com",
+	   :password => "hogehuga1234",
+	   :password_confirmation => "hogehuga1234")
+
+   visit '/users/sign_up'
+	 
+   fill_in 'user[email]',    with: user.email
+   fill_in 'user[password]', with: user.password
+   fill_in 'user[password_confirmation]', with: user.password_confirmation
+
+   click_button 'アカウント登録'
+  end
+
+  step ':model_name のテストデータを作成する' do |model_name|
+    FactoryGirl.create(model_name)
+  end
+  
+  step ':file_name にスクリーンショットをとる' do |file_name|
+    page.save_screenshot(file_name, full: true)
+  end
 end
