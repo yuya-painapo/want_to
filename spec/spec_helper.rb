@@ -97,4 +97,18 @@ RSpec.configure do |config|
 
   Capybara.javascript_driver = :poltergeist
   Capybara.default_driver = :poltergeist
+  # clean test data
+  require 'database_cleaner'
+
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :truncation
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
 end

@@ -5,7 +5,7 @@ class HomeController < ApplicationController
   require 'json'
   require 'active_support'
   require 'active_support/core_ext'
-  
+
   def login_nicovideo(mail, pass)
     host = 'secure.nicovideo.jp'
     path = '/secure/login?site=niconico'
