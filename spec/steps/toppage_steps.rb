@@ -63,10 +63,6 @@ steps_for :toppage do
    click_button 'アカウント登録'
   end
 
-  step ':model_name のテストデータを作成する' do |model_name|
-    FactoryGirl.create(model_name)
-  end
-  
   step ':file_name にスクリーンショットをとる' do |file_name|
     page.save_screenshot(file_name, full: true)
   end

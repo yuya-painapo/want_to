@@ -28,7 +28,4 @@ steps_for :moviepage do
    click_button 'ログイン'
   end
 
-  step ':model_name のテストデータを作成する' do |model_name|
-    FactoryGirl.create(model_name)
-  end
 end
