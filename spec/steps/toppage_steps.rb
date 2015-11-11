@@ -34,13 +34,14 @@ steps_for :toppage do
   end
 
   step 'ログインする' do 
-   user = User.new(
-                     :email => "test@test.com",
-                     :password => "test1234",
-                     :password_confirmation => "test1234"
-                     )
-   user.save
+   #@user = create(:user)
+   #user.save
    #Capybara.app_host = "http://localhost:3000"
+   user = User.new(
+	   :email => "hoge@test.com",
+	   :password => "hoge1234",
+	   :password_confirmation => "hoge1234")
+   user.save
 
    visit '/users/sign_in'
 
@@ -52,11 +53,11 @@ steps_for :toppage do
   end
   
   step 'サインアップする' do
+   #@user = create(:user)
    user = User.new(
-                     :email => "signup@test.com",
-                     :password => "signup1234",
-                     :password_confirmation => "signup1234"
-                     )
+	   :email => "hogehuga@test.com",
+	   :password => "hogehuga1234",
+	   :password_confirmation => "hogehuga1234")
 
    visit '/users/sign_up'
 	 
@@ -66,5 +67,13 @@ steps_for :toppage do
 
    click_button 'Sign up'
    expect(page).to have_content 'You have signed up successfully.'
+  end
+
+  step ':model_name のテストデータを作成する' do |model_name|
+    FactoryGirl.create(model_name)
+  end
+  
+  step ':file_name にスクリーンショットをとる' do |file_name|
+    page.save_screenshot(file_name, full: true)
   end
 end

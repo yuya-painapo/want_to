@@ -7,8 +7,6 @@ class HomeController < ApplicationController
   require 'active_support/core_ext'
   include SessionAction
 
-  before_action :require_login
-  
   def login_nicovideo(mail, pass)
     host = 'secure.nicovideo.jp'
     path = '/secure/login?site=niconico'
