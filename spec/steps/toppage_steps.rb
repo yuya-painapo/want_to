@@ -34,14 +34,12 @@ steps_for :toppage do
   end
 
   step 'ログインする' do 
-   #@user = create(:user)
-   #user.save
-   #Capybara.app_host = "http://localhost:3000"
    user = User.new(
 	   :email => "hoge@test.com",
 	   :password => "hoge1234",
 	   :password_confirmation => "hoge1234")
    user.save
+   #Capybara.app_host = "http://localhost:3000"
 
    visit '/users/sign_in'
 

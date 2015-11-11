@@ -15,10 +15,9 @@ steps_for :moviepage do
 
   step 'ログインする' do 
    user = User.new(
-                     :email => "test@test.com",
-                     :password => "test1234",
-                     :password_confirmation => "test1234"
-                     )
+	   :email => "hoge@test.com",
+	   :password => "hoge1234",
+	   :password_confirmation => "hoge1234")
    user.save
    #Capybara.app_host = "http://localhost:3000"
 
@@ -29,5 +28,9 @@ steps_for :moviepage do
 
    click_button 'Sign in'
    expect(page).to have_content 'Signed in successfully.'
+  end
+
+  step ':model_name のテストデータを作成する' do |model_name|
+    FactoryGirl.create(model_name)
   end
 end

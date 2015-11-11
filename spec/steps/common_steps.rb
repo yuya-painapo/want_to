@@ -41,12 +41,4 @@ end
 
 step '要素 :selector が :n 個存在すること' do |selector, n|
   expect(page.has_css?(selector, count: n, visible: :all)).to eq true
-
-step ':model_name のテストデータを作成する' do |model_name|
-  FactoryGirl.create(model_name)
-end
-
-step ':file_name にスクリーンショットをとる' do |file_name|
-  page.save_screenshot(file_name, full: true)
-end
 end
