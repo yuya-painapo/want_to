@@ -21,3 +21,12 @@ public/assets
 /log/*
 !/log/.keep
 /tmp
+
+
+# Ignore vim temp files
+*.swp
+*.swo
+
+# Ignore Emacs temp files
+*~
+\#*\#

@@ -5,7 +5,7 @@ class HomeController < ApplicationController
   require 'json'
   require 'active_support'
   require 'active_support/core_ext'
-  
+
   def login_nicovideo(mail, pass)
     host = 'secure.nicovideo.jp'
     path = '/secure/login?site=niconico'
@@ -49,7 +49,7 @@ class HomeController < ApplicationController
   
   def get_comments(flv_info, res_from)
     host = URI.unescape(flv_info[:ms])
-    request = "#{host.gsub(/\/api\//, '/api.json/')}thread?thread=#{flv_info[:thread_id]}&version=20061206&res_from=-#{res_from.to_s}"
+    request = "#{host.gsub(/\/api\//, '/api.json/')}thread?thread=#{flv_info[:thread_id]}&version=20061206&res_from=-#{res_from}"
     
     uri = URI.parse(request)
     json = Net::HTTP.get(uri)
@@ -88,6 +88,9 @@ class HomeController < ApplicationController
       return
     end
         
+
+    @bookmarks = Bookmark.where(smid: @id)
+
     flv_data = get_comments(flv_info, 1000) # max 1000
     chat = flv_data.select{ |data| data['chat'] }
     @comments = chat.sort{ |a, b| a['chat']['vpos'] <=> b['chat']['vpos'] }
@@ -138,7 +141,7 @@ class HomeController < ApplicationController
       end
     else
       nico = NicoSearchSnapshot.new('niconico_highlight')
-      results = nico.search(params[:q], size: 15, search: [:tags_exact], sort_by: :comment_counter)
+      results = nico.search(params[:q], size: 30, search: [:tags_exact], sort_by: :comment_counter)
 
       sm_list = []
       results.each do |r| 
@@ -148,13 +151,13 @@ class HomeController < ApplicationController
         end 
       end 
       
-      unless results.empty?
+      unless sm_list.empty?
         smID = sm_list[rand(sm_list.size)]
         logger.info smID
         redirect_to action: 'movie', id: smID
         return
       else
-        flash[:notice] = "keyword : #{params[:q]} だと動画が見つからないよ！"
+        flash[:notice] = "keyword : #{params[:q]} だと再生可能な動画が表示できません"
         redirect_to :back
       end
     end
@@ -190,5 +193,18 @@ class HomeController < ApplicationController
     end
     
     return tagRank
+  end
+
+  def create
+    smid = params[:smid]
+    start_vpos = params[:start_vpos]
+    comment = params[:comment]
+    bookmark = Bookmark.new(smid: smid, start_vpos: start_vpos, comment: comment)
+    bookmark.user_id = current_user.id
+    bookmark.save
+    @bookmarks = [bookmark]
+    respond_to do |format|
+      format.js
+    end
   end
 end
