@@ -31,6 +31,10 @@ step ':movie_id 以外のの再生画面が表示されていること' do |movi
   expect(current_path).not_to eq "/home/movie/#{movie_id}"
 end
 
+step '再生画面が表示されていること' do
+  expect(current_path).to match "/home/movie/.*"
+end
+
 step 'メッセージ :message が表示されていること' do |message|
   expect(page).to have_content message
 end
