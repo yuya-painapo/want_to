@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   get 'home/index'
   post 'home/search'
   post 'home/create'
-  get 'home/search/:q' => 'home#search'
+  get 'home/search/:q' => 'home#search', constraints: { q: '/.*/' }
   get 'home/movie'
   get 'home/movie/:id' => 'home#movie'
   get 'home/movie/:id/:num' => 'home#movie'
