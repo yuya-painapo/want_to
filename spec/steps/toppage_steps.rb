@@ -1,10 +1,6 @@
 # coding: utf-8
 require 'rails_helper'
 steps_for :toppage do
-  step '動画検索画面を表示する' do
-    visit '/home/index'
-  end
-
   step '動画検索画面が表示されていること' do
     expect(current_path).to satisfy { |p| ['/home/index'].include?(p) }
   end
@@ -15,10 +11,6 @@ steps_for :toppage do
 
   step ':name ボタンをクリックする' do |name|
     click_on name
-  end
-
-  step ':movie_id の再生画面を表示する' do |movie_id|
-    visit "/home/movie/#{movie_id}"
   end
 
   step ':movie_id の再生画面が表示されていること' do |movie_id|
@@ -33,19 +25,8 @@ steps_for :toppage do
     expect(page.find(name).value).to eq value
   end
 
-  step 'ログインする' do 
-   user = User.new(
-	   :email => "hoge@test.com",
-	   :password => "hoge1234",
-	   :password_confirmation => "hoge1234")
-   user.save
-
-   visit '/users/sign_in'
-
-   fill_in 'user[email]',    with: user.email
-   fill_in 'user[password]', with: user.password
-
-   click_button 'ログイン'
+  step '遠隔技術動画が表示されていること' do
+    expect(current_path).to satisfy { |p| ['/home/movie/sm20652382', '/home/movie/sm20628576'].include?(p) }
   end
   
   step 'サインアップする' do
