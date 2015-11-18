@@ -88,6 +88,9 @@ class HomeController < ApplicationController
       return
     end
         
+
+    @bookmarks = Bookmark.where(smid: @id)
+
     flv_data = get_comments(flv_info, 1000) # max 1000
     chat = flv_data.select{ |data| data['chat'] }
     @comments = chat.sort{ |a, b| a['chat']['vpos'] <=> b['chat']['vpos'] }
@@ -195,7 +198,8 @@ class HomeController < ApplicationController
   def create
     smid = params[:smid]
     start_vpos = params[:start_vpos]
-    bookmark = Bookmark.new(smid: smid, start_vpos: start_vpos)
+    comment = params[:comment]
+    bookmark = Bookmark.new(smid: smid, start_vpos: start_vpos, comment: comment)
     bookmark.user_id = current_user.id
     bookmark.save
     @bookmarks = [bookmark]

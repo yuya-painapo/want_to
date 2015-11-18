@@ -1,7 +1,7 @@
 <% @bookmarks.each do |bookmark| %>
 <li>
     <a class="bookmark" href="#" data-vpos="<%= bookmark.start_vpos %>">
-        再生位置：<%= bookmark.start_vpos %>, コメント: <%= bookmark.comment %>
+        再生位置：<%= vpos_to_h_mm_ss(bookmark.start_vpos) %>, コメント: <%= bookmark.comment %>
     </a>
 </li>
 <% end %>

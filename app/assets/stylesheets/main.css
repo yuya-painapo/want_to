@@ -90,7 +90,6 @@ a:after {
 .navbar {
 	font-weight: 800;
 	font-size: 14px;
-	padding-top: 15px;
 	padding-bottom: 15px;
 	background-color: #ffffff;
 }
@@ -112,7 +111,7 @@ a:after {
 	border-color: transparent;
 }
 
-.btn {
+.bolt-btn {
 	padding: 10px 30px;
 	margin-bottom: 0;
 	font-size: 18px;

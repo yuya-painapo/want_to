@@ -25,6 +25,16 @@ span#tooltip{
                 return false;
             }
         });
+        $(document).on('click', 'a.bookmark' ,function() {
+            var player = document.getElementById('external_nico_0');
+            try {
+                player.ext_setPlayheadTime($(this).data('vpos') / 100);
+                return false;
+            } catch (e) {
+                alert("再生ボタンを押してください。");
+                return false;
+            }
+        });
     });
 </script>
 <span id="tooltip"></span>
@@ -42,7 +52,7 @@ span#tooltip{
                 <%= text_field_tag(:q, @q, class: "form-control input-lg", placeholder: "sm* または keyword") %>
             </div>
             <div class="col-lg-3 mt">
-                <%= submit_tag("再生", class: "btn btn-theme btn-lg") %>
+                <%= submit_tag("再生", class: "bolt-btn btn-theme btn-lg") %>
             </div>
         <%end%>
     </div>
@@ -55,6 +65,22 @@ span#tooltip{
     <div class="row centered">
         <div class="col-lg-6 centered" data-step="1" data-intro="ここが動画再生エリアです">
             <script type="text/javascript" src=<%= "http://ext.nicovideo.jp/thumb_watch/"+@id %>></script><noscript><a href= <%="http://www.nicovideo.jp/watch/"+ @id %>>nicovideo</a></noscript>
+
+            <% if user_signed_in? %>
+            <div class="row centered mt">
+                <%= form_tag({:controller => 'home', :action => 'create'}, :remote => true, :class => 'form-ajax') do %>
+                <%= hidden_field_tag :smid, @id %>
+                <%= hidden_field_tag :start_vpos, 0, :id => 'vpos' %>
+                <div class="input-group">
+                    <%= text_field_tag :comment, "", :class => "form-control", placeholder: "ふせんにコメントをつけてみる" %>
+                    <span class="input-group-btn">
+                        <%= button_tag '<i class="glyphicon glyphicon-bookmark"></i>ふせんをつける'.html_safe, :type=> "submit",
+                         :class => 'btn btn-primary btn-sm', :id => 'btnCreate' %>
+                    </span>
+                </div>
+                <% end %>
+            </div>
+            <% end %>
         </div>
         <div class="col-lg-6 centered" data-step="2" data-intro="ここに盛り上がりグラフが表示されます。動画を読み込んでからクリックすると、その位置から再生します。">
             <div id="chart"></div>
@@ -92,8 +118,12 @@ span#tooltip{
                          .y(function(d) { return chart_height - d * yScale; });
 
             var yScale = (function (height, num_max, rate) {
-                         magnification = height/num_max/rate;
-                         return magnification;
+                         if (num_max !== 0) {
+                            magnification = height/num_max/rate;
+                            return magnification;
+                         } else {
+                            return 0;
+                         }
                          }(chart_height, comment_max, ymax_position)); // グラフの高さの倍率
             var tooltip = d3.select("#tooltip")
 
@@ -210,13 +240,6 @@ span#tooltip{
             </script>
         </div>
     </div>
-    <div class="row mt centered">
-        <%= form_tag({:controller => 'home', :action => 'create'}, :remote => true, :class => 'form-ajax') do %>
-        <%= hidden_field_tag :smid, @id %>
-        <%= hidden_field_tag :start_vpos, 0, :id => 'vpos' %>
-        <%= submit_tag('ふせんをつける', :class => 'btn btn-primary btn-sm', :id => 'btnCreate') %>
-        <% end %>
-    </div>
 </div>
 
 <% if Rails.env.development? %>
@@ -247,6 +270,8 @@ span#tooltip{
     <% end %>
 
     <br>
-    <b>ふせん</b>
-    <div id="bookmark"></div>
 <% end %>
+<b>ふせん</b>
+<div id="bookmark">
+    <%= render partial: 'home/bookmark', collections: @bookmarks %>
+</div>

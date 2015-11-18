@@ -70,4 +70,6 @@ group :test do
   gem 'turnip', '~> 1.3'
   gem 'capybara', '~> 2.5'
   gem 'poltergeist', '~> 1.7'
+  gem 'factory_girl_rails', '~> 4.2.1'
+  gem 'database_cleaner', '~> 1.5.1'
 end
