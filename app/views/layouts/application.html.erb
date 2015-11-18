@@ -49,16 +49,26 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li id="howtouse" class="inactive"><a href="javascript:void(0);return false;">このページの使い方</a></li>
-                        <li id="about" class="inactive"> <%= link_to "About", home_about_path %></li>
-                        <li id="contact" class="inactive"><a href="#f">Contact</a></li>
-                        <% if user_signed_in? %> 
-						    <li id="user" class="inactive"><%= link_to 'プロフィール変更', edit_user_registration_path %></li>
-						    <li id="session" class="inactive"><%= link_to "ログアウト", destroy_user_session_path %></li>
-                        <% else %>
-                            <li id="user" class="inactive"><%= link_to "サインイン", new_user_registration_path %></li>
-                            <li id="session" class="inactive"><%= link_to "ログイン", new_user_session_path %></li>
-                        <% end %>
+						<% if !current_page?(:controller => 'welcome', :action => 'index') %>
+                            <li id="howtouse" class="inactive"><a href="javascript:void(0);return false;">このページの使い方</a></li>
+					    <% end %>
+						<li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								<img class=".img-thumbnail" src="assets/lines7.png" alt="Generic placeholder image" width="25" height="25">
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li id="about" class="inactive"> <%= link_to "About", home_about_path %></li>
+                                <li id="contact" class="inactive"><a href="#f">Contact</a></li>
+                                <li role="separator" class="divider"></li>
+                                <% if user_signed_in? %> 
+						            <li id="user" class="inactive"><%= link_to 'プロフィール変更', edit_user_registration_path %></li>
+						            <li id="session" class="inactive"><%= link_to "ログアウト", destroy_user_session_path %></li>
+                                <% else %>
+                                    <li id="user" class="inactive"><%= link_to "ユーザ登録", new_user_registration_path %></li>
+                                    <li id="session" class="inactive"><%= link_to "ログイン", new_user_session_path %></li>
+                                <% end %>
+                            </ul>
+						</li>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>
