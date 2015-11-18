@@ -30,6 +30,7 @@
              $("#contact").hover(function() {_on("#contact");}, function() {_off("#contact")});
              $("#user").hover(function() {_on("#user");}, function() {_off("#user")});
              $("#session").hover(function() {_on("#session");}, function() {_off("#session")});
+             $("#mypage").hover(function() {_on("#mypage");}, function() {_off("#mypage")});
              $("#howtouse").click(function() {introJs().start();});
          });
         </script>
@@ -54,6 +55,7 @@
                         <li id="contact" class="inactive"><a href="#f">Contact</a></li>
                         <% if user_signed_in? %> 
 						    <li id="user" class="inactive"><%= link_to 'プロフィール変更', edit_user_registration_path %></li>
+						    <li id="mypage" class="inactive"><%= link_to 'マイページ', my_page_index_path %></li>
 						    <li id="session" class="inactive"><%= link_to "ログアウト", destroy_user_session_path %></li>
                         <% else %>
                             <li id="user" class="inactive"><%= link_to "サインイン", new_user_registration_path %></li>
