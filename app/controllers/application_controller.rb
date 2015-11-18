@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from ActionController::RedirectBackError, with: :root
 
-  def root(exception = nil)
+  def root
     redirect_to :root
   end
 

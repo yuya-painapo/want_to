@@ -12,6 +12,7 @@ AllCops:
     - 'config/**/*'
     - 'script/**/*'
     - 'bin/**/*'
+    - 'vendor/**/*'
   RunRailsCops: true
 
 # Offense count: 30
