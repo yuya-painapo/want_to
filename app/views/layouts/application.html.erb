@@ -58,6 +58,7 @@
                         <% else %>
                             <li id="user" class="inactive"><%= link_to "サインイン", new_user_registration_path %></li>
                             <li id="session" class="inactive"><%= link_to "ログイン", new_user_session_path %></li>
+			    <li id="facebook" class="inactive"><%= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook) %>
                         <% end %>
                     </ul>
                 </div><!--/.nav-collapse -->
