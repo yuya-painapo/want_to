@@ -15,5 +15,9 @@ FactoryGirl.define do
     smid "sm13"
     start_vpos 3000
     comment 'コメントです'
+
+    factory :bookmark_sm13_2, class: Bookmark do
+      comment 'bookmark_sm13_2'
+    end
   end
 end

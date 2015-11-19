@@ -17,6 +17,7 @@ FactoryGirl.define do
     after(:create) do |user|
       user.bookmarks << FactoryGirl.create(:bookmark_sm9, user: user)
       user.bookmarks << FactoryGirl.create(:bookmark_sm9_2, user: user)
+      user.bookmarks << FactoryGirl.create(:bookmark_sm13_2, user: user)
     end
   end
 end
