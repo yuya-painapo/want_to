@@ -1,7 +1,6 @@
 # coding: utf-8
 FactoryGirl.define do
   factory :bookmark_sm9, class: Bookmark do
-    user_id 1
     smid "sm9"
     start_vpos 3000
     comment 'コメントです'
@@ -13,7 +12,6 @@ FactoryGirl.define do
   end
 
   factory :bookmark_sm13, class: Bookmark do
-    user_id 1
     smid "sm13"
     start_vpos 3000
     comment 'コメントです'
