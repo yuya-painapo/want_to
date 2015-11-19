@@ -6,6 +6,8 @@ FactoryGirl.define do
     password "userpassword"
     password_confirmation "userpassword"
     after(:create) do |user|
+      user.bookmarks << FactoryGirl.create(:bookmark_user1_sm9_1, user: user)
+      user.bookmarks << FactoryGirl.create(:bookmark_user1_sm9_2, user: user)
       user.bookmarks << FactoryGirl.create(:bookmark_user1_sm13_1, user: user)
     end
   end
@@ -18,6 +20,7 @@ FactoryGirl.define do
       user.bookmarks << FactoryGirl.create(:bookmark_user2_sm9_1, user: user)
       user.bookmarks << FactoryGirl.create(:bookmark_user2_sm9_2, user: user)
       user.bookmarks << FactoryGirl.create(:bookmark_user2_sm13_1, user: user)
+      user.bookmarks << FactoryGirl.create(:bookmark_user2_sm13_2, user: user)
     end
   end
 end
