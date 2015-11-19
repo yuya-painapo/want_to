@@ -108,59 +108,45 @@ class HomeController < ApplicationController
 
     @q = session[:q]
   end
-  
+
   def search
-    # セッションに検索キーワードを格納
     session[:q] = params[:q]
     if params[:q].empty?
       flash[:notice] = 'キーワードが入力されていません'
-      redirect_to :back
-      return
+      return redirect_to :back
     end
 
     thumb_info = get_nicovideo_thumb_response(params[:q]) if params[:q].match(/^[a-z]|[0-9]+$/)
-    if thumb_info.try(:[], :thumb) && thumb_info[:thumb].has_key?(:ch_id)
+    if thumb_info.try(:[], :thumb) && thumb_info[:thumb].key?(:ch_id)
       flash[:notice] = "動画ID : #{params[:q]} はチャンネル動画なのでniconicoで課金して見てね！"
-      redirect_to :back
-      return
+      return redirect_to :back
     elsif params[:q].match(/^sm[0-9]+$/)
-      if thumb_info[:thumb] && thumb_info[:thumb][:embeddable] == "0"
+      if thumb_info[:thumb] && thumb_info[:thumb][:embeddable] == '0'
         flash[:notice] = "動画ID : #{params[:q]} はniconico公式でのみ視聴可能です！"
-        redirect_to :back
-        return
-      elsif thumb_info[:error] && thumb_info[:error].has_value?("NOT_FOUND")
+        return redirect_to :back
+      elsif thumb_info[:error] && thumb_info[:error].value?('NOT_FOUND')
         flash[:notice] = "動画ID : #{params[:q]} は見つかりません。動画は存在しないか、削除された可能性があります"
-        redirect_to :back
-        return
-      elsif thumb_info[:error] && thumb_info[:error].has_value?("DELETED")
+        return redirect_to :back
+      elsif thumb_info[:error] && thumb_info[:error].value?('DELETED')
         flash[:notice] = "動画ID : #{params[:q]} は削除、非公開設定、配信停止の為、視聴できません"
-        redirect_to :back
-        return
+        return redirect_to :back
       else
-        redirect_to action: 'movie', id: params[:q]
-        return
+        return redirect_to action: 'movie', id: params[:q]
       end
     else
       nico = NicoSearchSnapshot.new('niconico_highlight')
       results = nico.search(params[:q], size: 30, search: [:tags_exact], sort_by: :comment_counter)
 
-      sm_list = []
-      results.each do |r| 
+      results.shuffle!.each do |r|
         thumb = get_nicovideo_thumb_response(r.cmsid)
-        if !thumb.has_key?(:error).present? && r.cmsid =~ /^sm/ && thumb[:thumb][:embeddable] == "1" 
-          sm_list << r.cmsid
-        end 
-      end 
-      
-      unless sm_list.empty?
-        smID = sm_list[rand(sm_list.size)]
-        logger.info smID
-        redirect_to action: 'movie', id: smID
-        return
-      else
-        flash[:notice] = "keyword : #{params[:q]} だと再生可能な動画が表示できません"
-        redirect_to :back
+        if !thumb.key?(:error).present? && r.cmsid =~ /^sm/ && thumb[:thumb][:embeddable] == '1'
+          logger.info r.cmsid
+          return redirect_to action: 'movie', id: r.cmsid
+        end
       end
+
+      flash[:notice] = "keyword : #{params[:q]} だと再生可能な動画が表示できません"
+      return redirect_to :back
     end
   end
 
