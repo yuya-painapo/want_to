@@ -1,12 +1,14 @@
 Rails.application.routes.draw do
 
+  get 'my_page/index'
+
   devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
   get 'home/index'
   post 'home/search'
   post 'home/create'
-  get 'home/search/:q' => 'home#search'
+  get 'home/search/:q' => 'home#search', constraints: { q: '/.*/' }
   get 'home/movie'
   get 'home/movie/:id' => 'home#movie'
   get 'home/movie/:id/:num' => 'home#movie'
