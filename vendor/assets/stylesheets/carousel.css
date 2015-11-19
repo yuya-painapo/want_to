@@ -47,6 +47,11 @@ body {
   z-index: 10;
 }
 
+.carousel-caption h1{
+  z-index: 10;
+  color: #fff
+}
+
 /* Declare heights because of positioning of img element */
 .carousel .item {
   height: 500px;
@@ -82,7 +87,7 @@ body {
 ------------------------- */
 
 .featurette-divider {
-  margin: 80px 0; /* Space out the Bootstrap <hr> more */
+  margin: 60px 0; /* Space out the Bootstrap <hr> more */
 }
 
 /* Thin out the marketing headings */

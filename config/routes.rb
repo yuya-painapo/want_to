@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   get 'welcome' => 'welcome#index'
 
   # You can have the root of your site routed with "root"
-  root 'admin/base#index'
+  root 'welcome#index'
   #root 'home#index'
 
   # Example of regular route:
