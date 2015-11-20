@@ -32,6 +32,10 @@ step '再生画面が表示されていること' do
   expect(current_path).to match "/home/movie/.*"
 end
 
+step 'ログイン画面が表示されていること' do
+  expect(current_path).to eq "/users/sign_in"
+end
+
 step 'メッセージ :message が表示されていること' do |message|
   expect(page).to have_content message
 end
