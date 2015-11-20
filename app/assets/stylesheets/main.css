@@ -88,8 +88,8 @@ a:after {
 
 
 .navbar {
-	font-weight: 800;
-	font-size: 14px;
+	font-weight: 100;
+	font-size: 17px;
 	padding-bottom: 15px;
 	background-color: #ffffff;
 }
@@ -99,11 +99,13 @@ a:after {
 	background-color: #74cfae;
 }
 
+/*
 .navbar-brand {
-	font-size: 60px;
+	font-size: 24px;
 	padding-top: 0px;
 	padding-bottom: 0px;
 }
+*/
 
 .btn-theme {
 	color: #ffffff;
