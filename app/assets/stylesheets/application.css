@@ -12,6 +12,8 @@
  *
  *= require bootstrap.min
  *= require introjs
+ *= require carousel
+ *= require btns.min 
  *= require_tree .
  *= require_self
  *= require devise_bootstrap_views
