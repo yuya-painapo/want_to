@@ -274,6 +274,6 @@ svg.append("g")
 <% end %>
 	<b>ふせん</b>
 	<div id="bookmark">
-		<%= render partial: 'home/bookmark', collections: @bookmarks %>
+		<%= render partial: 'home/bookmark', locals: { bookmarks: @bookmarks } %>
 	</div>
 </div>

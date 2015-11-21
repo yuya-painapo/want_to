@@ -4,8 +4,6 @@
 <h2>ユーザー情報</h2>
 メールアドレス: <%= @user.email %>
 <h2>ふせん</h2>
-<ul>
-    <% @user.bookmarks.each do |b| %>
-        <li class="bookmark">動画ID: <%= b.smid %>, 時間: <%= b.start_vpos %>, コメント: <%= b.comment %></li>
-    <% end %>
-</ul>
+<div id="bookmark">
+	<%= render partial: 'home/bookmark', locals: { bookmarks: @user.bookmarks } %>
+</div>
