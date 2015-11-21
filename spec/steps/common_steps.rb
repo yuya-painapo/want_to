@@ -44,6 +44,10 @@ step ':name の値が :value であること' do |name, value|
   expect(page.find(name).value).to eq value
 end
 
+step '要素 :selector の :n 番目の要素の内容に :text が含まれていること' do |selector, n, text|
+  expect(page.all(:css, selector)[n.to_i].text).to match text
+end
+
 step '要素 :selector が存在すること' do |selector|
   expect(page.has_css?(selector, visible: :all)).to eq true
 end
