@@ -2,7 +2,7 @@ require 'factory_girl'
 
 FactoryGirl.define do
   factory :user do
-    email "user@test.com"
+    email "user@example.com"
     password "userpassword"
     password_confirmation "userpassword"
     after(:create) do |user|
