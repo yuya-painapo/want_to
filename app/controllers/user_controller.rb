@@ -5,7 +5,7 @@ class UserController < ApplicationController
       @user = User.find(params[:id])
     rescue
       flash[:notice] = "ユーザーID #{params[:id]} は存在しません。"
-      redirect_to :root and return
+      redirect_to :home_index and return
     end
   end
 end
