@@ -1,0 +1,11 @@
+<h1>User#show</h1>
+<p>Find me in app/views/user/show.html.erb</p>
+
+<h2>ユーザー情報</h2>
+メールアドレス: <%= @user.email %>
+<h2>ふせん</h2>
+<ul>
+    <% @user.bookmarks.each do |b| %>
+        <li class="bookmark">動画ID: <%= b.smid %>, 時間: <%= b.start_vpos %>, コメント: <%= b.comment %></li>
+    <% end %>
+</ul>
