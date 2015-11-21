@@ -11,7 +11,7 @@
   シナリオ: マイページに自分の付箋一覧が表示されている
     もし bookmark_user のテストデータを作成する
     かつ user のテストデータを作成する
-    かつ 'test@example.com' と 'hogehoge' でログインする
+    かつ 'bookmark_user@example.com' と 'hogehoge' でログインする
     かつ マイページを表示する
     ならば 要素 'li.bookmark' が 4 個存在すること
 
