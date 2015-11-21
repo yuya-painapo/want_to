@@ -99,3 +99,11 @@ step ':email と :password でログインする' do |email, password|
 
    click_button 'ログイン'
 end
+
+step 'ユーザー :user_id のユーザーページを表示する' do |user_id|
+  visit "/user/#{user_id}"
+end
+
+step 'ユーザー :user_id のユーザーページが表示されていること' do |user_id|
+  expect(current_path).to eq "/user/#{user_id}"
+end
