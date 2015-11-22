@@ -60,6 +60,10 @@ step '要素 :selector が :n 個存在すること' do |selector, n|
   expect(page.has_css?(selector, count: n, visible: :all)).to eq true
 end
 
+step 'リンク :selector をクリックする' do |selector|
+  click_link selector
+end
+
 #step ':model_name のテストデータを作成する' do |model_name|
 #  FactoryGirl.create(model_name)
 #end
