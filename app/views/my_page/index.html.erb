@@ -3,8 +3,6 @@
 <h2>ユーザー情報</h2>
 メールアドレス: <%= current_user.email %>
 <h2>ふせん</h2>
-<ul>
-<% @bookmarks.each do |b| %>
-    <li class="bookmark">動画ID: <%= b.smid %>, 時間: <%= b.start_vpos %>, コメント: <%= b.comment %></li>
-<% end %>
-</ul>
+<div id="bookmark">
+	<%= render partial: 'user/bookmark', locals: { bookmarks: @bookmarks } %>
+</div>
