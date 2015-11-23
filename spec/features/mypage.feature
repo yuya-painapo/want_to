@@ -4,14 +4,14 @@
 機能: マイページを開く
   シナリオ: マイページを表示する
     もし user のテストデータを作成する
-    かつ 'user@example.com' と 'userpassword' でログインする
+    かつ 'test_user' と 'userpassword' でログインする
     かつ マイページを表示する
     ならば マイページが表示されていること
 
   シナリオ: マイページに自分の付箋一覧が表示されている
     もし bookmark_user のテストデータを作成する
     かつ user のテストデータを作成する
-    かつ 'bookmark_user@example.com' と 'hogehoge' でログインする
+    かつ 'bookmark_test_user' と 'hogehoge' でログインする
     かつ マイページを表示する
     ならば 要素 'a.bookmark' が 4 個存在すること
 
@@ -23,7 +23,7 @@
 
   シナリオ: マイページのふせん一覧には動画IDが表示されている
     もし bookmark_user のテストデータを作成する
-    かつ 'bookmark_user@example.com' と 'hogehoge' でログインする
+    かつ 'bookmark_test_user' と 'hogehoge' でログインする
     かつ マイページを表示する
     かつ 要素 'a.bookmark' の 0 番目の要素の内容に '動画ID' が含まれていること
 
