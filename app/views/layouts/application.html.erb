@@ -50,7 +50,7 @@
                 </div>
                 <div id="navbar"class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-						<% unless /welcome|users|\// =~ request.path_info %>
+						<% unless /welcome|users|\A\/\z/ =~ request.path_info %>
                             <li id="howtouse" class="inactive"><a href="javascript:void(0);return false;">このページの使い方</a></li>
                         <% end %>
 						<li class="dropdown">
@@ -88,7 +88,7 @@
             <div class="container">
                 <div class="row">
                     <% if user_signed_in? %> 
-                    <p> Logged in as <strong><%= current_user.email %></strong> Created <i class="fa fa-heart"></i> by tebiti.</p>
+                    <p> Logged in as <strong><%= current_user.name %></strong> Created <i class="fa fa-heart"></i> by tebiti.</p>
                     <% else %>
 					<p> Created <i class="fa fa-heart"></i> by tebiti.</p>
                     <% end %>

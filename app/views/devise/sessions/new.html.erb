@@ -6,8 +6,8 @@
   <div class="panel-body">
     <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { role: "form" }) do |f| %>
       <div class="form-group">
-        <%= f.label :email %>
-        <%= f.email_field :email, autofocus: true, class: "form-control" %>
+        <%= f.label :name%>
+        <%= f.text_field :name, autofocus: true, class: "form-control" %>
       </div>
       <div class="form-group">
         <%= f.label :password %>
@@ -21,7 +21,7 @@
           </label>
         </div>
         <% end %>
-      <%= f.submit  t('.sign_in', :default => "Sign in"), class: "btn btn-primary" %>
+      <%= f.submit  t('.sign_in', :default => "Sign in"), class: "btn btn--gray" %>
     <% end %>
   </div>
 </div>
