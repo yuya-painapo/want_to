@@ -22,4 +22,19 @@ steps_for :toppage do
    click_button 'アカウント登録'
   end
 
+  step 'メールアドレスでログインする' do 
+    user = User.new(
+	    :email => "user@example.com",
+        :password => "userpassword",
+        :password_confirmation => "userpassword")
+    user.save
+   
+    visit '/users/sign_in'
+   
+    fill_in 'user[login]', with: user.email
+    fill_in 'user[password]', with: user.password
+   
+    click_button 'ログイン'
+  end
+
 end

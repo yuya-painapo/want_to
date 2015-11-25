@@ -69,7 +69,7 @@ step 'ログインする' do
  
   visit '/users/sign_in'
  
-  fill_in 'user[nickname]', with: user.nickname
+  fill_in 'user[login]', with: user.nickname
   fill_in 'user[password]', with: user.password
  
   click_button 'ログイン'
@@ -94,7 +94,7 @@ end
 step ':name と :password でログインする' do |name, password|
    visit '/users/sign_in'
 
-   fill_in 'user[nickname]', with: name
+   fill_in 'user[login]', with: name
    fill_in 'user[password]', with: password
 
    click_button 'ログイン'
