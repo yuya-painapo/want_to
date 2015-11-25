@@ -25,5 +25,11 @@
     もし bookmark_user のテストデータを作成する
     かつ 'bookmark_user@example.com' と 'hogehoge' でログインする
     かつ マイページを表示する
-    かつ 要素 'a.bookmark' の 0 番目の要素の内容に '動画ID' が含まれていること
+    かつ 要素 '#bookmark li' の 0 番目の要素の内容に '動画ID' が含まれていること
 
+  シナリオ: userのマイページからsm13の動画を見ることができる
+    もし user のテストデータを作成する
+    かつ 'user@example.com' と 'userpassword' でログインする
+    かつ マイページを表示する
+    かつ リンク 'sm13' をクリックする
+    ならば sm13 の再生画面が表示されていること
