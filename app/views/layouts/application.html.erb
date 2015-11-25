@@ -60,7 +60,7 @@
                                 <li id="contact" class="inactive"><a href="#f">Contact</a></li>
                                 <li role="separator" class="divider"></li>
                                 <% if user_signed_in? %> 
-						            <li id="mypage" class="inactive"><%= link_to 'マイページ', my_page_index_path %></li>
+						            <li id="mypage" class="inactive"><%= link_to 'マイページ', my_page_index_path, :data => { :'no-turbolink' => '1' } %></li>
 						            <li id="user" class="inactive"><%= link_to 'プロフィール変更', edit_user_registration_path %></li>
 						            <li id="session" class="inactive"><%= link_to "ログアウト", destroy_user_session_path %></li>
                                 <% else %>
