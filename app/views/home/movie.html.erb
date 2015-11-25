@@ -274,7 +274,12 @@ svg.append("g")
 <% end %>
 	<b>
         ふせん
-        <div class="fb-share-button" data-layout="button"></div>
+        <a href=<%= "http://www.facebook.com/share.php?u=" + url_encode(request.original_url) %>
+          onclick="window.open(this.href,'FBwindow','width=650,height=450,menubar=no,toolbar=no,scrollbars=yes');return false;" 
+          title="Facebookでシェア"
+          class="btn btn-social-icon btn-facebook">
+          <i class="fa fa-facebook"></i>
+          </a>
     </b>
 	<div id="bookmark">
 		<%= render partial: 'home/bookmark', locals: { bookmarks: @bookmarks } %>
