@@ -70,14 +70,14 @@ end
 
 step 'ログインする' do 
   user = User.new(
-      :email => "hoge@test.com",
-      :password => "hoge1234",
-      :password_confirmation => "hoge1234")
+      :nickname => "test_user",
+      :password => "userpassword",
+      :password_confirmation => "userpassword")
   user.save
  
   visit '/users/sign_in'
  
-  fill_in 'user[email]',    with: user.email
+  fill_in 'user[login]', with: user.nickname
   fill_in 'user[password]', with: user.password
  
   click_button 'ログイン'
@@ -99,10 +99,10 @@ step 'マイページが表示されていること' do
   expect(current_path).to eq '/my_page/index'
 end
 
-step ':email と :password でログインする' do |email, password|
+step ':name と :password でログインする' do |name, password|
    visit '/users/sign_in'
 
-   fill_in 'user[email]',    with: email
+   fill_in 'user[login]', with: name
    fill_in 'user[password]', with: password
 
    click_button 'ログイン'

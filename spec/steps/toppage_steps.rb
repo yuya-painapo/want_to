@@ -7,17 +7,34 @@ steps_for :toppage do
   
   step 'サインアップする' do
    user = User.new(
-	   :email => "hogehuga@test.com",
-	   :password => "hogehuga1234",
-	   :password_confirmation => "hogehuga1234")
+	   :nickname => "test_user",
+	   :email => "user@example.com",
+	   :password => "userpassword",
+	   :password_confirmation => "userpassword")
 
    visit '/users/sign_up'
 	 
-   fill_in 'user[email]',    with: user.email
+   fill_in 'user[nickname]', with: user.nickname
+   fill_in 'user[email]', with: user.email
    fill_in 'user[password]', with: user.password
    fill_in 'user[password_confirmation]', with: user.password_confirmation
 
    click_button 'アカウント登録'
+  end
+
+  step 'メールアドレスでログインする' do 
+    user = User.new(
+	    :email => "user@example.com",
+        :password => "userpassword",
+        :password_confirmation => "userpassword")
+    user.save
+   
+    visit '/users/sign_in'
+   
+    fill_in 'user[login]', with: user.email
+    fill_in 'user[password]', with: user.password
+   
+    click_button 'ログイン'
   end
 
 end
