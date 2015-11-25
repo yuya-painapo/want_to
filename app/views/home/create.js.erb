@@ -1,1 +1,1 @@
-$("#bookmark").append("<%=j render partial: 'bookmark', collections: @bookmarks %>");
+$("#bookmark").append("<%=j render partial: 'home/bookmark', locals: { bookmarks: @bookmarks } %>");
