@@ -96,6 +96,7 @@ step ':file_name にスクリーンショットをとる' do |file_name|
 end
 
 step 'Facebookにログインする' do 
+  visit '/users/sign_in'
   OmniAuth.config.test_mode = true
   OmniAuth.config.mock_auth[:facebook] = OmniAuth::AuthHash.new({
     "uid" => "11111",
