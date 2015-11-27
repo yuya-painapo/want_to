@@ -1,0 +1,9 @@
+<% bookmarks.each do |bookmark| %>
+    <li>
+        <span>動画ID：</span>
+        <%= link_to bookmark.smid, { :controller => 'home', :action => 'movie', :id => bookmark.smid }, :data => { :'no-turbolink' => '1' }, :class => 'bookmark'  %>
+        <span>
+            , 再生位置：<%= vpos_to_h_mm_ss(bookmark.start_vpos) %>, コメント： <%= bookmark.comment %>
+        </span>
+    </li>
+<% end %>

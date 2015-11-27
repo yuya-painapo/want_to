@@ -9,6 +9,7 @@
         <title>niconico highlight</title>
         <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
         <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <%= csrf_meta_tags %>
         <style>
             .axis text {
@@ -35,22 +36,21 @@
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-                        <% if user_signed_in? %> 
-                        <a class="navbar-brand" href="/home/index">niconico highlight</a>
-                        <% else %>
-                        <a class="navbar-brand" href="/">niconico highlight</a>
-                        <% end %>
-
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <% if user_signed_in? %> 
+                    <a class="navbar-brand" href="/home/index">niconico highlight</a>
+                    <% else %>
+                    <a class="navbar-brand" href="/">niconico highlight</a>
+                    <% end %>
                 </div>
                 <div id="navbar"class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-						<% unless /welcome|users|\// =~ request.path_info %>
+						<% unless /welcome|users|\A\/\z/ =~ request.path_info %>
                             <li id="howtouse" class="inactive"><a href="javascript:void(0);return false;">このページの使い方</a></li>
                         <% end %>
 						<li class="dropdown">
@@ -60,7 +60,7 @@
                                 <li id="contact" class="inactive"><a href="#f">Contact</a></li>
                                 <li role="separator" class="divider"></li>
                                 <% if user_signed_in? %> 
-						            <li id="mypage" class="inactive"><%= link_to 'マイページ', my_page_index_path %></li>
+						            <li id="mypage" class="inactive"><%= link_to 'マイページ', my_page_index_path, :data => { :'no-turbolink' => '1' } %></li>
 						            <li id="user" class="inactive"><%= link_to 'プロフィール変更', edit_user_registration_path %></li>
 						            <li id="session" class="inactive"><%= link_to "ログアウト", destroy_user_session_path %></li>
                                 <% else %>
@@ -88,7 +88,7 @@
             <div class="container">
                 <div class="row">
                     <% if user_signed_in? %> 
-                    <p> Logged in as <strong><%= current_user.email %></strong> Created <i class="fa fa-heart"></i> by tebiti.</p>
+                    <p> Logged in as <strong><%= current_user.nickname %></strong> Created <i class="fa fa-heart"></i> by tebiti.</p>
                     <% else %>
 					<p> Created <i class="fa fa-heart"></i> by tebiti.</p>
                     <% end %>

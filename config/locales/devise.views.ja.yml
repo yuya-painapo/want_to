@@ -7,6 +7,8 @@ ja:
         password: "パスワード"
         password_confirmation: "確認用パスワード"
         remember_me: "ログインを記憶"
+        nickname: "ニックネーム"
+        login: "ニックネーム or メールアドレス"
       bookmark:
         smid: 動画ID
         start_vpos: 再生開始位置

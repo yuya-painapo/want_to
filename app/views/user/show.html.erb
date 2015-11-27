@@ -1,0 +1,9 @@
+<h1>User#show</h1>
+<p>Find me in app/views/user/show.html.erb</p>
+
+<h2>ユーザー情報</h2>
+メールアドレス: <%= @user.email %>
+<h2>ふせん</h2>
+<div id="bookmark">
+	<%= render partial: 'user/bookmark', locals: { bookmarks: @user.bookmarks } %>
+</div>

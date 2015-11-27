@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'user/show'
+
   get 'my_page/index'
 
   devise_for :users
@@ -15,6 +17,7 @@ Rails.application.routes.draw do
   get 'home/about'
   get '/admin' => 'admin/base#index'
   get 'welcome' => 'welcome#index'
+  get 'user/:id' => 'user#show', constraints: { id: /[0-9]+/ }
 
   # You can have the root of your site routed with "root"
   root 'welcome#index'

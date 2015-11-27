@@ -32,12 +32,20 @@ step '再生画面が表示されていること' do
   expect(current_path).to match "/home/movie/.*"
 end
 
+step 'ログイン画面が表示されていること' do
+  expect(current_path).to eq "/users/sign_in"
+end
+
 step 'メッセージ :message が表示されていること' do |message|
   expect(page).to have_content message
 end
 
 step ':name の値が :value であること' do |name, value|
   expect(page.find(name).value).to eq value
+end
+
+step '要素 :selector の :n 番目の要素の内容に :text が含まれていること' do |selector, n, text|
+  expect(page.all(:css, selector)[n.to_i].text).to match text
 end
 
 step '要素 :selector が存在すること' do |selector|
@@ -52,20 +60,24 @@ step '要素 :selector が :n 個存在すること' do |selector, n|
   expect(page.has_css?(selector, count: n, visible: :all)).to eq true
 end
 
+step 'リンク :selector をクリックする' do |selector|
+  click_link selector
+end
+
 #step ':model_name のテストデータを作成する' do |model_name|
 #  FactoryGirl.create(model_name)
 #end
 
 step 'ログインする' do 
   user = User.new(
-      :email => "hoge@test.com",
-      :password => "hoge1234",
-      :password_confirmation => "hoge1234")
+      :nickname => "test_user",
+      :password => "userpassword",
+      :password_confirmation => "userpassword")
   user.save
  
   visit '/users/sign_in'
  
-  fill_in 'user[email]',    with: user.email
+  fill_in 'user[login]', with: user.nickname
   fill_in 'user[password]', with: user.password
  
   click_button 'ログイン'
@@ -87,11 +99,19 @@ step 'マイページが表示されていること' do
   expect(current_path).to eq '/my_page/index'
 end
 
-step ':email と :password でログインする' do |email, password|
+step ':name と :password でログインする' do |name, password|
    visit '/users/sign_in'
 
-   fill_in 'user[email]',    with: email
+   fill_in 'user[login]', with: name
    fill_in 'user[password]', with: password
 
    click_button 'ログイン'
+end
+
+step 'ユーザー :user_id のユーザーページを表示する' do |user_id|
+  visit "/user/#{user_id}"
+end
+
+step 'ユーザー :user_id のユーザーページが表示されていること' do |user_id|
+  expect(current_path).to eq "/user/#{user_id}"
 end
