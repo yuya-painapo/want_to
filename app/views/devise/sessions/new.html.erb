@@ -6,9 +6,9 @@
   <div class="panel-body">
     <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { role: "form" }) do |f| %>
       <div class="form-group">
-        <%= f.label :email %>
-        <%= f.email_field :email, autofocus: true, class: "form-control" %>
-      </div>
+        <%= f.label :login%>
+        <%= f.text_field :login, autofocus: true, class: "form-control" %>
+	  </div>
       <div class="form-group">
         <%= f.label :password %>
         <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
@@ -21,9 +21,10 @@
           </label>
         </div>
         <% end %>
-      <%= f.submit  t('.sign_in', :default => "Sign in"), class: "btn btn-primary" %>
+      <%= f.submit  t('.sign_in', :default => "Sign in"), class: "btn btn--gray" %>
     <% end %>
   </div>
 </div>
+<%= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook) %><br>
 <%= render "devise/shared/links" %>
 </div>

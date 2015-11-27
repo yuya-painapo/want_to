@@ -10,7 +10,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     #  redirect_to welcome_index_url
     else
       session["devise.facebook_data"] = request.env["omniauth.auth"]
-      redirect_to new_user_registration_url #new_user_registration_url
+      redirect_to home_index_url 
     end
   end
 

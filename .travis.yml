@@ -1,12 +1,16 @@
 language: ruby
 rvm:
 - 2.2.2
-script: bundle exec rspec spec
+before_install:
+  - gem install rubocop
+script:
+  - bundle exec rubocop --fail-level=W
+  - bundle exec rspec spec
 deploy:
   provider: heroku
   api_key:
     secure: ugJgyx3yoYErXV9TozcDgcUR0DaF7igK3jMLgoss/1N80TwEStT/NxMLKzi+iJD1jU2VWeOVEtcC9cdw6gbX6E9vGloF7wzvEyRf09d003GVTuoDezrPlL3Vkkm30RlDGSPD8UHvaEGX3F7S6wXEDWoVbBpiA2GTaH4Y43bgyHxfsAx+xrqwW5gDKRpR9Jyw98RB5LHFdiGCeebFKXOcEJY6yR1F2vn5mid0yJ7nMOUhMmQllEbgNPMIcna4X9wWRXvt1smapTQEdPATbRD5hb1bVvl0lAPloyPXQqmy7O+z6hAWYzkUzvro/bXl5Drg+QNP2zGYfzgo8cPoOcKqwiK2E1XO5O1f4xqycrb6pjKZuLBx/uzub/SujyXmdyrcSz6qaDBYAyf0vHUQ3W02JJluLHChJ8nA3AkmWfxdum3JJ1QeMT2Wg9TL/VyMaznXGMOClgPBbhxxHE1bv1nZYx6ZBJMpwRADWD0GSpxxOKwDASxfkG4C5S4JBzFM6Xb2+uUVD2akegjhx5nqjrcIEq2mIWDJ/DTgejR0JLgAn9BVTKKOE6zc5I9cy/gFy35Eb3/9GkSAonWDxgsSCCI6zBSP5Vnc/yq3MQ5LIgtNpXhwBGmJjDLGvPOh79SHLVUnv5Qyj3DgNh55nIuNfeUtr7XC3S6wrLWHovhX7y1Cza0=
-  app: infinite-plateau-1767
+  app: niconico-highlight
   on:
     repo: yuya-painapo/want_to
 addons:

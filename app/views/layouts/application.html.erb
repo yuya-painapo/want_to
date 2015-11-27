@@ -6,9 +6,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>niconico highlight(仮)</title>
+        <title>niconico highlight</title>
         <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
         <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <%= csrf_meta_tags %>
         <style>
             .axis text {
@@ -26,44 +27,53 @@
          var _on = function(jquery_selector) { $(jquery_selector).addClass("active").removeClass("inactive"); }
          var _off = function(jquery_selector) { $(jquery_selector).addClass("inactive").removeClass("active"); }
          $(function() {
-             $("#howtouse").hover(function() {_on("#howtouse");}, function() {_off("#howtouse")});
-             $("#contact").hover(function() {_on("#contact");}, function() {_off("#contact")});
-             $("#user").hover(function() {_on("#user");}, function() {_off("#user")});
-             $("#session").hover(function() {_on("#session");}, function() {_off("#session")});
              $("#howtouse").click(function() {introJs().start();});
          });
         </script>
     </head>
     <body>
         <!-- Fixed navbar -->
-        <div class="navbar navbar-default navbar-fixed-top">
+        <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <h2>
-                        <% if user_signed_in? %> 
-                        <%= link_to "niconico highlight(仮)", home_index_path %>
-                        <% else %>
-                        <%= link_to "niconico highlight(仮)", '/' %>
-                        <% end %>
-                    </h2>
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <% if user_signed_in? %> 
+                    <a class="navbar-brand" href="/home/index">niconico highlight</a>
+                    <% else %>
+                    <a class="navbar-brand" href="/">niconico highlight</a>
+                    <% end %>
                 </div>
-                <div class="navbar-collapse collapse">
+                <div id="navbar"class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li id="howtouse" class="inactive"><a href="javascript:void(0);return false;">このページの使い方</a></li>
-                        <li id="about" class="inactive"> <%= link_to "About", home_about_path %></li>
-                        <li id="contact" class="inactive"><a href="#f">Contact</a></li>
-                        <% if user_signed_in? %> 
-						    <li id="user" class="inactive"><%= link_to 'プロフィール変更', edit_user_registration_path %></li>
-						    <li id="session" class="inactive"><%= link_to "ログアウト", destroy_user_session_path %></li>
-                        <% else %>
-                            <li id="user" class="inactive"><%= link_to "サインイン", new_user_registration_path %></li>
-                            <li id="session" class="inactive"><%= link_to "ログイン", new_user_session_path %></li>
-			    <li id="facebook" class="inactive"><%= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook) %>
+                                                <% unless /welcome|users|\A\/\z/ =~ request.path_info %>
+                            <li id="howtouse" class="inactive"><a href="javascript:void(0);return false;">このページの使い方</a></li>
                         <% end %>
+						<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">menu<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li id="about" class="inactive"> <%= link_to "About", home_about_path %></li>
+                                <li id="contact" class="inactive"><a href="#f">Contact</a></li>
+                                <li role="separator" class="divider"></li>
+                                <% if user_signed_in? %> 
+						            <li id="mypage" class="inactive"><%= link_to 'マイページ', my_page_index_path, :data => { :'no-turbolink' => '1' } %></li>
+						            <li id="user" class="inactive"><%= link_to 'プロフィール変更', edit_user_registration_path %></li>
+						            <li id="session" class="inactive"><%= link_to "ログアウト", destroy_user_session_path %></li>
+                                <% else %>
+                                    <li id="user" class="inactive"><%= link_to "ユーザ登録", new_user_registration_path %></li>
+                                    <li id="session" class="inactive"><%= link_to "ログイン", new_user_session_path %></li>
+				    <li id="facebook" class="inactive"><%= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook) %></li>
+                                <% end %>
+                            </ul>
+						</li>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>
-        </div>
+        </nav>
         <div class="container">
             <% flash.each do |key, value| %>
                 <div class="alert alert-<%= status = key == "notice" ? "success" : "danger" %> fade in", style="margin-top: 20px">
@@ -79,7 +89,7 @@
             <div class="container">
                 <div class="row">
                     <% if user_signed_in? %> 
-                    <p> Logged in as <strong><%= current_user.email %></strong> Created <i class="fa fa-heart"></i> by tebiti.</p>
+                    <p> Logged in as <strong><%= current_user.nickname %></strong> Created <i class="fa fa-heart"></i> by tebiti.</p>
                     <% else %>
 					<p> Created <i class="fa fa-heart"></i> by tebiti.</p>
                     <% end %>
@@ -87,4 +97,5 @@
             </div>
         </div>
     </body>
+
 </html>
