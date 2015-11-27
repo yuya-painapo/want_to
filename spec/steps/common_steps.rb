@@ -40,6 +40,10 @@ step 'メッセージ :message が表示されていること' do |message|
   expect(page).to have_content message
 end
 
+step 'メッセージ :message が含まれていること' do |message|
+  expect(page).to satisfy { |p| message.include?(p) }
+end
+
 step ':name の値が :value であること' do |name, value|
   expect(page.find(name).value).to eq value
 end
@@ -89,6 +93,30 @@ end
 
 step ':file_name にスクリーンショットをとる' do |file_name|
     page.save_screenshot(file_name, full: true)
+end
+
+step 'Facebookにログインする' do 
+  visit '/users/sign_in'
+  OmniAuth.config.test_mode = true
+  OmniAuth.config.mock_auth[:facebook] = OmniAuth::AuthHash.new({
+    "uid" => "11111",
+    "provider" => "facebook",
+    "info" => {
+      "name" => "Yuya",
+     },
+     :credentials => {
+     :token => "abcde",
+     :epires_at => 1234556789,
+     :expires => true
+    },
+    "extra" => {
+     :raw_info =>{
+       :name => 'Yuya'
+      }
+    }
+
+  })
+  visit "/users/auth/facebook"
 end
 
 step 'マイページを表示する' do
