@@ -53,7 +53,7 @@
                         <td><%= time_ago_in_words(bookmark.created_at) %></td>
                         <td><%= bookmark.comment %></td>
                         <td>
-                            <%= link_to bookmark.user.nickname, {:controller => "user", :action => "show", :id => bookmark.user }, :data => { :'no-turbolink' => '1' } %>
+			   <%= link_to bookmark.smid, { :controller => 'home', :action => 'movie', :id => bookmark.smid }, :data => { :'no-turbolink' => '1' } %>
                         </td>
                     </tr>
                     <% end %>

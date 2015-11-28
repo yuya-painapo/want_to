@@ -263,8 +263,11 @@ Devise.setup do |config|
   # config.omniauth_path_prefix = '/my_engine/users/auth'
 
   config.omniauth( :facebook,
-                   ENV['FACEBOOK_APP_ID'],
-                   ENV['FACEBOOK_APP_SECRET'],
-                   {:scope => 'email'} )
+                   Rails.application.secrets.facebook_app_id,
+                   Rails.application.secrets.facebook_app_secret,
+                   {:scope => 'email'})
 
+  config.omniauth( :twitter,
+                   Rails.application.secrets.twitter_consumer_key,
+                   Rails.application.secrets.twitter_consumer_secret)
 end
