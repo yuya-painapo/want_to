@@ -91,7 +91,7 @@ class HomeController < ApplicationController
     end
         
 
-    @bookmarks = Bookmark.where(smid: @id)
+    @bookmarks = Bookmark.where(smid: @id).joins(:user).eager_load(:user).order(:user_id).order(:start_vpos)
 
     flv_data = get_comments(flv_info, 1000) # max 1000
     chat = flv_data.select{ |data| data['chat'] }

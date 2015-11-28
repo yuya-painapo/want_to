@@ -1,18 +1,24 @@
+<%# user_idをキーにコントロールブレイク %>
+<% user_id = nil %>
 <% bookmarks.each do |bookmark| %>
-<li>
-    <span>
-        再生位置：
-    </span>
-    <a class="bookmark" href="#" data-vpos="<%= bookmark.start_vpos %>">
-        <%= vpos_to_h_mm_ss(bookmark.start_vpos) %>
-    </a>
-    <span>, </span>
-    <span>
-        コメント：<%= bookmark.comment %>, 
-    </span>
-    <span>
-        ユーザー：
-    </span>
-    <%= link_to bookmark.user.nickname, {:controller => "user", :action => "show", :id => bookmark.user }, :data => { :'no-turbolink' => '1' } %>
-</li>
+    <% if user_id == bookmark.user_id %>
+        <li>
+            <%= render partial: 'home/bookmark_oneline', locals: { bookmark: bookmark } %>
+        </li>
+    <% else %>
+        <% if user_id != nil %>
+            </ul>
+        <% end %>
+        <h3>
+            ユーザー： <%= link_to bookmark.user.nickname, {:controller => "user", :action => "show", :id => bookmark.user }, :data => { :'no-turbolink' => '1' } %>
+        </h3>
+        <ul>
+            <li>
+                <%= render partial: 'home/bookmark_oneline', locals: { bookmark: bookmark } %>
+            </li>
+            <% user_id = bookmark.user_id %>
+    <% end %>
+<% end %>
+<% if user_id != nil %>
+        </ul>
 <% end %>
