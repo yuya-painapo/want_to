@@ -29,6 +29,7 @@ FactoryGirl.define do
     end
 
     factory :bookmark_user2_sm13_2, class: Bookmark do
+      start_vpos 4000
       comment 'bookmark_user2_sm13_2'
     end
   end
