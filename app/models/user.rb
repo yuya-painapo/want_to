@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
 
     unless user
       user = User.new(name:     auth.extra.raw_info.name,
+                      nickname: auth.extra.raw_info.name,
                       provider: auth.provider,
                       uid:      auth.uid,
                       email:    User.dummy_email(auth), # auth.info.email,
@@ -32,8 +33,7 @@ class User < ActiveRecord::Base
       where(conditions).find_by(['nickname= :value OR lower(email) = lower(:value)', { value: login }])
     end
   end
-
-  private
+ 
   def self.dummy_email(auth)
     "#{auth.uid}-#{auth.provider}@example.com"
   end

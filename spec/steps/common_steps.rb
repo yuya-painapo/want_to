@@ -40,10 +40,6 @@ step 'メッセージ :message が表示されていること' do |message|
   expect(page).to have_content message
 end
 
-step 'メッセージ :message が含まれていること' do |message|
-  expect(page).to satisfy { |p| message.include?(p) }
-end
-
 step ':name の値が :value であること' do |name, value|
   expect(page.find(name).value).to eq value
 end
@@ -103,6 +99,7 @@ step 'Facebookにログインする' do
     "provider" => "facebook",
     "info" => {
       "name" => "Yuya",
+    
      },
      :credentials => {
      :token => "abcde",
@@ -111,7 +108,7 @@ step 'Facebookにログインする' do
     },
     "extra" => {
      :raw_info =>{
-       :name => 'Yuya'
+       :name => 'Yuya'       
       }
     }
 
