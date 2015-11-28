@@ -62,6 +62,7 @@ class HomeController < ApplicationController
   def index
     @q = session[:q]
     @trendtag = get_nico_trend_tag
+    @bookmarks = Bookmark.order('created_at DESC').limit(10)
     logger.info @trendtag
   end
   
