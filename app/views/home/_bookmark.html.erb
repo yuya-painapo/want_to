@@ -13,6 +13,6 @@
     <span>
         ユーザー：
     </span>
-    <%= link_to bookmark.user.nickname, {:controller => "user", :action => "show", :id => bookmark.user } %>
+    <%= link_to bookmark.user.nickname, {:controller => "user", :action => "show", :id => bookmark.user }, :data => { :'no-turbolink' => '1' } %>
 </li>
 <% end %>
