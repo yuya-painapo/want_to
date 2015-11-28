@@ -49,8 +49,8 @@ gem 'enum_help'
 # gem 'capistrano-rails', group: :development
 
 gem 'rubocop', require: false
-
-gem "introjs-rails"
+gem 'font-awesome-rails'
+gem 'introjs-rails'
 
 gem 'rails-i18n'
 
