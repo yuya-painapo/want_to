@@ -1,90 +1,83 @@
 <style type="text/css">
 span#tooltip{
-	position: absolute;
-	z-index: 10;
-	visibility: hidden;
-	padding: 0px 0px;
-	border: 3px solid #000;
-	border-radius: 1px;
-	background-color: #333;
-	color: #fff;
-	font-size: 13px;
-	opacity: 1;
+    position: absolute;
+    z-index: 10;
+    visibility: hidden;
+    padding: 0px 0px;
+    border: 3px solid #000;
+    border-radius: 1px;
+    background-color: #333;
+    color: #fff;
+    font-size: 13px;
+    opacity: 1;
 }
 </style>
 <script>
 $(function() {
-		$(document).on('click', '#btnCreate', function() {
-			try {
-			$('#vpos').val(function() {
-				var player = document.getElementById('external_nico_0');
-				return player.ext_getPlayheadTime() * 100;
-				});
-			} catch (e) {
-			alert("再生ボタンを押してください。");
-			return false;
-			}
-			});
-		$(document).on('click', 'a.bookmark' ,function() {
-			var player = document.getElementById('external_nico_0');
-			try {
-			player.ext_setPlayheadTime($(this).data('vpos') / 100);
-			return false;
-			} catch (e) {
-			alert("再生ボタンを押してください。");
-			return false;
-			}
-			});
+        $(document).on('click', '#btnCreate', function() {
+            try {
+            $('#vpos').val(function() {
+                var player = document.getElementById('external_nico_0');
+                return player.ext_getPlayheadTime() * 100;
+                });
+            } catch (e) {
+            alert("再生ボタンを押してください。");
+            return false;
+            }
+            });
+        $(document).on('click', 'a.bookmark' ,function() {
+            var player = document.getElementById('external_nico_0');
+            try {
+            player.ext_setPlayheadTime($(this).data('vpos') / 100);
+            return false;
+            } catch (e) {
+            alert("再生ボタンを押してください。");
+            return false;
+            }
+            });
 });
 </script>
 <span id="tooltip"></span>
-<script src="http://code.jquery.com/jquery-latest.js"></script>
 
-<div class="container">
-	<div class="row mt centered">
-		<% if flash[:notice] %>
-			<div class="alert alert-info">
-			<%= flash[:notice] %>
-		</div>
-	<% end %>
-		<%= form_tag(controller: "home", action: "search", method: "post") do %>
-			<div class="col-lg-7 col-lg-offset-1 mt">
-			<%= text_field_tag(:q, @q, class: "form-control input-lg", placeholder: "sm* または keyword") %>
-		</div>
-		<div class="col-lg-3 mt">
-			<%= submit_tag("再生", class: "bolt-btn btn-theme btn-lg") %>
-		</div>
-	<%end%>
-	</div>
-	<hr>
-	<div class="row center mt">
+<div class="container mt">
+    <div class="row centered">
+        <%= form_tag(controller: "home", action: "search", method: "post") do %>
+            <div class="col-lg-7 col-lg-offset-1">
+            <%= text_field_tag(:q, @q, class: "form-control input-lg", placeholder: "sm* または keyword") %>
+        </div>
+        <div class="col-lg-3">
+            <%= submit_tag("再生", class: "bolt-btn btn-theme btn-lg") %>
+        </div>
+    <%end%>
+    </div>
+    <hr>
+    <div class="row center">
+        <div class="row centered">
+            <H2><%=@video_title%></H2>
+        </div>
+        <div class="row centered">
+            <div class="col-lg-6 centered" data-step="1" data-intro="ここが動画再生エリアです">
+                <script type="text/javascript" src=<%= "http://ext.nicovideo.jp/thumb_watch/"+@id %>></script><noscript><a href= <%="http://www.nicovideo.jp/watch/"+ @id %>>nicovideo</a></noscript>
 
-		<div class="row centered">
-			<H2><%=@video_title%></H2>
-		</div>
-		<div class="row centered">
-			<div class="col-lg-6 centered" data-step="1" data-intro="ここが動画再生エリアです">
-				<script type="text/javascript" src=<%= "http://ext.nicovideo.jp/thumb_watch/"+@id %>></script><noscript><a href= <%="http://www.nicovideo.jp/watch/"+ @id %>>nicovideo</a></noscript>
-
-				<% if user_signed_in? %>
-					<div class="row centered mt">
-					<%= form_tag({:controller => 'home', :action => 'create'}, :remote => true, :class => 'form-ajax') do %>
-						<%= hidden_field_tag :smid, @id %>
-					<%= hidden_field_tag :start_vpos, 0, :id => 'vpos' %>
-					<div class="input-group">
-						<%= text_field_tag :comment, "", :class => "form-control", placeholder: "ふせんにコメントをつけてみる" %>
-						<span class="input-group-btn">
-							<%= button_tag '<i class="glyphicon glyphicon-bookmark"></i>ふせんをつける'.html_safe, :type=> "submit",
-								:class => 'btn btn-primary btn-sm', :id => 'btnCreate' %>
-						</span>
-						</div>
-					<% end %>
-					</div>
-				<% end %>
-				</div>
-				<div class="col-lg-6 centered" data-step="2" data-intro="ここに盛り上がりグラフが表示されます。動画を読み込んでからクリックすると、その位置から再生します。">
-					<div id="chart"></div>
-					<script type="text/javascript">
+                <% if user_signed_in? %>
+                    <div class="row centered mt">
+                    <%= form_tag({:controller => 'home', :action => 'create'}, :remote => true, :class => 'form-ajax') do %>
+                        <%= hidden_field_tag :smid, @id %>
+                    <%= hidden_field_tag :start_vpos, 0, :id => 'vpos' %>
+                    <div class="input-group">
+                        <%= text_field_tag :comment, "", :class => "form-control", placeholder: "ふせんにコメントをつけてみる" %>
+                        <span class="input-group-btn">
+                            <%= button_tag '<i class="glyphicon glyphicon-bookmark"></i>ふせんをつける'.html_safe, :type=> "submit",
+                                :class => 'btn btn-primary btn-sm', :id => 'btnCreate' %>
+                        </span>
+                        </div>
+                    <% end %>
+                    </div>
+                <% end %>
+                </div>
+                <div class="col-lg-6 centered" data-step="2" data-intro="ここに盛り上がりグラフが表示されます。動画を読み込んでからクリックすると、その位置から再生します。">
+                    <div id="chart"></div>
+                    <script type="text/javascript">
 var svgWidth = 520; // SVG領域の横幅
 var svgHeight = 360;    // SVG領域の縦幅
 var margin = {top: 20, right: 40, bottom: 40, left: 50};
@@ -94,19 +87,19 @@ var ymax_position = 1.25  //
 
 var time_watch = [
 <% @time_watch.each do |time| %>
-	<%= time %>,
+    <%= time %>,
 <% end %>
 ]; // vposによるブロック毎の動画開始位置
 
 var block_com_num = [
 <% @block_com_num.each do |com_num| %>
-	<%= com_num %>,
+    <%= com_num %>,
 <% end %>
 ]; // ブロック毎のコメント数
 
 var movie_start_time = [
 <% @start_time.each do |time| %>
-	"<%= time %>",
+    "<%= time %>",
 <% end %>
 ]; // ブロック毎の動画開始位置
 
@@ -114,17 +107,17 @@ var comment_max = Math.max.apply(null, block_com_num); // コメントの最大�
 var color = d3.scale.category10();  // あらかじめ用意されている色を使う
 
 var line = d3.svg.line()
-	.x(function(d, i) { return i * svgWidth;})
-	.y(function(d) { return chart_height - d * yScale; });
+    .x(function(d, i) { return i * svgWidth;})
+    .y(function(d) { return chart_height - d * yScale; });
 
-	var yScale = (function (height, num_max, rate) {
-			if (num_max !== 0) {
-			magnification = height/num_max/rate;
-			return magnification;
-			} else {
-			return 0;
-			}
-			}(chart_height, comment_max, ymax_position)); // グラフの高さの倍率
+    var yScale = (function (height, num_max, rate) {
+            if (num_max !== 0) {
+            magnification = height/num_max/rate;
+            return magnification;
+            } else {
+            return 0;
+            }
+            }(chart_height, comment_max, ymax_position)); // グラフの高さの倍率
 var tooltip = d3.select("#tooltip")
 
 var svg = d3.select("#chart").append("svg")
@@ -133,89 +126,89 @@ var svg = d3.select("#chart").append("svg")
 .append("g")
 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-	svg.selectAll("rect")   // 四角形を対象にする
-	.data(block_com_num)  // データを読み込む
+    svg.selectAll("rect")   // 四角形を対象にする
+    .data(block_com_num)  // データを読み込む
 .enter()
-	.append("rect") // 四角形を生成する
-	.attr("x", function(d, i){  // X座標を計算
-			return i * chart_width / <%= @m_division %> ;
-			})
+    .append("rect") // 四角形を生成する
+    .attr("x", function(d, i){  // X座標を計算
+            return i * chart_width / <%= @m_division %> ;
+            })
 .attr("y", function(d){ // Y座標を計算
-		return chart_height - d * yScale;
-		})
+        return chart_height - d * yScale;
+        })
 .attr("width", 0)  // 四角形の横幅
 .attr("height", function(d){ // 四角形の高さ
-		return d * yScale;})
+        return d * yScale;})
 .attr("fill", function(d,i){    // 色を指定する
-		return color(i);    // 色を返す
-		})
+        return color(i);    // 色を返す
+        })
 .on("mouseover", function(d,i){
-		d3.select(this).attr("fill","red");
-		return tooltip.style("visibility", "visible").text("コメント数:\n" + d ).append("p").text( "再生位置:\n" + movie_start_time[i] ); //ポップアップを表示
-		})
+        d3.select(this).attr("fill","red");
+        return tooltip.style("visibility", "visible").text("コメント数:\n" + d ).append("p").text( "再生位置:\n" + movie_start_time[i] ); //ポップアップを表示
+        })
 .on("mousemove", function(d){
-		return tooltip.style("top", (d3.event.pageY-20)+"px").style("left",(d3.event.pageX+10)+"px"); //ポップアップが表示される位置の指定
-		})
+        return tooltip.style("top", (d3.event.pageY-20)+"px").style("left",(d3.event.pageX+10)+"px"); //ポップアップが表示される位置の指定
+        })
 .on("mouseout", function(d,i){
-		d3.select(this).attr("fill",color(i));
-		return tooltip.style("visibility", "hidden");//ポップアップを非表示
-		})
+        d3.select(this).attr("fill",color(i));
+        return tooltip.style("visibility", "hidden");//ポップアップを非表示
+        })
 .on("click", function(d,i){
-		var player = document.getElementById('external_nico_0');
-		try {
-		player.ext_setPlayheadTime(time_watch[i]);
-		} catch (e) {
-		alert("再生ボタンを押してください。");
-		}
+        var player = document.getElementById('external_nico_0');
+        try {
+        player.ext_setPlayheadTime(time_watch[i]);
+        } catch (e) {
+        alert("再生ボタンを押してください。");
+        }
 
-		})
+        })
 .transition() //アニメーション
-	.delay(function(d, i){　
-			//それぞれの棒を遅くれて表示
-			return i * 10;
-			})
+    .delay(function(d, i){　
+            //それぞれの棒を遅くれて表示
+            return i * 10;
+            })
 .duration(1000)
-	.ease("bounce")
-	.attr("width", chart_width / <%= @m_division %>) //四角形の横幅
-	.attr("height", function(d){ // 四角形の高さ
-			return d * yScale;
-			})
+    .ease("bounce")
+    .attr("width", chart_width / <%= @m_division %>) //四角形の横幅
+    .attr("height", function(d){ // 四角形の高さ
+            return d * yScale;
+            })
 
 
-	var xAxis = d3.svg.axis()
+    var xAxis = d3.svg.axis()
 .scale(d3.scale.linear().domain([0, <%= @vpos_video_length/100 %>*0.9]).range([0, chart_width*0.9]))
-	.orient("bottom")
-	.tickSize(6, -chart_height)
+    .orient("bottom")
+    .tickSize(6, -chart_height)
 .ticks(5)
-	.tickFormat(function(d) { 
-			var value = "";
-			var second = d % 60;
-			var minute = (d - second) / 60;
-			if (minute > 0) {
-			value += minute + "分";
-			}
-			return value + second + "秒"; 
-			});
-	var yAxis = d3.svg.axis()
-	.ticks(5)
+    .tickFormat(function(d) { 
+            var value = "";
+            var second = d % 60;
+            var minute = (d - second) / 60;
+            if (minute > 0) {
+            value += minute + "分";
+            }
+            return value + second + "秒"; 
+            });
+    var yAxis = d3.svg.axis()
+    .ticks(5)
 .scale(d3.scale.linear().domain([0, comment_max*ymax_position]).range([chart_height, 0]))
-	.orient("left")
-	.tickSize(6, -chart_width);
+    .orient("left")
+    .tickSize(6, -chart_width);
 
-	var xSVG = svg.append("g")
-	.attr("class", "x axis")
-	.attr("transform", "translate(0, " + chart_height + ")")
-	.call(xAxis);
-	xSVG.append("text")
-	.attr("y", 35)
-	.attr("x", 200)
-	.style("text-anchor", "middle")
-	.text("経過時間 / 分秒");
-	var Lsecond = <%= @vpos_video_length/100 % 60 %>;
-	var Lminute = (<%= @vpos_video_length/100 %> - Lsecond) / 60;
-	if (Lminute > 0) {
-		Lminute += "分";
-	} else Lminute = "分";
+    var xSVG = svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0, " + chart_height + ")")
+    .call(xAxis);
+    xSVG.append("text")
+    .attr("y", 35)
+    .attr("x", 200)
+    .style("text-anchor", "middle")
+    .text("経過時間 / 分秒");
+    var Lsecond = <%= @vpos_video_length/100 % 60 %>;
+    var Lminute = (<%= @vpos_video_length/100 %> - Lsecond) / 60;
+    if (Lminute > 0) {
+        Lminute += "分";
+    } else Lminute = "分";
 xSVG.append("text")
 .attr("y", 16)
 .attr("x", 450)
@@ -223,65 +216,65 @@ xSVG.append("text")
 .text(Lminute + Lsecond + "秒");
 
 svg.append("g")
-	.attr("class", "y axis")
+    .attr("class", "y axis")
 .call(yAxis)
-	.append("text")
-	.attr("y", -10)
-	.style("text-anchor", "end")
-	.text("コメント数");
+    .append("text")
+    .attr("y", -10)
+    .style("text-anchor", "end")
+    .text("コメント数");
 
-	svg.append("path")
-	.attr("d", line([<%= @threshold %>, <%= @threshold %>]))
-	.attr("stroke", "black")
-	.attr("stroke-width", 3)
-	.attr("stroke-dasharray", "5, 2")
-	.attr("fill", "none");
+    svg.append("path")
+    .attr("d", line([<%= @threshold %>, <%= @threshold %>]))
+    .attr("stroke", "black")
+    .attr("stroke-width", 3)
+    .attr("stroke-dasharray", "5, 2")
+    .attr("fill", "none");
 
-					</script>
-				</div>
-			</div>
-		</div>
-	</div>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	<% if Rails.env.development? %>
-		<b>分割数 : </b>
-	<%= @m_division %>
-	<br>
+    <% if Rails.env.development? %>
+        <b>分割数 : </b>
+    <%= @m_division %>
+    <br>
 
 
-	<b>閾値 : </b>
-	<%= @threshold %>
-	<br>
+    <b>閾値 : </b>
+    <%= @threshold %>
+    <br>
 
-	<b>ブロックごとのコメント数 :</b>
-	<% @block_com_num.each do |com_num| %>
-		<%= com_num %>
+    <b>ブロックごとのコメント数 :</b>
+    <% @block_com_num.each do |com_num| %>
+        <%= com_num %>
 <% end %>
 
-	<br>
-	<b>ブロックごとの動画開始位置 :</b>
-	<% @start_time.each do |time| %>
-		<%= time %>
+    <br>
+    <b>ブロックごとの動画開始位置 :</b>
+    <% @start_time.each do |time| %>
+        <%= time %>
 <% end %>
 
-	<br>
-	<b>ハイライト該当箇所 :</b>
-	<% @highlights_place.each do |start, finish| %>
-		<%= start.to_s + '~' + finish.to_s %> 
+    <br>
+    <b>ハイライト該当箇所 :</b>
+    <% @highlights_place.each do |start, finish| %>
+        <%= start.to_s + '~' + finish.to_s %> 
 <% end %>
 
-	<br>
+    <br>
 <% end %>
-	<b>
+    <b>
         ふせん
         <a href=<%= "http://www.facebook.com/share.php?u=" + url_encode(request.original_url) %>
           onclick="window.open(this.href,'FBwindow','width=650,height=450,menubar=no,toolbar=no,scrollbars=yes');return false;" 
           title="Facebookでシェア"
           class="btn">
-          <i class="fa fa-facebook"></i>
+          <%= fa_icon "facebook", text: "Facebookでシェア" %>
           </a>
     </b>
-	<div id="bookmark">
-		<%= render partial: 'home/bookmark', locals: { bookmarks: @bookmarks } %>
-	</div>
+    <div id="bookmark">
+        <%= render partial: 'home/bookmark', locals: { bookmarks: @bookmarks } %>
+    </div>
 </div>
