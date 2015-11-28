@@ -36,6 +36,8 @@ gem 'devise-bootstrap-views'
 gem 'cancancan'
 gem 'devise-i18n'
 gem 'devise-i18n-views'
+gem 'omniauth'
+gem 'omniauth-facebook'
 # form helper
 gem 'enum_help'
 

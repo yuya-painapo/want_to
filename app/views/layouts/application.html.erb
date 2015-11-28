@@ -49,7 +49,7 @@
                 </div>
                 <div id="navbar"class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-						<% unless /welcome|users|\A\/\z/ =~ request.path_info %>
+                                                <% unless /welcome|users|\A\/\z/ =~ request.path_info %>
                             <li id="howtouse" class="inactive"><a href="javascript:void(0);return false;">このページの使い方</a></li>
                         <% end %>
 						<li class="dropdown">
@@ -65,6 +65,7 @@
                                 <% else %>
                                     <li id="user" class="inactive"><%= link_to "ユーザ登録", new_user_registration_path %></li>
                                     <li id="session" class="inactive"><%= link_to "ログイン", new_user_session_path %></li>
+				    <li id="facebook" class="inactive"><%= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook) %></li>
                                 <% end %>
                             </ul>
 						</li>
@@ -95,4 +96,5 @@
             </div>
         </div>
     </body>
+
 </html>

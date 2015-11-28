@@ -1,10 +1,10 @@
 Rails.application.routes.draw do
 
-  get 'user/show'
+  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
 
+  get 'user/show'
   get 'my_page/index'
 
-  devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
   get 'home/index'
@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   get '/admin' => 'admin/base#index'
   get 'welcome' => 'welcome#index'
   get 'user/:id' => 'user#show', constraints: { id: /[0-9]+/ }
+ # get 'sign_in', :to => 'devise/sessions#edit', :as => :edit_user_registration
 
   # You can have the root of your site routed with "root"
   root 'welcome#index'
