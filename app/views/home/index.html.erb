@@ -1,20 +1,20 @@
-<div class="container">
-    <div class="row mt centered">
+<div class="container mt">
+    <div class="row centered">
         <%= form_tag(controller: "home", action: "search", method: "post") do %>
-            <div class="col-lg-7 col-lg-offset-1 mt" data-step="1" data-intro="ここにキーワードを入力します。">
+            <div class="col-lg-7 col-lg-offset-1" data-step="1" data-intro="ここにキーワードを入力します。">
                 <%= text_field_tag(:q, @q, class: "form-control input-lg", placeholder: "sm* または keyword") %>
             </div>
-            <div class="col-lg-3 mt" data-step="2" data-intro="このボタンをクリックすると、動画を再生します。">
+            <div class="col-lg-3" data-step="2" data-intro="このボタンをクリックすると、動画を再生します。">
                 <%= submit_tag("再生", class: "bolt-btn btn-theme btn-lg") %>
             </div>
         <%end%>
     </div>
     <hr>
-    <div class="row centered mt grid">
-        <div class="container" data-step="3" data-intro="トレンドタグをクリックすることで、動画を再生することもできます。">
+    <div class="row centered grid">
+        <div class="col-md-6" data-step="3" data-intro="トレンドタグをクリックすることで、動画を再生することもできます。">
             <h3>トレンドタグ</h3>
             <div class="table-responsive">
-                <table class="table table-hover table-striped">
+                <table class="table table-hover table-striped table-bordered">
                     <thead>
                         <tr>
                             <th>Ranking</th>
@@ -28,6 +28,35 @@
                             <td><a href=<%="/home/search/#{@trendtag[num]}"%> data-no-turbolink="1"><%= @trendtag[num]%></a></td>
                         </tr>
                     <%end%>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-6" date-step="4" data-intro="最近つけられたふせんの一覧です。">
+            <h3>新しいふせん</h3>
+            <div class="table-responsive">
+                <table class="table table-hover table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>動画タイトル</th>
+                            <th>時間</th>
+                            <th>コメント</th>
+                            <th>ニックネーム</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <% for bookmark in @bookmarks %>
+                    <tr>
+                        <td>
+                            <%= link_to bookmark.smid, { :controller => 'home', :action => 'movie', :id => bookmark.smid }, :data => { :'no-turbolink' => '1' }, :class => 'bookmark'  %>
+                        </td>
+                        <td><%= time_ago_in_words(bookmark.created_at) %></td>
+                        <td><%= bookmark.comment %></td>
+                        <td>
+                            <%= link_to bookmark.user.nickname, {:controller => "user", :action => "show", :id => bookmark.user }, :data => { :'no-turbolink' => '1' } %>
+                        </td>
+                    </tr>
+                    <% end %>
                     </tbody>
                 </table>
             </div>

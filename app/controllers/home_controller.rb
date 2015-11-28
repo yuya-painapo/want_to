@@ -62,6 +62,7 @@ class HomeController < ApplicationController
   def index
     @q = session[:q]
     @trendtag = get_nico_trend_tag
+    @bookmarks = Bookmark.order('created_at DESC').limit(10)
     logger.info @trendtag
   end
   
@@ -135,6 +136,7 @@ class HomeController < ApplicationController
       end
     else
       nico = NicoSearchSnapshot.new('niconico_highlight')
+      print nico
       results = nico.search(params[:q], size: 40, search: [:tags_exact], sort_by: :comment_counter)
 
       results.shuffle!.each do |r|
