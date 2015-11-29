@@ -12,7 +12,7 @@
         <%= link_to bookmark.user.nickname, {:controller => "user", :action => "show", :id => bookmark.user }, :data => { :'no-turbolink' => '1' } %>
     </td>
     <td>
-        <a href=<%= "http://www.facebook.com/share.php?u=" + url_encode(request.original_url + '?fusen=no' + bookmark.id.to_s) %>
+        <a href=<%= "http://www.facebook.com/share.php?u=" + url_encode(request.original_url.split('?')[0] + '?fusen=no' + bookmark.id.to_s) %>
           onclick="window.open(this.href,'FBwindow','width=650,height=450,menubar=no,toolbar=no,scrollbars=yes');return false;" 
           title="Facebookでシェア"
           class="btn btn--s btn-no-padding">
