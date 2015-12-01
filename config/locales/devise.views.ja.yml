@@ -55,7 +55,7 @@ ja:
         confirm_new_password: "確認用新しいパスワード"
         new_password: "新しいパスワード"
       new:
-        forgot_your_password: "パスワードを忘れた方はこちら"
+        forgot_your_password: "パスワードの再設定"
         send_me_reset_password_instructions: "送信"
     registrations:
       edit:
@@ -77,7 +77,7 @@ ja:
         back: "戻る"
         didn_t_receive_confirmation_instructions: "アカウント確認のメールを受け取っていませんか?"
         didn_t_receive_unlock_instructions: "アカウントの凍結解除方法のメールを受け取っていませんか?"
-        forgot_your_password: "パスワードを忘れましたか?"
+        forgot_your_password: "パスワードを忘れた方はこちら"
         sign_in: "ログイン"
         sign_in_with_provider: "%{provider}でログイン"
         sign_up: "アカウント登録"
