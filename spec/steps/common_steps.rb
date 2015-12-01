@@ -116,6 +116,31 @@ step 'Facebookにログインする' do
   visit "/users/auth/facebook"
 end
 
+step 'Twitterにログインする' do 
+  visit '/users/sign_in'
+  OmniAuth.config.test_mode = true
+  OmniAuth.config.mock_auth[:twitter] = OmniAuth::AuthHash.new({
+    "uid" => "11111",
+    "provider" => "twitter",
+    "info" => {
+      "name" => "Yuya",
+    
+     },
+     :credentials => {
+     :token => "abcde",
+     :epires_at => 1234556789,
+     :expires => true
+    },
+    "extra" => {
+     :raw_info =>{
+       :name => 'Yuya'       
+      }
+    }
+
+  })
+  visit "/users/auth/twitter"
+end
+
 step 'マイページを表示する' do
   visit '/my_page/index'
 end
