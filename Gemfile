@@ -38,6 +38,7 @@ gem 'devise-i18n'
 gem 'devise-i18n-views'
 gem 'omniauth'
 gem 'omniauth-facebook'
+gem 'omniauth-twitter'
 # form helper
 gem 'enum_help'
 

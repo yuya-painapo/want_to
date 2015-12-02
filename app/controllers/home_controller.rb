@@ -117,26 +117,28 @@ class HomeController < ApplicationController
       return redirect_to :back
     end
 
-    thumb_info = get_nicovideo_thumb_response(params[:q]) if params[:q].match(/^[a-z]|[0-9]+$/)
+    movie_url_pattern = /http:\/\/www.nicovideo.jp\/watch\/(sm[0-9]+)/
+    q = (md = params[:q].match(movie_url_pattern)) ? md[1] : params[:q]
+    thumb_info = get_nicovideo_thumb_response(q) if q.match(/^[a-z]|[0-9]+$/)
     if thumb_info.try(:[], :thumb) && thumb_info[:thumb].key?(:ch_id)
-      flash[:notice] = "動画ID : #{params[:q]} はチャンネル動画なのでniconicoで課金して見てね！"
+      flash[:notice] = "動画ID : #{q} はチャンネル動画なのでniconicoで課金して見てね！"
       return redirect_to :back
-    elsif params[:q].match(/^sm[0-9]+$/)
+    elsif q.match(/^sm[0-9]+$/) || q.match(movie_url_pattern)
       if thumb_info[:thumb] && thumb_info[:thumb][:embeddable] == '0'
-        flash[:notice] = "動画ID : #{params[:q]} はniconico公式でのみ視聴可能です！"
+        flash[:notice] = "動画ID : #{q} はniconico公式でのみ視聴可能です！"
         return redirect_to :back
       elsif thumb_info[:error] && thumb_info[:error].value?('NOT_FOUND')
-        flash[:notice] = "動画ID : #{params[:q]} は見つかりません。動画は存在しないか、削除された可能性があります"
+        flash[:notice] = "動画ID : #{q} は見つかりません。動画は存在しないか、削除された可能性があります"
         return redirect_to :back
       elsif thumb_info[:error] && thumb_info[:error].value?('DELETED')
-        flash[:notice] = "動画ID : #{params[:q]} は削除、非公開設定、配信停止の為、視聴できません"
+        flash[:notice] = "動画ID : #{q} は削除、非公開設定、配信停止の為、視聴できません"
         return redirect_to :back
       else
-        return redirect_to action: 'movie', id: params[:q]
+        return redirect_to action: 'movie', id: q
       end
     else
       nico = NicoSearchSnapshot.new('niconico_highlight')
-      results = nico.search(params[:q], size: 40, search: [:tags_exact], sort_by: :comment_counter)
+      results = nico.search(q, size: 40, search: [:tags_exact], sort_by: :comment_counter)
 
       results.shuffle!.each do |r|
         thumb = get_nicovideo_thumb_response(r.cmsid)
@@ -146,7 +148,7 @@ class HomeController < ApplicationController
         end
       end
 
-      flash[:notice] = "keyword : #{params[:q]} だと再生可能な動画が表示できません"
+      flash[:notice] = "keyword : #{q} だと再生可能な動画が表示できません"
       return redirect_to :back
     end
   end

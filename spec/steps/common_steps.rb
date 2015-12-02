@@ -15,7 +15,6 @@ step '動画検索画面が表示されていること' do
   expect(current_path).to satisfy { |p| ['/home/index'].include?(p) }
 end
 
-
 step ':movie_id の再生画面が表示されていること' do |movie_id|
   expect(current_path).to eq "/home/movie/#{movie_id}"
 end
@@ -91,15 +90,14 @@ step ':file_name にスクリーンショットをとる' do |file_name|
     page.save_screenshot(file_name, full: true)
 end
 
-step 'Facebookにログインする' do 
+step ':provider にログインする' do |provider| 
   visit '/users/sign_in'
   OmniAuth.config.test_mode = true
-  OmniAuth.config.mock_auth[:facebook] = OmniAuth::AuthHash.new({
+  OmniAuth.config.mock_auth[:"#{provider}"] = OmniAuth::AuthHash.new({
     "uid" => "11111",
-    "provider" => "facebook",
+    "provider" => provider,
     "info" => {
       "name" => "Yuya",
-    
      },
      :credentials => {
      :token => "abcde",
@@ -113,7 +111,7 @@ step 'Facebookにログインする' do
     }
 
   })
-  visit "/users/auth/facebook"
+  visit "/users/auth/#{provider}"
 end
 
 step 'マイページを表示する' do
