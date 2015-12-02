@@ -14,27 +14,34 @@ span#tooltip{
 </style>
 <script>
 $(function() {
-        $(document).on('click', '#btnCreate', function() {
-            try {
+    $(document).on('click', '#btnCreate', function(e) {
+        e.preventDefault();
+        try {
             $('#vpos').val(function() {
                 var player = document.getElementById('external_nico_0');
                 return player.ext_getPlayheadTime() * 100;
                 });
-            } catch (e) {
+            $('#create-fusen').submit();
+        } catch (e) {
             alert("再生ボタンを押してください。");
-            return false;
-            }
-            });
-        $(document).on('click', 'a.bookmark' ,function() {
-            var player = document.getElementById('external_nico_0');
-            try {
-            player.ext_setPlayheadTime($(this).data('vpos') / 100);
-            return false;
-            } catch (e) {
-            alert("再生ボタンを押してください。");
-            return false;
-            }
-            });
+        }
+    });
+    $(document).on('click', 'a.bookmark' ,function(e) {
+        e.preventDefault();
+        var player = document.getElementById('external_nico_0');
+        try {
+        player.ext_setPlayheadTime($(this).data('vpos') / 100);
+        } catch (e) {
+        alert("再生ボタンを押してください。");
+        }
+    });
+
+    var args = $.getParameter();
+    if (args['fusen'] !== undefined) {
+        var target = '#' + args['fusen'];
+        $(target).addClass('success');
+        $(target).prependTo('#bookmark tbody');
+    }
 });
 </script>
 <span id="tooltip"></span>
@@ -51,7 +58,7 @@ $(function() {
     <%end%>
     </div>
     <hr>
-    <div class="row center">
+    <div class="row centered">
         <div class="row centered">
             <H2><%=@video_title%></H2>
         </div>
@@ -61,14 +68,13 @@ $(function() {
 
                 <% if user_signed_in? %>
                     <div class="row centered mt">
-                    <%= form_tag({:controller => 'home', :action => 'create'}, :remote => true, :class => 'form-ajax') do %>
+                    <%= form_tag({:controller => 'home', :action => 'create'}, :remote => true, :class => 'form-ajax', :id => 'create-fusen') do %>
                         <%= hidden_field_tag :smid, @id %>
                     <%= hidden_field_tag :start_vpos, 0, :id => 'vpos' %>
                     <div class="input-group">
                         <%= text_field_tag :comment, "", :class => "form-control", placeholder: "ふせんにコメントをつけてみる" %>
                         <span class="input-group-btn">
-                            <%= button_tag '<i class="glyphicon glyphicon-bookmark"></i>ふせんをつける'.html_safe, :type=> "submit",
-                                :class => 'btn btn-primary btn-sm', :id => 'btnCreate' %>
+                            <%= link_to '<i class="glyphicon glyphicon-bookmark"></i>ふせんをつける'.html_safe, '#', :class => 'btn btn--s btn-no-padding', :id => 'btnCreate' %>
                         </span>
                         </div>
                     <% end %>
@@ -233,48 +239,57 @@ svg.append("g")
                     </script>
                 </div>
             </div>
+            <div class="row centered">
+                <h2>
+                    ふせん
+
+                </h2>
+                <div class="table-responsive">
+                    <table id="bookmark" class="table table-hover table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>再生位置</th>
+                                <th>コメント</th>
+                                <th>ユーザー</th>
+                                <th>その他</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%= render partial: 'home/bookmark', locals: { bookmarks: @bookmarks } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
     <% if Rails.env.development? %>
         <b>分割数 : </b>
-    <%= @m_division %>
-    <br>
+        <%= @m_division %>
+        <br>
 
 
-    <b>閾値 : </b>
-    <%= @threshold %>
-    <br>
+        <b>閾値 : </b>
+        <%= @threshold %>
+        <br>
 
-    <b>ブロックごとのコメント数 :</b>
-    <% @block_com_num.each do |com_num| %>
-        <%= com_num %>
-<% end %>
+        <b>ブロックごとのコメント数 :</b>
+        <% @block_com_num.each do |com_num| %>
+            <%= com_num %>
+        <% end %>
 
-    <br>
-    <b>ブロックごとの動画開始位置 :</b>
-    <% @start_time.each do |time| %>
-        <%= time %>
-<% end %>
+        <br>
+        <b>ブロックごとの動画開始位置 :</b>
+        <% @start_time.each do |time| %>
+            <%= time %>
+        <% end %>
 
-    <br>
-    <b>ハイライト該当箇所 :</b>
-    <% @highlights_place.each do |start, finish| %>
-        <%= start.to_s + '~' + finish.to_s %> 
-<% end %>
+        <br>
+        <b>ハイライト該当箇所 :</b>
+        <% @highlights_place.each do |start, finish| %>
+            <%= start.to_s + '~' + finish.to_s %>
+        <% end %>
 
-    <br>
-<% end %>
-    <b>
-        ふせん
-        <a href=<%= "http://www.facebook.com/share.php?u=" + url_encode(request.original_url) %>
-          onclick="window.open(this.href,'FBwindow','width=650,height=450,menubar=no,toolbar=no,scrollbars=yes');return false;" 
-          title="Facebookでシェア"
-          class="btn">
-          <%= fa_icon "facebook", text: "Facebookでシェア" %>
-          </a>
-    </b>
-    <div id="bookmark">
-        <%= render partial: 'home/bookmark', locals: { bookmarks: @bookmarks } %>
-    </div>
+        <br>
+    <% end %>
 </div>
