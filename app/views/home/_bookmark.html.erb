@@ -1,18 +1,23 @@
 <% bookmarks.each do |bookmark| %>
-<li>
-    <span>
-        再生位置：
-    </span>
-    <a class="bookmark" href="#" data-vpos="<%= bookmark.start_vpos %>">
-        <%= vpos_to_h_mm_ss(bookmark.start_vpos) %>
-    </a>
-    <span>, </span>
-    <span>
-        コメント：<%= bookmark.comment %>, 
-    </span>
-    <span>
-        ユーザー：
-    </span>
-    <%= link_to bookmark.user.nickname, {:controller => "user", :action => "show", :id => bookmark.user }, :data => { :'no-turbolink' => '1' } %>
-</li>
+<tr id="no<%= bookmark.id.to_s %>">
+    <td>
+        <a class="bookmark" href="#" data-vpos="<%= bookmark.start_vpos %>">
+            <%= vpos_to_h_mm_ss(bookmark.start_vpos) %>
+        </a>
+    </td>
+    <td>
+        <%= bookmark.comment %>
+    </td>
+    <td>
+        <%= link_to bookmark.user.nickname, {:controller => "user", :action => "show", :id => bookmark.user }, :data => { :'no-turbolink' => '1' } %>
+    </td>
+    <td>
+        <a href=<%= "http://www.facebook.com/share.php?u=" + url_encode(request.original_url.split('?')[0] + '?fusen=no' + bookmark.id.to_s) %>
+          onclick="window.open(this.href,'FBwindow','width=650,height=450,menubar=no,toolbar=no,scrollbars=yes');return false;" 
+          title="Facebookでシェア"
+          class="btn btn--s btn-no-padding">
+          <%= fa_icon "facebook", text: "Facebookでシェア" %>
+        </a>
+    </td>
+</tr>
 <% end %>

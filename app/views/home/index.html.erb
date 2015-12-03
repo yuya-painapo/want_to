@@ -48,12 +48,12 @@
                     <% for bookmark in @bookmarks %>
                     <tr>
                         <td>
-                            <%= link_to bookmark.smid, { :controller => 'home', :action => 'movie', :id => bookmark.smid }, :data => { :'no-turbolink' => '1' }, :class => 'bookmark'  %>
+                            <%= link_to bookmark.smid, { :controller => 'home', :action => 'movie', :id => bookmark.smid, :fusen => 'no' + bookmark.id.to_s }, :data => { :'no-turbolink' => '1' }, :class => 'bookmark'  %>
                         </td>
-                        <td><%= time_ago_in_words(bookmark.created_at) %></td>
+                        <td><%= time_ago_in_words(bookmark.created_at) %>前</td>
                         <td><%= bookmark.comment %></td>
                         <td>
-                            <%= link_to bookmark.user.nickname, {:controller => "user", :action => "show", :id => bookmark.user }, :data => { :'no-turbolink' => '1' } %>
+			   <%= link_to bookmark.user.nickname, {:controller => "user", :action => "show", :id => bookmark.user }, :data => { :'no-turbolink' => '1' } %>
                         </td>
                     </tr>
                     <% end %>

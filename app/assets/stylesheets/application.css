@@ -23,3 +23,8 @@
 .introjs-helperNumberLayer {
     box-sizing: content-box;
 }
+
+.btn-no-padding {
+    padding: 6px 12px !important;
+    margin-bottom: 0px !important;
+}

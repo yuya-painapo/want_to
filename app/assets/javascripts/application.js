@@ -19,3 +19,20 @@
 //= require jquery.turbolinks
 //= require introjs
 //= require_tree .
+
+(function($) {
+    $.extend({
+        getParameter: function getParameter() {
+            /// <summary>
+            /// Get Url Parameter
+            /// </summery>
+            var arg = new Object;
+            var pair = location.search.substring(1).split('&');
+            for(i = 0; pair[i]; i++) {
+                var kv = pair[i].split('=');
+                arg[kv[0]] = kv[1];
+            }
+            return arg;
+        }
+    });
+})(jQuery);
