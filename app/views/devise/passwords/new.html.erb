@@ -1,7 +1,9 @@
+<div class="container", style="margin-top: 20px">
 <%= bootstrap_devise_error_messages! %>
 <div class="panel panel-default">
   <div class="panel-heading">
     <h4><%= t('.forgot_your_password', :default => 'Forgot your password?') %></h4>
+	<h6 style="margin-bottom: 3px">入力したメールアドレスにパスワードの再設定方法を送信します</h6>
   </div>
   <div class="panel-body">
     <%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post, role: "form" }) do |f| %>
@@ -10,8 +12,10 @@
         <%= f.email_field :email, autofocus: true, class: "form-control" %>
       </div>
 
-      <%= f.submit t('.send_me_reset_password_instructions', :default => "Send me reset password instructions"), class: "btn btn-primary" %>
+      <%= f.submit t('.send_me_reset_password_instructions', :default => "Send me reset password instructions"), class: "btn btn-gray" %>
     <% end %>
   </div>
 </div>
+<%= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook) %><br>
 <%= render "devise/shared/links" %>
+</div>

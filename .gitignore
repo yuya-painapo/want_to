@@ -16,6 +16,7 @@
 .ruby-version
 vendor/bundle
 public/assets
+.env
 
 # Ignore all logfiles and tempfiles.
 /log/*
