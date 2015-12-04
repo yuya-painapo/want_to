@@ -1,15 +1,34 @@
+<div id="tooltip" class="hidden">
+        <p><strong>コメント数 : </strong><span id="value">100</span></p>
+        <p><strong>再生位置 : </strong><span id="value2">100</span></p>
+</div>
 <style type="text/css">
-span#tooltip{
-    position: absolute;
-    z-index: 10;
-    visibility: hidden;
-    padding: 0px 0px;
-    border: 3px solid #000;
-    border-radius: 1px;
-    background-color: #333;
-    color: #fff;
-    font-size: 13px;
-    opacity: 1;
+#tooltip {
+        position: absolute;
+        z-index: 10;
+        width: 150px;
+        height: auto;
+        padding: 10px;
+        background-color: white;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+        -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+        -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+        box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+        pointer-events: none;
+        opacity: 0.93;
+}
+
+#tooltip.hidden {
+        display: none;
+}
+
+#tooltip p {
+        margin: 0;
+        font-family: sans-serif;
+        font-size: 16px;
+        line-height: 20px;
 }
 </style>
 <script>
@@ -37,7 +56,7 @@ $(function() {
             });
 });
 </script>
-<span id="tooltip"></span>
+
 
 <div class="container mt">
     <div class="row centered">
@@ -147,14 +166,19 @@ var svg = d3.select("#chart").append("svg")
         })
 .on("mouseover", function(d,i){
         d3.select(this).attr("fill","red");
-        return tooltip.style("visibility", "visible").text("コメント数:\n" + d ).append("p").text( "再生位置:\n" + movie_start_time[i] ); //ポップアップを表示
-        })
+        tooltip.select("#value")
+        .text(d);
+        tooltip.select("#value2")
+        .text(movie_start_time[i]);
+        d3.select("#tooltip").classed("hidden",false);
+       })
 .on("mousemove", function(d){
         return tooltip.style("top", (d3.event.pageY-20)+"px").style("left",(d3.event.pageX+10)+"px"); //ポップアップが表示される位置の指定
         })
+
 .on("mouseout", function(d,i){
         d3.select(this).attr("fill",colors2(d));
-        return tooltip.style("visibility", "hidden");//ポップアップを非表示
+        d3.select("#tooltip").classed("hidden",true);
         })
 .on("click", function(d,i){
         var player = document.getElementById('external_nico_0');
