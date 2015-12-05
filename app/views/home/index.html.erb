@@ -10,10 +10,10 @@ $(function() {
 <div class="container mt">
     <div class="row centered">
         <%= form_tag(controller: "home", action: "search", method: "post") do %>
-            <div class="col-lg-7 col-lg-offset-1" data-step="1" data-intro="ここにキーワードを入力します。">
+            <div class="col-lg-7 col-lg-offset-1" data-step="1" data-intro="ここに好きなキーワードを入力します。">
                 <%= text_field_tag(:q, @q, class: "form-control input-lg", placeholder: "sm* または keyword") %>
             </div>
-            <div class="col-lg-3" data-step="2" data-intro="このボタンをクリックすると、動画を再生します。">
+            <div class="col-lg-3" data-step="2" data-intro="キーワードを入力後このボタンをクリックすると、動画を検索しランダムに一つ再生します。">
                 <%= submit_tag("再生", class: "bolt-btn btn-theme btn-lg") %>
             </div>
         <%end%>
@@ -24,15 +24,15 @@ $(function() {
         <div class="col-md-12">
             <ul id="index-tabs" class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active">
-                    <a href="#tag" aria-controls="tag" role="tab" data-toggle="tab">トレンドタグ</a>
+                    <a href="#tag" aria-controls="tag" role="tab" data-toggle="tab" data-step="3" data-intro="トレンドタグをクリックすることで、現在のニコニコ動画で人気のタグが表示されます。" >トレンドタグ</a>
                 </li>
                 <li role="presentation">
-                    <a href="#new" aria-controls="new" role="tab" data-toggle="tab">新着ふせん</a>
+                    <a href="#new" aria-controls="new" role="tab" data-toggle="tab" date-step="4" data-intro="最近当サービスにつけられたふせんの一覧を表示します。">新着ふせん</a>
                 </li>
             </ul>
 
             <div class="tab-content">
-                <div id="tag" role="tabpanel" class="tab-pane active" data-step="3" data-intro="トレンドタグをクリックすることで、動画を再生することもできます。">
+                <div id="tag" role="tabpanel" class="tab-pane active">
                     <table class="table table-hover table-striped table-bordered">
                         <thead>
                             <tr>
@@ -50,7 +50,7 @@ $(function() {
                         </tbody>
                     </table>
                 </div>
-                <div id="new" role="tabpanel" class="tab-pane" date-step="4" data-intro="最近つけられたふせんの一覧です。">
+                <div id="new" role="tabpanel" class="tab-pane">
                     <table class="table table-hover table-striped table-bordered">
                         <thead>
                             <tr>

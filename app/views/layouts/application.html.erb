@@ -26,7 +26,17 @@
          var _on = function(jquery_selector) { $(jquery_selector).addClass("active").removeClass("inactive"); }
          var _off = function(jquery_selector) { $(jquery_selector).addClass("inactive").removeClass("active"); }
          $(function() {
-             $("#howtouse").click(function() {introJs().start();});
+             $("#howtouse").click(function() {
+                var intro = introJs().setOptions({
+                    "nextLabel": "次へ",
+                    "prevLabel": "前へ",
+                    "skipLabel": "スキップ",
+                    "doneLabel": "終了",
+                    "scrollToElement": true,
+                    "showStepNumbers": false,
+                });
+                intro.start();
+            });
          });
         </script>
     </head>

@@ -91,7 +91,7 @@ $(function() {
             <H2><%=@video_title%></H2>
         </div>
         <div class="row centered">
-            <div class="col-lg-6 centered mt" data-step="1" data-intro="ここが動画再生エリアです">
+            <div class="col-lg-6 centered mt" data-step="1" data-intro="ここが動画再生エリアです。">
                 <script type="text/javascript" src=<%= "http://ext.nicovideo.jp/thumb_watch/"+@id %>></script><noscript><a href= <%="http://www.nicovideo.jp/watch/"+ @id %>>nicovideo</a></noscript>
 
                 <% if user_signed_in? %>
@@ -99,7 +99,7 @@ $(function() {
                     <%= form_tag({:controller => 'home', :action => 'create'}, :remote => true, :class => 'form-ajax', :id => 'create-fusen') do %>
                         <%= hidden_field_tag :smid, @id %>
                     <%= hidden_field_tag :start_vpos, 0, :id => 'vpos' %>
-                    <div class="input-group">
+                    <div class="input-group" data-step="2" data-intro="動画のおすすめな部分にコメントをつけて保存することができます。">
                         <%= text_field_tag :comment, "", :class => "form-control", placeholder: "ふせんにコメントをつけてみる" %>
                         <span class="input-group-btn">
                             <%= link_to '<i class="glyphicon glyphicon-bookmark"></i>ふせんをつける'.html_safe, '#', :class => 'btn btn--s btn-no-padding', :id => 'btnCreate' %>
@@ -113,15 +113,15 @@ $(function() {
             <div class="col-lg-6">
                 <ul id="movie-tabs" class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active">
-                        <a href="#graph-tab" aria-controls="graph-tab" role="tab" data-toggle="tab">コメントグラフ</a>
+                        <a href="#graph-tab" aria-controls="graph-tab" role="tab" data-toggle="tab" data-step="3" data-intro="盛り上がりグラフを表示します。動画を読み込んでから棒グラフをクリックすると、その位置を再生します。">コメントグラフ</a>
                     </li>
                     <li role="presentation">
-                        <a href="#fusen-tab" aria-controls="fusen-tab" role="tab" data-toggle="tab">ふせん</a>
+                        <a href="#fusen-tab" aria-controls="fusen-tab" role="tab" data-toggle="tab" data-step="4" data-intro="この動画につけられたふせんを表示します。ふせん一覧からおすすめのふせんをFacebookやTwitterで共有することができます。">ふせん</a>
                     </li>
                 </ul>
 
                 <div class="tab-content">
-                    <div id="graph-tab" class="tab-pane active" data-step="2" data-intro="ここに盛り上がりグラフが表示されます。動画を読み込んでからクリックすると、その位置から再生します。">
+                    <div id="graph-tab" class="tab-pane active">
                         <div id="chart"></div>
                         <script>
         var svgWidth = 520; // SVG領域の横幅
@@ -278,7 +278,7 @@ $(function() {
                         </script>
                     </div>
                     <div id="fusen-tab" role="tabpanel" class="tab-pane">
-                        <table id="bookmark" class="table table-hover table-striped table-bordered dataTable" role="grid" aria-describedby>
+                        <table id="bookmark" class="table table-hover table-striped table-bordered dataTable" role="grid">
                             <thead>
                                 <tr>
                                     <th>再生位置</th>
@@ -305,7 +305,8 @@ $(function() {
                                     "bStateSave": true,
                                     "retrieve": true,
                                     "language": {
-                                        "infoEmpty": "ふせんがありません。",
+                                        "emptyTable": "ふせんがありません。",
+                                        "infoEmpty": "",
                                         "info": " _PAGE_ / _PAGES_ ページ ",
                                     },
                                 });
