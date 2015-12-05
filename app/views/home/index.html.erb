@@ -1,3 +1,12 @@
+<script>
+$(function() {
+    $('#index-tabs a').click(function (e) {
+      e.preventDefault();
+      $(this).tab('show');
+    });
+});
+</script>
+
 <div class="container mt">
     <div class="row centered">
         <%= form_tag(controller: "home", action: "search", method: "post") do %>
@@ -10,55 +19,63 @@
         <%end%>
     </div>
     <hr>
+
     <div class="row centered grid">
-        <div class="col-md-6" data-step="3" data-intro="トレンドタグをクリックすることで、動画を再生することもできます。">
-            <h3>トレンドタグ</h3>
-            <div class="table-responsive">
-                <table class="table table-hover table-striped table-bordered">
-                    <thead>
+        <div class="col-md-12">
+            <ul id="index-tabs" class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active">
+                    <a href="#tag" aria-controls="tag" role="tab" data-toggle="tab">トレンドタグ</a>
+                </li>
+                <li role="presentation">
+                    <a href="#new" aria-controls="new" role="tab" data-toggle="tab">新着ふせん</a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="tag" role="tabpanel" class="tab-pane active" data-step="3" data-intro="トレンドタグをクリックすることで、動画を再生することもできます。">
+                    <table class="table table-hover table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Ranking</th>
+                                <th>Tag name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <% for num in 1..10 do %>
+                            <tr id="TagRanking">
+                                <td><%=num%></td>
+                                <td><a href=<%="/home/search/#{@trendtag[num]}"%> data-no-turbolink="1"><%= @trendtag[num]%></a></td>
+                            </tr>
+                        <%end%>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="new" role="tabpanel" class="tab-pane" date-step="4" data-intro="最近つけられたふせんの一覧です。">
+                    <table class="table table-hover table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>動画タイトル</th>
+                                <th>時間</th>
+                                <th>コメント</th>
+                                <th>ニックネーム</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <% for bookmark in @bookmarks %>
                         <tr>
-                            <th>Ranking</th>
-                            <th>Tag name</th>
+                            <td>
+                                <%= link_to bookmark.smid, { :controller => 'home', :action => 'movie', :id => bookmark.smid, :fusen => 'no' + bookmark.id.to_s }, :data => { :'no-turbolink' => '1' }, :class => 'bookmark'  %>
+                            </td>
+                            <td><%= time_ago_in_words(bookmark.created_at) %>前</td>
+                            <td><%= bookmark.comment %></td>
+                            <td>
+                                <%= link_to bookmark.user.nickname, {:controller => "user", :action => "show", :id => bookmark.user }, :data => { :'no-turbolink' => '1' } %>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                    <% for num in 1..10 do %>
-                        <tr id="TagRanking">
-                            <td><%=num%></td>
-                            <td><a href=<%="/home/search/#{@trendtag[num]}"%> data-no-turbolink="1"><%= @trendtag[num]%></a></td>
-                        </tr>
-                    <%end%>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="col-md-6" date-step="4" data-intro="最近つけられたふせんの一覧です。">
-            <h3>新しいふせん</h3>
-            <div class="table-responsive">
-                <table class="table table-hover table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th>動画タイトル</th>
-                            <th>時間</th>
-                            <th>コメント</th>
-                            <th>ニックネーム</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <% for bookmark in @bookmarks %>
-                    <tr>
-                        <td>
-                            <%= link_to bookmark.smid, { :controller => 'home', :action => 'movie', :id => bookmark.smid, :fusen => 'no' + bookmark.id.to_s }, :data => { :'no-turbolink' => '1' }, :class => 'bookmark'  %>
-                        </td>
-                        <td><%= time_ago_in_words(bookmark.created_at) %>前</td>
-                        <td><%= bookmark.comment %></td>
-                        <td>
-			   <%= link_to bookmark.user.nickname, {:controller => "user", :action => "show", :id => bookmark.user }, :data => { :'no-turbolink' => '1' } %>
-                        </td>
-                    </tr>
-                    <% end %>
-                    </tbody>
-                </table>
+                        <% end %>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
