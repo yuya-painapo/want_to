@@ -61,7 +61,7 @@ class HomeController < ApplicationController
 
   def index
     @q = session[:q]
-    @trendtag = get_nico_trend_tag
+    @trendtag = TagRanking.instance.tag
     @bookmarks = Bookmark.order('created_at DESC').limit(10)
     logger.info @trendtag
   end
@@ -162,27 +162,6 @@ class HomeController < ApplicationController
     nico_thumb_info = JSON.parse(json,{:symbolize_names => true})
 
     return nico_thumb_info[:nicovideo_thumb_response]
-  end
-  
-  def get_nico_trend_tag
-    url = 'http://www.nicovideo.jp/trendtag?ref=top_trendtagpage'
-    
-    charset = nil 
-    html = open(url) do |f| 
-      charset = f.charset
-      f.read
-    end
-    
-    doc = Nokogiri::HTML.parse(html, nil, charset)
-    tagRank = Hash.new
-
-    doc.css('div#tagRanking/div.box/h2').each do |node|
-        rank = node.css('span').inner_text.to_i
-        tag = node.css('a').inner_text
-        tagRank.store(rank, tag)
-    end
-    
-    return tagRank
   end
 
   def create
