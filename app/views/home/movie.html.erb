@@ -30,6 +30,19 @@
         font-size: 16px;
         line-height: 20px;
 }
+
+.axis path,
+.axis line{
+    fill: none;
+    stroke: black;
+}
+
+.tick line{
+    opacity: 0.2;
+}
+
+
+
 </style>
 <script>
 $(function() {
@@ -205,8 +218,11 @@ var svg = d3.select("#chart").append("svg")
     var xAxis = d3.svg.axis()
 .scale(d3.scale.linear().domain([0, <%= @vpos_video_length/100 %>*0.9]).range([0, chart_width*0.9]))
     .orient("bottom")
-    .tickSize(6, -chart_height)
-.ticks(5)
+//    .tickSize(6, -chart_height)
+    .ticks(5)
+    .innerTickSize(-chart_height)  // 目盛線の長さ（内側）
+    .outerTickSize(0) // 目盛線の長さ（外側）
+    .tickPadding(10) // 目盛線とテキストの間の長さ
     .tickFormat(function(d) { 
             var value = "";
             var second = d % 60;
@@ -220,7 +236,10 @@ var svg = d3.select("#chart").append("svg")
     .ticks(5)
 .scale(d3.scale.linear().domain([0, comment_max*ymax_position]).range([chart_height, 0]))
     .orient("left")
-    .tickSize(6, -chart_width);
+   // .tickSize(6, -chart_width);
+    .innerTickSize(-chart_width)
+    .outerTickSize(0)
+    .tickPadding(10);
 
     var xSVG = svg.append("g")
     .attr("class", "x axis")
@@ -237,7 +256,7 @@ var svg = d3.select("#chart").append("svg")
         Lminute += "分";
     } else Lminute = "分";
 xSVG.append("text")
-.attr("y", 16)
+.attr("y", 17)
 .attr("x", 450)
 .style("text-anchor", "end")
 .text(Lminute + Lsecond + "秒");
