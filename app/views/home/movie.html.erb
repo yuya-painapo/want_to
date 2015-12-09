@@ -40,9 +40,6 @@
 .tick line{
     opacity: 0.2;
 }
-
-
-
 </style>
 <script>
 $(function() {
@@ -70,9 +67,8 @@ $(function() {
 });
 
 $(document).ready(function(){
-    $("#div_num").validationEngine('attach', {promptPosition : "bottomLeft", scroll: false});
+        $("#div_num").validationEngine('attach', {promptPosition : "bottomLeft", scroll: false});
 });
-
 </script>
 
 
@@ -285,19 +281,14 @@ svg.append("g")
                 </div>
 
 <form id="div_num" name="div_form" action="">
-    <input type="text" name="num" size="10" maxlength="5" class="validate[required,custom[integer],min[1],max[100]]" 
+  分割数 : <input type="text" name="num" size="10" maxlength="5" class="validate[required,custom[integer],min[1],max[<%= @vpos_video_length/100 %>]]" 
               data-errormessage-value-missing="入力されていません" 
 	      data-errormessage="整数値を入力してください" 
 	      data-errormessage-range-underflow="最小値は1です" 
-	      data-errormessage-range-overflow="最大値は100です" >
+	      data-errormessage-range-overflow="最大値は<%= @vpos_video_length/100 %>です" >
     <button id="button" type="submit"> 送信</button>
 </form>
-<!--
-<form action="" method="get" name="division">
-  分割数 : <input type="number" name="num" min="10" max="80">
-  <input type="submit" value="送信"><br>
-</form>
--->
+
             </div>
         </div>
     </div>
