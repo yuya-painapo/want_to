@@ -137,7 +137,7 @@ var movie_start_time = [
 ]; // ブロック毎の動画開始位置
 
 var comment_max = Math.max.apply(null, block_com_num); // コメントの最大値
-var color = d3.scale.category10();  // あらかじめ用意されている色を使う
+var color3 = "#ff7f0e"
 var colors2 = d3.scale.linear()
     .domain([0,comment_max])
     .range(["skyblue", "darkblue"]);
@@ -270,9 +270,9 @@ svg.append("g")
     .style("text-anchor", "end")
     .text("コメント数");
 
-    svg.append("path")
+svg.append("path")
     .attr("d", line([<%= @threshold %>, <%= @threshold %>]))
-    .attr("stroke", "black")
+    .attr("stroke", "#ff7f0e")
     .attr("stroke-width", 3)
     .attr("stroke-dasharray", "5, 2")
     .attr("fill", "none");
