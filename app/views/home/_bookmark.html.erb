@@ -15,8 +15,14 @@
         <a href=<%= "http://www.facebook.com/share.php?u=" + url_encode(request.original_url.split('?')[0] + '?fusen=no' + bookmark.id.to_s) %>
           onclick="window.open(this.href,'FBwindow','width=650,height=450,menubar=no,toolbar=no,scrollbars=yes');return false;" 
           title="Facebookでシェア"
-          class="btn btn--s btn-no-padding">
-          <%= fa_icon "facebook", text: "Facebookでシェア" %>
+          class="btn btn-no-padding">
+          <%= fa_icon "facebook" %>
+        </a>
+        <a href=<%= "https://twitter.com/share?url=" + url_encode(request.original_url.split('?')[0] + '?fusen=no' + bookmark.id.to_s) + "&hashtags=niconicohighlight" %>
+          onclick="window.open(this.href,'TWwindow','width=650,height=450,menubar=no,toolbar=no,scrollbars=yes');return false;"
+          class="btn btn-no-padding"
+          title="Twitterでシェア">
+          <%= fa_icon "twitter" %>
         </a>
     </td>
 </tr>

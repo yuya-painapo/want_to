@@ -18,6 +18,8 @@
 //= require turbolinks
 //= require jquery.turbolinks
 //= require introjs
+//= require jquery.dataTables.min
+//= require dataTables.bootstrap.min
 //= require_tree .
 
 (function($) {
