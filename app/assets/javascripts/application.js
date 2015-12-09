@@ -19,3 +19,5 @@
 //= require jquery.turbolinks
 //= require introjs
 //= require_tree .
+//= require jquery.validationEngine-zh_CN
+//= require jquery.validationEngine

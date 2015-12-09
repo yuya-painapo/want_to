@@ -18,6 +18,7 @@
  *= require_self
  *= require devise_bootstrap_views
  *= require font-awesome
+ *= require validationEngine.jquery
  */
 
 .introjs-helperNumberLayer {

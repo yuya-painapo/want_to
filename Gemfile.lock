@@ -96,6 +96,7 @@ GEM
     introjs-rails (1.0.0)
       sass-rails (>= 3.2)
       thor (~> 0.14)
+    jQuery-Validation-Engine-rails (0.0.2)
     jbuilder (2.3.1)
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
@@ -286,6 +287,7 @@ DEPENDENCIES
   factory_girl_rails (~> 4.2.1)
   font-awesome-rails
   introjs-rails
+  jQuery-Validation-Engine-rails
   jbuilder (~> 2.0)
   jquery-rails
   jquery-turbolinks
