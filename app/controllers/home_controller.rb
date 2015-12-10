@@ -96,8 +96,15 @@ class HomeController < ApplicationController
     flv_data = get_comments(flv_info, 1000) # max 1000
     chat = flv_data.select{ |data| data['chat'] }
     @comments = chat.sort{ |a, b| a['chat']['vpos'] <=> b['chat']['vpos'] }
-    params[:num] ||= '10'
+    
     @vpos_video_length = time_to_vpos(movie_thumb_info[:thumb][:length])
+   
+    if ("#{@vpos_video_length}".to_i/100 < 30)
+      params[:num] ||= "#{@vpos_video_length}".to_i/100
+    else
+      params[:num] ||= '30'
+    end
+ 
     @m_division = params[:num].to_i
     @vpos_range = divide_equally(@vpos_video_length, @m_division)
     @start_time, @finish_time = from_vpos_to_time(@vpos_range,@m_division)

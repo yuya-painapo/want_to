@@ -40,6 +40,20 @@
 .tick line{
     opacity: 0.2;
 }
+
+
+.btn-yellow {
+  background: skyblue;
+  color: black;
+ 
+ 
+  
+  padding: 0px 0px;
+  font-size: 15px;
+  border-radius: 3px;
+}
+
+
 </style>
 <script>
 $(function() {
@@ -206,7 +220,7 @@ var svg = d3.select("#chart").append("svg")
 .transition() //アニメーション
     .delay(function(d, i){　
             //それぞれの棒を遅くれて表示
-            return i * 10;
+            return i * 20;
             })
 .duration(1000)
     .ease("bounce")
@@ -214,7 +228,6 @@ var svg = d3.select("#chart").append("svg")
     .attr("height", function(d){ // 四角形の高さ
             return d * yScale;
             })
-
 
     var xAxis = d3.svg.axis()
 .scale(d3.scale.linear().domain([0, <%= @vpos_video_length/100 %>*0.9]).range([0, chart_width*0.9]))
@@ -276,10 +289,9 @@ svg.append("path")
     .attr("stroke-width", 3)
     .attr("stroke-dasharray", "5, 2")
     .attr("fill", "none");
-
                     </script>
                 </div>
-
+<!-- フォーム 
 <form id="div_num" name="div_form" action="">
   分割数 : <input type="text" name="num" size="10" maxlength="5" class="validate[required,custom[integer],min[1],max[<%= @vpos_video_length/100 %>]]" 
               data-errormessage-value-missing="入力されていません" 
@@ -288,6 +300,25 @@ svg.append("path")
 	      data-errormessage-range-overflow="最大値は<%= @vpos_video_length/100 %>です" >
     <button id="button" type="submit"> 送信</button>
 </form>
+-->
+
+<!-- フォーム -->
+            <form id="div_num" action="" method="get" name="division" class="form-inline">
+              <div class="form-group">
+                <label class="control-label" for="number"> 分割数 :
+               <input style="width:75px;" type="text" value="<%= @m_division %>" name="num" maxlength="5" class="validate[required,custom[integer],min[1],max[<%= @vpos_video_length/100 %>]]"
+		      data-errormessage-value-missing="入力されていません"
+                      data-errormessage="整数値を入力してください"
+                      data-errormessage-range-underflow="最小値は1です"
+                      data-errormessage-range-overflow="最大値は<%= @vpos_video_length/100 %>です" >
+	      </div>
+           <!--   <button type="submit" class="btn btn-sm">送信</button> -->
+	   <button id="button" class="btn btn--m btn--blue" type="submit" style="position:relative; left:2px; top:4px; padding-top: 3px; padding-bottom: 3px; padding-left: 8px; padding-right: 8px"> 変更</button>                                                               
+            </label>
+            </form>
+
+
+
 
             </div>
         </div>
