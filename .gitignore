@@ -31,3 +31,6 @@ public/assets
 # Ignore Emacs temp files
 *~
 \#*\#
+
+# Ignore image file to create test
+*.png
