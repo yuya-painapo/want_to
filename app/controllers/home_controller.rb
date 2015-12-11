@@ -59,7 +59,7 @@ class HomeController < ApplicationController
         flv = Cacheflvinfo.new(smid: video_id, flvinfo: response.body)
         flv.save
 	  end
-	end
+    end
 
     return flv_info
   end
