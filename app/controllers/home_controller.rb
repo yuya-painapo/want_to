@@ -46,7 +46,7 @@ class HomeController < ApplicationController
     end
     
 	unless flv_info[:thread_id].nil?
-      flv = Cacheflvinfo.new(smid: video_id, flvinfo: flv_info)
+      flv = Cacheflvinfo.new(smid: video_id, flvinfo: response.body)
       flv.save
 	end
 
@@ -79,8 +79,13 @@ class HomeController < ApplicationController
     cookie = login_nicovideo(ENV["NICOADD"], ENV["NICOPASS"])
     if Cacheflvinfo.exists?(smid: @id)
         flv_infos = Cacheflvinfo.where(smid: @id).first
-        flv_info = flv_infos.flvinfo
+        #flv_info = flv_infos.flvinfo
         logger.info "### load cache flv_info "
+        flv_info = {}
+        flv_infos.flvinfo.split('&').each do |st|
+          stt = st.split('=')
+          flv_info[stt[0].to_sym] = stt[1]
+        end
     else
         flv_info = get_flv_info(cookie, @id)
     end 
