@@ -41,19 +41,6 @@
     opacity: 0.2;
 }
 
-
-.btn-yellow {
-  background: skyblue;
-  color: black;
- 
- 
-  
-  padding: 0px 0px;
-  font-size: 15px;
-  border-radius: 3px;
-}
-
-
 </style>
 <script>
 $(function() {
@@ -171,39 +158,36 @@ $(document).ready(function(){
                     <div id="graph-tab" class="tab-pane active">
                         <div id="chart"></div>
                         <script>
-        var svgWidth = 520; // SVG領域の横幅
-        var svgHeight = 360;    // SVG領域の縦幅
-        var margin = {top: 20, right: 40, bottom: 40, left: 50};
-        var chart_width = svgWidth - margin.left - margin.right;
-        var chart_height = svgHeight - margin.top - margin.bottom;
-        var ymax_position = 1.25  //
+var svgWidth = 520; // SVG領域の横幅
+var svgHeight = 360;    // SVG領域の縦幅
+var margin = {top: 20, right: 40, bottom: 40, left: 50};
+var chart_width = svgWidth - margin.left - margin.right;
+var chart_height = svgHeight - margin.top - margin.bottom;
+var ymax_position = 1.25  //
 
-        var time_watch = [
-        <% @time_watch.each do |time| %>
-            <%= time %>,
-        <% end %>
-        ]; // vposによるブロック毎の動画開始位置
+var time_watch = [
+<% @time_watch.each do |time| %>
+    <%= time %>,
+<% end %>
+]; // vposによるブロック毎の動画開始位置
+
+var block_com_num = [
+<% @block_com_num.each do |com_num| %>
+    <%= com_num %>,
+<% end %>
+]; // ブロック毎のコメント数
+
+var movie_start_time = [
+<% @start_time.each do |time| %>
+    "<%= time %>",
+<% end %>
+]; // ブロック毎の動画開始位置
 
 var comment_max = Math.max.apply(null, block_com_num); // コメントの最大値
 var color3 = "#ff7f0e"
 var colors2 = d3.scale.linear()
     .domain([0,comment_max])
     .range(["skyblue", "darkblue"]);
-
-        var block_com_num = [
-        <% @block_com_num.each do |com_num| %>
-            <%= com_num %>,
-        <% end %>
-        ]; // ブロック毎のコメント数
-
-        var movie_start_time = [
-        <% @start_time.each do |time| %>
-            "<%= time %>",
-        <% end %>
-        ]; // ブロック毎の動画開始位置
-
-        var comment_max = Math.max.apply(null, block_com_num); // コメントの最大値
-        var color = d3.scale.category10();  // あらかじめ用意されている色を使う
 
         var line = d3.svg.line()
             .x(function(d, i) { return i * svgWidth;})
@@ -334,13 +318,27 @@ svg.append("g")
 
             svg.append("path")
             .attr("d", line([<%= @threshold %>, <%= @threshold %>]))
-            .attr("stroke", "black")
+            .attr("stroke", "#ff7f0e")
             .attr("stroke-width", 3)
             .attr("stroke-dasharray", "5, 2")
             .attr("fill", "none");
                         </script>
-
+<!-- フォーム -->
+<form id="div_num" action="" method="get" name="division" class="form-inline">
+    <div class="form-group">
+        <label class="control-label" for="number"> 分割数 :
+            <input style="width:75px;" type="text" value="<%= @m_division %>" name="num" maxlength="5" class="validate[required,custom[integer],min[1],max[<%= @vpos_video_length/100 %>]]"
+                      data-errormessage-value-missing="入力されていません"
+                      data-errormessage="整数値を入力してください"
+                      data-errormessage-range-underflow="最小値は1です"
+                      data-errormessage-range-overflow="最大値は<%= @vpos_video_length/100 %>です" >
+    </div>
+           <!--   <button type="submit" class="btn btn-sm">送信</button> -->
+    <button id="button" class="btn btn--m btn--blue" type="submit" style="position:relative; left:2px; top:4px; padding-top: 3px; padding-bottom: 3px; padding-left: 8px; padding-right: 8px"> 変更</button>
+        </label>
+            </form>
                     </div>
+
                     <div id="fusen-tab" role="tabpanel" class="tab-pane">
                         <table id="bookmark" class="table table-hover table-striped table-bordered dataTable" role="grid">
                             <thead>
@@ -385,26 +383,6 @@ svg.append("g")
                         </script>
                     </div>
                 </div>
-
-
-<!-- フォーム -->
-            <form id="div_num" action="" method="get" name="division" class="form-inline">
-              <div class="form-group">
-                <label class="control-label" for="number"> 分割数 :
-               <input style="width:75px;" type="text" value="<%= @m_division %>" name="num" maxlength="5" class="validate[required,custom[integer],min[1],max[<%= @vpos_video_length/100 %>]]"
-		      data-errormessage-value-missing="入力されていません"
-                      data-errormessage="整数値を入力してください"
-                      data-errormessage-range-underflow="最小値は1です"
-                      data-errormessage-range-overflow="最大値は<%= @vpos_video_length/100 %>です" >
-	      </div>
-           <!--   <button type="submit" class="btn btn-sm">送信</button> -->
-	   <button id="button" class="btn btn--m btn--blue" type="submit" style="position:relative; left:2px; top:4px; padding-top: 3px; padding-bottom: 3px; padding-left: 8px; padding-right: 8px"> 変更</button>                                                               
-            </label>
-            </form>
-
-
-
-
             </div>
         </div>
     </div>
