@@ -60,7 +60,7 @@ FactoryGirl.define do
 
   factory :sm13, class: Cacheflvinfo do
 	  smid "sm13"
-	  flvinfo {{:error=>"access_locked", :done=>"true\n"}}
+	  flvinfo {{:thread_id=>"1173120219", :l=>"35", :url=>"http%3A%2F%2Fsmile-com23.nicovideo.jp%2Fsmile%3Fv%3D13.0989", :ms=>"http%3A%2F%2Fmsg.nicovideo.jp%2F43%2Fapi%2F", :ms_sub=>"http%3A%2F%2Fsub.msg.nicovideo.jp%2F43%2Fapi%2F", :user_id=>"20099307", :is_premium=>"0", :nickname=>"lessi", :time=>"1449821133095", :done=>"true", :ng_rv=>"5", :hms=>"hiroba.nicovideo.jp", :hmsp=>"2599", :hmst=>"750", :hmstk=>"1449821193.lzY_ayVbnBaiHPaCxZhypoRXvIQ", :userkey=>"1449822933.%7E1%7EKAeUDlm4QgbOTZLC2Rd4NvBFTQrorsMZ2qMWzYsklaI"}}
 	initialize_with { new(attributes) }
   end
 end
