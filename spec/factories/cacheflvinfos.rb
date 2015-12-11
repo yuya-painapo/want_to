@@ -5,8 +5,7 @@ FactoryGirl.define do
   factory :sm9, class: Cacheflvinfo do
     smid "sm9"
     flvinfo {
-		{:thread_id=>"1173108780", :l=>"319", :url=>"http%3A%2F%2Fsmile-com42.nicovideo.jp%2Fsmile%3Fm%3D9.0468low", :ms=>"http%3A%2F%2Fmsg.nicovideo.jp%2F10%2Fapi%2F", :ms_sub=>"http%3A%2F%2Fsub.msg.nicovideo.jp%2F10%2Fapi%2F", :user_id=>"20099307", :is_premium=>"0", :nickname=>"lessi", :time=>"1449760880816", :done=>"true", :ng_rv=>"5", :hms=>"hiroba.nicovideo.jp", :hmsp=>"2606", :hmst=>"820", :hmstk=>"1449760940.8Eg4kyj0yYqysugf3wY-WdTgCII", :userkey=>"1449762680.%7E1%7EhNfzdteL-QGEXZR4jkKpccpu6C61sudYI4Xm2-Dk_bk"}
-	}
+		{:thread_id=>"1173108780", :l=>"319", :url=>"http%3A%2F%2Fsmile-com42.nicovideo.jp%2Fsmile%3Fm%3D9.0468low", :ms=>"http%3A%2F%2Fmsg.nicovideo.jp%2F10%2Fapi%2F", :ms_sub=>"http%3A%2F%2Fsub.msg.nicovideo.jp%2F10%2Fapi%2F", :user_id=>"20099307", :is_premium=>"0", :nickname=>"lessi", :time=>"1449760880816", :done=>"true", :ng_rv=>"5", :hms=>"hiroba.nicovideo.jp", :hmsp=>"2606", :hmst=>"820", :hmstk=>"1449760940.8Eg4kyj0yYqysugf3wY-WdTgCII", :userkey=>"1449762680.%7E1%7EhNfzdteL-QGEXZR4jkKpccpu6C61sudYI4Xm2-Dk_bk"}}
 	initialize_with { new(attributes) }
   end
 
