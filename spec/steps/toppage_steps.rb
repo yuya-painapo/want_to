@@ -37,4 +37,14 @@ steps_for :toppage do
     click_button 'ログイン'
   end
 
+  step 'パスワードの再設定を行う' do
+    visit '/users/password/new'
+
+    fill_in 'user[email]', with: 'user@example.com'
+  end
+  
+  step 'メールが送信されていること' do
+    url = mail_preview_path(path: 'test_mailer/last')
+    visit url
+  end
 end

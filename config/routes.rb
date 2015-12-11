@@ -18,11 +18,16 @@ Rails.application.routes.draw do
   get '/admin' => 'admin/base#index'
   get 'welcome' => 'welcome#index'
   get 'user/:id' => 'user#show', constraints: { id: /[0-9]+/ }
- # get 'sign_in', :to => 'devise/sessions#edit', :as => :edit_user_registration
+  # get 'sign_in', :to => 'devise/sessions#edit', :as => :edit_user_registration
 
   # You can have the root of your site routed with "root"
   root 'welcome#index'
   #root 'home#index'
+  if Rails.env.test?
+    get '/rails/mailers'      , to: "rails/mailers#index"
+    get '/rails/mailers/*path', to: "rails/mailers#preview", as: 'mail_preview'
+  end
+
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

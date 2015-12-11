@@ -19,8 +19,18 @@
  *= require devise_bootstrap_views
  *= require font-awesome
  *= require validationEngine.jquery
+ *= require dataTables.bootstrap.min
  */
 
 .introjs-helperNumberLayer {
     box-sizing: content-box;
+}
+
+.btn-no-padding {
+    padding: 6px 12px !important;
+    margin-bottom: 0px !important;
+}
+
+.tab-pane {
+    margin-top: 20px;
 }

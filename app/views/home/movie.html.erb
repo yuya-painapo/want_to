@@ -57,27 +57,62 @@
 </style>
 <script>
 $(function() {
-        $(document).on('click', '#btnCreate', function() {
-            try {
+    $('#movie-tabs a').click(function (e) {
+      e.preventDefault();
+      $(this).tab('show');
+    });
+
+    $(document).on('click', '#btnCreate', function(e) {
+        e.preventDefault();
+        try {
             $('#vpos').val(function() {
                 var player = document.getElementById('external_nico_0');
                 return player.ext_getPlayheadTime() * 100;
                 });
-            } catch (e) {
+            $('#create-fusen').submit();
+        } catch (e) {
             alert("再生ボタンを押してください。");
-            return false;
-            }
-            });
-        $(document).on('click', 'a.bookmark' ,function() {
-            var player = document.getElementById('external_nico_0');
+        }
+    });
+
+    $(document).on('click', '#btnGraph', function(e) {
+        e.preventDefault();
+        $('#graph-reload').submit();
+    });
+
+    $(document).on('keydown', '#create-fusen', function(e) {
+        if((e.which && e.which === 13) || (e.keyCode && e.keyCode === 13)) {
+            e.preventDefault();
             try {
-            player.ext_setPlayheadTime($(this).data('vpos') / 100);
-            return false;
+                $('#vpos').val(function() {
+                    var player = document.getElementById('external_nico_0');
+                    return player.ext_getPlayheadTime() * 100;
+                    });
+                $('#create-fusen').submit();
             } catch (e) {
-            alert("再生ボタンを押してください。");
-            return false;
+                alert("再生ボタンを押してください。");
             }
-            });
+        } else {
+            return true;
+        }
+    });
+
+    $(document).on('click', 'a.bookmark' ,function(e) {
+        e.preventDefault();
+        var player = document.getElementById('external_nico_0');
+        try {
+        player.ext_setPlayheadTime($(this).data('vpos') / 100);
+        } catch (e) {
+        alert("再生ボタンを押してください。");
+        }
+    });
+
+    var args = $.getParameter();
+    if (args['fusen'] !== undefined) {
+        var target = '#' + args['fusen'];
+        $(target).addClass('success');
+        $(target).prependTo('#bookmark tbody');
+    }
 });
 
 $(document).ready(function(){
@@ -98,57 +133,56 @@ $(document).ready(function(){
     <%end%>
     </div>
     <hr>
-    <div class="row center">
+    <div class="row centered">
         <div class="row centered">
             <H2><%=@video_title%></H2>
         </div>
         <div class="row centered">
-            <div class="col-lg-6 centered" data-step="1" data-intro="ここが動画再生エリアです">
+            <div class="col-lg-6 centered mt" data-step="1" data-intro="ここが動画再生エリアです。">
                 <script type="text/javascript" src=<%= "http://ext.nicovideo.jp/thumb_watch/"+@id %>></script><noscript><a href= <%="http://www.nicovideo.jp/watch/"+ @id %>>nicovideo</a></noscript>
 
                 <% if user_signed_in? %>
                     <div class="row centered mt">
-                    <%= form_tag({:controller => 'home', :action => 'create'}, :remote => true, :class => 'form-ajax') do %>
+                    <%= form_tag({:controller => 'home', :action => 'create'}, :remote => true, :class => 'form-ajax', :id => 'create-fusen') do %>
                         <%= hidden_field_tag :smid, @id %>
                     <%= hidden_field_tag :start_vpos, 0, :id => 'vpos' %>
-                    <div class="input-group">
+                    <div class="input-group" data-step="2" data-intro="動画のおすすめな部分にコメントをつけて保存することができます。">
                         <%= text_field_tag :comment, "", :class => "form-control", placeholder: "ふせんにコメントをつけてみる" %>
                         <span class="input-group-btn">
-                            <%= button_tag '<i class="glyphicon glyphicon-bookmark"></i>ふせんをつける'.html_safe, :type=> "submit",
-                                :class => 'btn btn-primary btn-sm', :id => 'btnCreate' %>
+                            <%= link_to '<i class="glyphicon glyphicon-bookmark"></i>ふせんをつける'.html_safe, '#', :class => 'btn btn--s btn-no-padding', :id => 'btnCreate' %>
                         </span>
                         </div>
                     <% end %>
                     </div>
                 <% end %>
-                </div>
-                <div class="col-lg-6 centered" data-step="2" data-intro="ここに盛り上がりグラフが表示されます。動画を読み込んでからクリックすると、その位置から再生します。">
-                    <div id="chart"></div>
-                    <script type="text/javascript">
-var svgWidth = 520; // SVG領域の横幅
-var svgHeight = 360;    // SVG領域の縦幅
-var margin = {top: 20, right: 40, bottom: 40, left: 50};
-var chart_width = svgWidth - margin.left - margin.right;
-var chart_height = svgHeight - margin.top - margin.bottom;
-var ymax_position = 1.25  //
+            </div>
 
-var time_watch = [
-<% @time_watch.each do |time| %>
-    <%= time %>,
-<% end %>
-]; // vposによるブロック毎の動画開始位置
+            <div class="col-lg-6">
+                <ul id="movie-tabs" class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#graph-tab" aria-controls="graph-tab" role="tab" data-toggle="tab" data-step="3" data-intro="盛り上がりグラフを表示します。動画を読み込んでから棒グラフをクリックすると、その位置を再生します。">コメントグラフ</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#fusen-tab" aria-controls="fusen-tab" role="tab" data-toggle="tab" data-step="4" data-intro="この動画につけられたふせんを表示します。ふせん一覧からおすすめのふせんをFacebookやTwitterで共有することができます。">ふせん</a>
+                    </li>
+                </ul>
 
-var block_com_num = [
-<% @block_com_num.each do |com_num| %>
-    <%= com_num %>,
-<% end %>
-]; // ブロック毎のコメント数
+                <div class="tab-content">
+                    <div id="graph-tab" class="tab-pane active">
+                        <div id="chart"></div>
+                        <script>
+        var svgWidth = 520; // SVG領域の横幅
+        var svgHeight = 360;    // SVG領域の縦幅
+        var margin = {top: 20, right: 40, bottom: 40, left: 50};
+        var chart_width = svgWidth - margin.left - margin.right;
+        var chart_height = svgHeight - margin.top - margin.bottom;
+        var ymax_position = 1.25  //
 
-var movie_start_time = [
-<% @start_time.each do |time| %>
-    "<%= time %>",
-<% end %>
-]; // ブロック毎の動画開始位置
+        var time_watch = [
+        <% @time_watch.each do |time| %>
+            <%= time %>,
+        <% end %>
+        ]; // vposによるブロック毎の動画開始位置
 
 var comment_max = Math.max.apply(null, block_com_num); // コメントの最大値
 var color3 = "#ff7f0e"
@@ -156,25 +190,40 @@ var colors2 = d3.scale.linear()
     .domain([0,comment_max])
     .range(["skyblue", "darkblue"]);
 
-var line = d3.svg.line()
-    .x(function(d, i) { return i * svgWidth;})
-    .y(function(d) { return chart_height - d * yScale; });
+        var block_com_num = [
+        <% @block_com_num.each do |com_num| %>
+            <%= com_num %>,
+        <% end %>
+        ]; // ブロック毎のコメント数
 
-    var yScale = (function (height, num_max, rate) {
-            if (num_max !== 0) {
-            magnification = height/num_max/rate;
-            return magnification;
-            } else {
-            return 0;
-            }
-            }(chart_height, comment_max, ymax_position)); // グラフの高さの倍率
-var tooltip = d3.select("#tooltip")
+        var movie_start_time = [
+        <% @start_time.each do |time| %>
+            "<%= time %>",
+        <% end %>
+        ]; // ブロック毎の動画開始位置
 
-var svg = d3.select("#chart").append("svg")
-.attr("width", svgWidth)
-.attr("height", svgHeight)
-.append("g")
-.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        var comment_max = Math.max.apply(null, block_com_num); // コメントの最大値
+        var color = d3.scale.category10();  // あらかじめ用意されている色を使う
+
+        var line = d3.svg.line()
+            .x(function(d, i) { return i * svgWidth;})
+            .y(function(d) { return chart_height - d * yScale; });
+
+        var yScale = (function (height, num_max, rate) {
+                    if (num_max !== 0) {
+                    magnification = height/num_max/rate;
+                    return magnification;
+                    } else {
+                    return 0;
+                    }
+                    }(chart_height, comment_max, ymax_position)); // グラフの高さの倍率
+        var tooltip = d3.select("#tooltip")
+
+        var svg = d3.select("#chart").append("svg")
+        .attr("width", svgWidth)
+        .attr("height", svgHeight)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     svg.selectAll("rect")   // 四角形を対象にする
     .data(block_com_num)  // データを読み込む
@@ -276,31 +325,67 @@ xSVG.append("text")
 .text(Lminute + Lsecond + "秒");
 
 svg.append("g")
-    .attr("class", "y axis")
-.call(yAxis)
-    .append("text")
-    .attr("y", -10)
-    .style("text-anchor", "end")
-    .text("コメント数");
+            .attr("class", "y axis")
+        .call(yAxis)
+            .append("text")
+            .attr("y", -10)
+            .style("text-anchor", "end")
+            .text("コメント数");
 
-svg.append("path")
-    .attr("d", line([<%= @threshold %>, <%= @threshold %>]))
-    .attr("stroke", "#ff7f0e")
-    .attr("stroke-width", 3)
-    .attr("stroke-dasharray", "5, 2")
-    .attr("fill", "none");
-                    </script>
+            svg.append("path")
+            .attr("d", line([<%= @threshold %>, <%= @threshold %>]))
+            .attr("stroke", "black")
+            .attr("stroke-width", 3)
+            .attr("stroke-dasharray", "5, 2")
+            .attr("fill", "none");
+                        </script>
+
+                    </div>
+                    <div id="fusen-tab" role="tabpanel" class="tab-pane">
+                        <table id="bookmark" class="table table-hover table-striped table-bordered dataTable" role="grid">
+                            <thead>
+                                <tr>
+                                    <th>再生位置</th>
+                                    <th>コメント</th>
+                                    <th>ユーザー</th>
+                                    <th>共有</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%= render partial: 'home/bookmark', locals: { bookmarks: @bookmarks } %>
+                            </tbody>
+                        </table>
+                        <script>
+                            $(function() {
+                                $("#bookmark").DataTable({
+                                    "pageLength": 8,
+                                    "paging": true,
+                                    "lengthChange": false,
+                                    "searching": false,
+                                    "order": [],
+                                    "ordering": true,
+                                    "info": true,
+                                    "autoWidth": false,
+                                    "bStateSave": true,
+                                    "retrieve": true,
+                                    "language": {
+                                        "emptyTable": "ふせんがありません。",
+                                        "infoEmpty": "",
+                                        "info": " _PAGE_ / _PAGES_ ページ ",
+                                        "paginate": {
+                                            "previous": "前",
+                                            "next": "次",
+                                        },
+                                    },
+                                    "columns": [
+                                        null, null, null, {"orderable": false}
+                                    ]
+                                });
+                            });
+                        </script>
+                    </div>
                 </div>
-<!-- フォーム 
-<form id="div_num" name="div_form" action="">
-  分割数 : <input type="text" name="num" size="10" maxlength="5" class="validate[required,custom[integer],min[1],max[<%= @vpos_video_length/100 %>]]" 
-              data-errormessage-value-missing="入力されていません" 
-	      data-errormessage="整数値を入力してください" 
-	      data-errormessage-range-underflow="最小値は1です" 
-	      data-errormessage-range-overflow="最大値は<%= @vpos_video_length/100 %>です" >
-    <button id="button" type="submit"> 送信</button>
-</form>
--->
+
 
 <!-- フォーム -->
             <form id="div_num" action="" method="get" name="division" class="form-inline">
@@ -326,43 +411,31 @@ svg.append("path")
 
     <% if Rails.env.development? %>
         <b>分割数 : </b>
-    <%= @m_division %>
-    <br>
+        <%= @m_division %>
+        <br>
 
 
-    <b>閾値 : </b>
-    <%= @threshold %>
-    <br>
+        <b>閾値 : </b>
+        <%= @threshold %>
+        <br>
 
-    <b>ブロックごとのコメント数 :</b>
-    <% @block_com_num.each do |com_num| %>
-        <%= com_num %>
-<% end %>
+        <b>ブロックごとのコメント数 :</b>
+        <% @block_com_num.each do |com_num| %>
+            <%= com_num %>
+        <% end %>
 
-    <br>
-    <b>ブロックごとの動画開始位置 :</b>
-    <% @start_time.each do |time| %>
-        <%= time %>
-<% end %>
+        <br>
+        <b>ブロックごとの動画開始位置 :</b>
+        <% @start_time.each do |time| %>
+            <%= time %>
+        <% end %>
 
-    <br>
-    <b>ハイライト該当箇所 :</b>
-    <% @highlights_place.each do |start, finish| %>
-        <%= start.to_s + '~' + finish.to_s %> 
-<% end %>
+        <br>
+        <b>ハイライト該当箇所 :</b>
+        <% @highlights_place.each do |start, finish| %>
+            <%= start.to_s + '~' + finish.to_s %>
+        <% end %>
 
-    <br>
-<% end %>
-    <b>
-        ふせん
-        <a href=<%= "http://www.facebook.com/share.php?u=" + url_encode(request.original_url) %>
-          onclick="window.open(this.href,'FBwindow','width=650,height=450,menubar=no,toolbar=no,scrollbars=yes');return false;" 
-          title="Facebookでシェア"
-          class="btn">
-          <%= fa_icon "facebook", text: "Facebookでシェア" %>
-          </a>
-    </b>
-    <div id="bookmark">
-        <%= render partial: 'home/bookmark', locals: { bookmarks: @bookmarks } %>
-    </div>
+        <br>
+    <% end %>
 </div>
