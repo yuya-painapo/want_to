@@ -45,6 +45,11 @@ class HomeController < ApplicationController
       flv_info[stt[0].to_sym] = stt[1]
     end
     
+	unless flv_info[:thread_id].nil?
+      flv = Cacheflvinfo.new(smid: video_id, flvinfo: flv_info)
+      flv.save
+	end
+
     return flv_info
   end
   
@@ -72,7 +77,13 @@ class HomeController < ApplicationController
     movie_thumb_info = get_nicovideo_thumb_response(@id)
 
     cookie = login_nicovideo(ENV["NICOADD"], ENV["NICOPASS"])
-    flv_info = get_flv_info(cookie, @id)
+    if Cacheflvinfo.exists?(smid: @id)
+        flv_infos = Cacheflvinfo.where(smid: @id).first
+        flv_info = flv_infos.flvinfo
+        logger.info "### load cache flv_info "
+    else
+        flv_info = get_flv_info(cookie, @id)
+    end 
     
     if flv_info[:error]
       msg = "指定された動画取得時にエラーが発生しました。動画ID = #{@id}"
