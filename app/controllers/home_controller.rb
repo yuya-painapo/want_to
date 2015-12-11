@@ -80,7 +80,7 @@ class HomeController < ApplicationController
     if Cacheflvinfo.exists?(smid: @id)
         flv_infos = Cacheflvinfo.where(smid: @id).first
         flv_info = flv_infos.flvinfo
-        logger.info "--- loading cache ----------------------"
+        logger.info "### load cache flv_info "
     else
         flv_info = get_flv_info(cookie, @id)
     end 
