@@ -30,21 +30,37 @@ class HomeController < ApplicationController
   end
   
   def get_flv_info(cookie, video_id)
-    host = 'flapi.nicovideo.jp'
-    path = "/api/getflv/#{video_id}"
-    
-    response = Net::HTTP.new(host).start { |http|
-      request = Net::HTTP::Get.new(path)
-      request['cookie'] = cookie
-      http.request(request)
-    }
-    
-    flv_info = {}
-    response.body.split('&').each do |st|
-      stt = st.split('=')
-      flv_info[stt[0].to_sym] = stt[1]
+    if Cacheflvinfo.exists?(smid: video_id)
+        flv_infos = Cacheflvinfo.where(smid: video_id).first
+        #flv_info = flv_infos.flvinfo
+        logger.info "### load cache flv_info "
+        flv_info = {}
+        flv_infos.flvinfo.split('&').each do |st|
+          stt = st.split('=')
+          flv_info[stt[0].to_sym] = stt[1]
+        end
+    else
+      host = 'flapi.nicovideo.jp'
+      path = "/api/getflv/#{video_id}"
+      
+      response = Net::HTTP.new(host).start { |http|
+        request = Net::HTTP::Get.new(path)
+        request['cookie'] = cookie
+        http.request(request)
+      }
+      
+      flv_info = {}
+      response.body.split('&').each do |st|
+        stt = st.split('=')
+        flv_info[stt[0].to_sym] = stt[1]
+      end
+      
+	  unless flv_info[:thread_id].nil?
+        flv = Cacheflvinfo.new(smid: video_id, flvinfo: response.body)
+        flv.save
+	  end
     end
-    
+
     return flv_info
   end
   
@@ -74,20 +90,24 @@ class HomeController < ApplicationController
     cookie = login_nicovideo(ENV["NICOADD"], ENV["NICOPASS"])
     flv_info = get_flv_info(cookie, @id)
     
+    if flv_info.key? :closed
+      logger.info flv_info
+      flash[:notice] = '動画情報取得時にエラーが発生しました。しばらく待ってもう一度更新してください。'
+      return redirect_to :back
+    end
+
     if flv_info[:error]
       msg = "指定された動画取得時にエラーが発生しました。動画ID = #{@id}"
       logger.info "#{msg}, flv_info = #{flv_info.inspect}"
       flash[:notice] = msg
-      redirect_to :back
-      return
+      return redirect_to :back
     end
 
-    if flv_info.has_key? :deleted
+    if flv_info.key? :deleted
       msg = "指定された動画は削除されています。動画ID = #{@id}"
-      logger.info msg + ", flv_info = " + flv_info.inspect
+      logger.info "#{msg}, flv_info = #{flv_info.inspect}"
       flash[:notice] = msg
-      redirect_to :back
-      return
+      return redirect_to :back
     end
         
 

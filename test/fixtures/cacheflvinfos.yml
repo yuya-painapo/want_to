@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  smid: MyString
+  flvinfo: MyText
+
+two:
+  smid: MyString
+  flvinfo: MyText
