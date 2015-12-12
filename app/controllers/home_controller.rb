@@ -30,21 +30,37 @@ class HomeController < ApplicationController
   end
   
   def get_flv_info(cookie, video_id)
-    host = 'flapi.nicovideo.jp'
-    path = "/api/getflv/#{video_id}"
-    
-    response = Net::HTTP.new(host).start { |http|
-      request = Net::HTTP::Get.new(path)
-      request['cookie'] = cookie
-      http.request(request)
-    }
-    
-    flv_info = {}
-    response.body.split('&').each do |st|
-      stt = st.split('=')
-      flv_info[stt[0].to_sym] = stt[1]
+    if Cacheflvinfo.exists?(smid: video_id)
+        flv_infos = Cacheflvinfo.where(smid: video_id).first
+        #flv_info = flv_infos.flvinfo
+        logger.info "### load cache flv_info "
+        flv_info = {}
+        flv_infos.flvinfo.split('&').each do |st|
+          stt = st.split('=')
+          flv_info[stt[0].to_sym] = stt[1]
+        end
+    else
+      host = 'flapi.nicovideo.jp'
+      path = "/api/getflv/#{video_id}"
+      
+      response = Net::HTTP.new(host).start { |http|
+        request = Net::HTTP::Get.new(path)
+        request['cookie'] = cookie
+        http.request(request)
+      }
+      
+      flv_info = {}
+      response.body.split('&').each do |st|
+        stt = st.split('=')
+        flv_info[stt[0].to_sym] = stt[1]
+      end
+      
+	  unless flv_info[:thread_id].nil?
+        flv = Cacheflvinfo.new(smid: video_id, flvinfo: response.body)
+        flv.save
+	  end
     end
-    
+
     return flv_info
   end
   
