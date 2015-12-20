@@ -1,7 +1,7 @@
 <% bookmarks.each do |bookmark| %>
 <tr id="no<%= bookmark.id.to_s %>">
     <td>
-        <%= link_to bookmark.smid, { :controller => 'home', :action => 'movie', :id => bookmark.smid }, :data => { :'no-turbolink' => '1' }, :class => 'bookmark'  %>
+        <%= link_to bookmark.smid, { :controller => 'home', :action => 'movie', :id => bookmark.smid, :fusen => 'no' + bookmark.id.to_s }, :data => { :'no-turbolink' => '1' }, :class => 'bookmark'  %>
     </td>
     <%= form_tag({:controller => 'my_page', :action => 'update'}) do %>
         <%= hidden_field_tag :id, bookmark.id %>
@@ -14,10 +14,11 @@
             <%= content_tag "span", bookmark.comment, :class => "comment" %>
         </td>
         <% if request.path_info.start_with?('/my_page') %>
-            <td>
+            <td style="width: 250px;">
                 <%= submit_tag "更新", :style => "display: none;", :class => "btn btnGroup btn-no-padding" %>
                 <%= button_tag "キャンセル", :style => "display: none;", :type => "button", :class => "btn btnCancel btnGroup btn-no-padding", :data => { :no => bookmark.id } %>
                 <%= button_tag "編集", :type => "button", :class => "btn btnEdit btn-no-padding", :data => { :no => bookmark.id } %>
+                <%= submit_tag "削除", :class => "btn btnDelete btn-no-padding" %>
             </td>
         <% end %>
     <% end %>
