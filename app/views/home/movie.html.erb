@@ -70,6 +70,8 @@ $(function() {
         $(target).addClass('success');
         $(target).prependTo('#bookmark tbody');
     }
+
+    createDataTable("#bookmark", 8, [null, null, null, {"orderable": false}]);
 });
 </script>
 <span id="tooltip"></span>
@@ -291,34 +293,6 @@ $(function() {
                                 <%= render partial: 'home/bookmark', locals: { bookmarks: @bookmarks } %>
                             </tbody>
                         </table>
-                        <script>
-                            $(function() {
-                                $("#bookmark").DataTable({
-                                    "pageLength": 8,
-                                    "paging": true,
-                                    "lengthChange": false,
-                                    "searching": false,
-                                    "order": [],
-                                    "ordering": true,
-                                    "info": true,
-                                    "autoWidth": false,
-                                    "bStateSave": true,
-                                    "retrieve": true,
-                                    "language": {
-                                        "emptyTable": "ふせんがありません。",
-                                        "infoEmpty": "",
-                                        "info": " _PAGE_ / _PAGES_ ページ ",
-                                        "paginate": {
-                                            "previous": "前",
-                                            "next": "次",
-                                        },
-                                    },
-                                    "columns": [
-                                        null, null, null, {"orderable": false}
-                                    ]
-                                });
-                            });
-                        </script>
                     </div>
                 </div>
             </div>
