@@ -18,10 +18,12 @@ class MyPageController < ApplicationController
 
   def delete
     bookmark = Bookmark.where(user_id: current_user.id, id: params[:id]).first
-    if bookmark.destroy
+    begin
+      bookmark.destroy
       flash[:notice] = 'ふせんを削除しました。'
-    else
+    rescue
       flash[:notice] = 'ふせんの削除に失敗しました。'
     end
+    redirect_to action: 'index'
   end
 end

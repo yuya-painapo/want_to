@@ -44,5 +44,15 @@
             $("#no" + no + " .btnGroup").toggle();
             $("#no" + no + " .btnEdit").toggle();
         });
+
+        $(document).on("click", ".btnDelete", function(e) {
+            if(window.confirm("ふせんを削除します。よろしいですか。")) {
+                var no = $(this).attr("data-no");
+                $("#no" + no + " form").attr("action", "/my_page/delete");
+                $("#no" + no + " form").submit();
+            } else {
+                return false;
+            }
+        });
     });
 </script>

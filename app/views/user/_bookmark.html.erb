@@ -18,7 +18,7 @@
                 <%= submit_tag "更新", :style => "display: none;", :class => "btn btnGroup btn-no-padding" %>
                 <%= button_tag "キャンセル", :style => "display: none;", :type => "button", :class => "btn btnCancel btnGroup btn-no-padding", :data => { :no => bookmark.id } %>
                 <%= button_tag "編集", :type => "button", :class => "btn btnEdit btn-no-padding", :data => { :no => bookmark.id } %>
-                <%= submit_tag "削除", :class => "btn btnDelete btn-no-padding" %>
+                <%= button_tag "削除", :type => "button", :class => "btn btnDelete btn-no-padding", :data => { :no => bookmark.id } %>
             </td>
         <% end %>
     <% end %>
