@@ -9,10 +9,10 @@ class MyPageController < ApplicationController
   def update
     bookmark = Bookmark.where(user_id: current_user.id, id: params[:id]).first
     bookmark.start_vpos = params[:start_vpos]
-
     bookmark.comment = params[:comment]
     bookmark.save
 
+    flash[:notice] = 'ふせんの更新に成功しました。'
     redirect_to action: 'index'
   end
 
