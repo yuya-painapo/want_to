@@ -38,7 +38,9 @@ $(function() {
 					<% for num in 1..10 do %>
                     <li>
 					<time class="cbp_tmtime"><span>Rank</span> <span><%=num%></span></time>
+					    <% if num == 1 %>
                         <div class="cbp_tmicon"><%= image_tag("tree-leaf2g.png", :size => "30x30", :alt => "visualize", :class => ".img-thumbnail") %></div>
+						<%end%>
                         <div class="cbp_tmlabel">
 							<h4><a href=<%="/home/search/#{@trendtag[num][0]}"%> data-no-turbolink="1"><%=@trendtag[num][0]%></a></h4>
 							<p><%=@trendtag[num][1].html_safe%></p>
