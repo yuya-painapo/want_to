@@ -35,12 +35,14 @@ class TagRanking
 
   def parse_trend_html(html, charset)
     doc = Nokogiri::HTML.parse(html, nil, charset)
-    tag_rank = {}
+    tag_rank = Hash.new
 
-    doc.css('div#tagRanking/div.box/h2').each do |node|
-      rank = node.css('span').inner_text.to_i
-      tag = node.css('a').inner_text
-      tag_rank.store(rank, tag)
+    doc.css('div#tagRanking/div.box').each do |node|
+	  caption = Array.new
+      rank = node.css('h2/span').inner_text.to_i
+	  caption.push(node.css('h2/a').inner_text)
+	  caption.push(node.css('div.commentBox/p.txt').inner_html)
+      tag_rank.store(rank, caption)
     end
 
     tag_rank
