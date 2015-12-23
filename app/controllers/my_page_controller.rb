@@ -21,8 +21,9 @@ class MyPageController < ApplicationController
     begin
       bookmark.destroy
       flash[:notice] = 'ふせんを削除しました。'
-    rescue
+    rescue => e
       flash[:notice] = 'ふせんの削除に失敗しました。'
+      logger.warn e
     end
     redirect_to action: 'index'
   end
