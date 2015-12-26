@@ -29,3 +29,18 @@
     ならば sm13 の再生画面が表示されていること
     かつ 要素 '#bookmark .success' が存在すること
 
+  シナリオ: userがbookmark_userをフォローする
+    もし user のテストデータを作成する
+    かつ bookmark_user のテストデータを作成する
+    かつ 'test_user' と 'userpassword' でログインする
+    かつ ユーザー 2 のユーザーページを表示する
+    かつ リンク 'follow' をクリックする
+    ならば 要素 '.btn-info' が 存在すること
+
+  シナリオ: userがbookmark_userのフォローをリムーブできる
+    もし user のテストデータを作成する
+    かつ bookmark_user のテストデータを作成する
+    かつ follow1_2 のテストデータを作成する
+    かつ　要素 '.btn-info' が存在すること
+    かつ リンク 'follow' をクリックする
+    ならば 要素 '.btn-info' が存在しないこと
