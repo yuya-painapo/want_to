@@ -19,6 +19,7 @@
  *= require devise_bootstrap_views
  *= require font-awesome
  *= require dataTables.bootstrap.min
+ *= require timeline
  */
 
 .introjs-helperNumberLayer {
