@@ -4,6 +4,8 @@ Rails.application.routes.draw do
 
   get 'user/show'
   get 'my_page/index'
+  post 'my_page/update'
+  post 'my_page/delete'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
