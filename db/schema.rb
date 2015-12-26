@@ -26,16 +26,6 @@ ActiveRecord::Schema.define(version: 20151226050713) do
     t.string   "title"
   end
 
-  create_table "ca_flv_infos", force: :cascade do |t|
-    t.string   "smid",       null: false
-    t.string   "ms",         null: false
-    t.string   "thread_id",  null: false
-    t.integer  "deleted"
-    t.boolean  "error"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "cacheflvinfos", force: :cascade do |t|
     t.string   "smid",       null: false
     t.text     "flvinfo",    null: false
