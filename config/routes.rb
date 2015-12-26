@@ -20,6 +20,8 @@ Rails.application.routes.draw do
   get '/admin' => 'admin/base#index'
   get 'welcome' => 'welcome#index'
   get 'user/:id' => 'user#show', constraints: { id: /[0-9]+/ }
+  post 'user/follow'
+  post 'user/remove'
   # get 'sign_in', :to => 'devise/sessions#edit', :as => :edit_user_registration
 
   # You can have the root of your site routed with "root"

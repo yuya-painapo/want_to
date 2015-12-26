@@ -1,0 +1,1 @@
+$('#btnFollow').removeClass('btn-info');

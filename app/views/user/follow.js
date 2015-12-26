@@ -1,0 +1,1 @@
+$('#btnFollow').addClass('btn-info');
