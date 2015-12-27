@@ -1,7 +1,7 @@
 <% follows.each do |follow| %>
 <tr>
     <td>
-        <%= link_to follow.nickname, { :controller => 'user', :action => 'show', :id => follow.id } %>
+        <%= link_to follow.nickname, { :controller => 'user', :action => 'show', :id => follow.id }, :data => { :'no-turbolink' => '1' } %>
     </td>
     <td>
         <%= link_to 'follow', '#', :class => 'btn btn--s btn-no-padding btn-info' %>
