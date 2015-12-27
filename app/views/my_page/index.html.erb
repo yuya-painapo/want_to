@@ -78,5 +78,17 @@
         });
 
         createDataTable("#bookmark", 20, [null, null, null, {"orderable": false}]);
+
+        $(document).on("click", ".btnFollow", function(e) {
+            e.preventDefault();
+            var no = $(this).attr("data-no");
+            if($(this).hasClass("btn-info")) {
+                $("#no" + no).attr("action", "/follow/delete");
+                $("#no" + no).submit();
+            } else {
+                $("#no" + no).attr("action", "/follow/create");
+                $("#no" + no).submit();
+            }
+        });
     });
 </script>

@@ -4,7 +4,12 @@
         <%= link_to follow.nickname, { :controller => 'user', :action => 'show', :id => follow.id }, :data => { :'no-turbolink' => '1' } %>
     </td>
     <td>
-        <%= link_to 'follow', '#', :class => 'btn btn--s btn-no-padding btn-info' %>
+        <% if user_signed_in? %>
+            <%= form_tag({:controller => 'follow', :action => 'delete'}, :remote => true, :class => 'form-ajax', :id => 'no' + follow.id.to_s) do %>
+            <%= hidden_field_tag :user, follow.id %>
+            <%= link_to 'follow', '#', :class => 'btn btn--s btn-no-padding btn-info btnFollow', :data => { :no => follow.id } %>
+            <% end %>
+        <% end %>
     </td>
 </tr>
 <% end %>
