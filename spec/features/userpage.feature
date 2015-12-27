@@ -36,4 +36,14 @@
     かつ 'test_user' と 'userpassword' でログインする
     かつ ユーザー 2 のユーザーページを表示する
     かつ リンク 'follow' をクリックする
-    ならば 要素 "#btnFollow.btn-info" が存在すること
+    ならば 要素 ".btn-info" が存在すること
+
+  シナリオ: userがbookmark_userのフォローを解除する
+    もし user のテストデータを作成する
+    かつ bookmark_user のテストデータを作成する
+    かつ follow1_2 のテストデータを作成する
+    かつ 'test_user' と 'userpassword' でログインする
+    かつ ユーザー 2 のユーザーページを表示する
+    かつ リンク 'follow' をクリックする
+    かつ ajax終了を待つ
+    ならば 要素 "#no2 .btn-info" が存在しないこと

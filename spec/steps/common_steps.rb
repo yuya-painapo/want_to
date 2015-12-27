@@ -1,4 +1,10 @@
 # coding: utf-8
+step 'ajax終了を待つ' do
+  Timeout.timeout(Capybara.default_max_wait_time) do
+    loop until page.evaluate_script('jQuery.active').zero?
+  end
+end
+
 step '動画検索画面を表示する' do
   visit '/home/index'
 end
