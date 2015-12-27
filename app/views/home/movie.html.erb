@@ -14,11 +14,6 @@ span#tooltip{
 </style>
 <script>
 $(function() {
-    $('#movie-tabs a').click(function (e) {
-      e.preventDefault();
-      $(this).tab('show');
-    });
-
     $(document).on('click', '#btnCreate', function(e) {
         e.preventDefault();
         try {
