@@ -1,12 +1,3 @@
-<script>
-$(function() {
-    $('#index-tabs a').click(function (e) {
-      e.preventDefault();
-      $(this).tab('show');
-    });
-});
-</script>
-
 <div class="container mt">
     <div class="row centered">
         <%= form_tag(controller: "home", action: "search", method: "post") do %>

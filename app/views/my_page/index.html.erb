@@ -5,21 +5,44 @@
     <h2>ふせん一覧</h2>
     <div class="row">
         <div class="col-sm-12">
-            <div class="table-responsive">
-                <table id="bookmark" class="table table-hover table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th>動画名</th>
-                            <th>再生位置</th>
-                            <th>コメント</th>
-                            <th>その他</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <%= render partial: 'user/bookmark', locals: { bookmarks: @bookmarks } %>
-                    </tbody>
-                </table>
-            </div>  
+            <ul id="index-tabs" class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active">
+                    <a href="#bookmark-table" aria-controls="bookmark-table" role="tab" data-toggle="tab">ふせん</a>
+                </li>
+                <li role="presentation">
+                    <a href="#follow-table" aria-controls="follow-table" role="tab" data-toggle="tab">フォローしているユーザー</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="bookmark-table" role="tabpanel" class="tab-pane active">
+                    <table id="bookmark" class="table table-hover table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>動画名</th>
+                                <th>再生位置</th>
+                                <th>コメント</th>
+                                <th>その他</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%= render partial: 'user/bookmark', locals: { bookmarks: @bookmarks } %>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="follow-table" role="tabpanel" class="tab-pane">
+                    <table id="follow-bookmark" class="table table-hover table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ユーザー名</th>
+                                <th>その他</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%= render partial: 'follow', locals: { follows: current_user.following} %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -55,5 +78,17 @@
         });
 
         createDataTable("#bookmark", 20, [null, null, null, {"orderable": false}]);
+
+        $(document).on("click", ".btnFollow", function(e) {
+            e.preventDefault();
+            var no = $(this).attr("data-no");
+            if($(this).hasClass("btn-info")) {
+                $("#no" + no).attr("action", "/follow/delete");
+                $("#no" + no).submit();
+            } else {
+                $("#no" + no).attr("action", "/follow/create");
+                $("#no" + no).submit();
+            }
+        });
     });
 </script>
