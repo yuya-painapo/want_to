@@ -8,10 +8,10 @@ $(function() {
         $(document).on('click', '#btnFollow', function(e) {
             e.preventDefault();
             if($(this).hasClass('btn-info')) {
-                $('#follow').attr('action', '/user/remove');
+                $('#follow').attr('action', '/follow/delete');
                 $('#follow').submit();
             } else {
-                $('#follow').attr('action', '/user/follow');
+                $('#follow').attr('action', '/follow/create');
                 $('#follow').submit();
             }
         });
@@ -25,7 +25,7 @@ $(function() {
 メールアドレス: <%= @user.email %>
 <h2>ふせん</h2>
 <% if user_signed_in? %>
-    <%= form_tag({:controller => 'user', :action => 'follow'}, :remote => true, :class => 'form-ajax', :id => 'follow') do %>
+    <%= form_tag({:controller => 'follow', :action => 'create'}, :remote => true, :class => 'form-ajax', :id => 'follow') do %>
     <%= hidden_field_tag :user, @user.id %>
     <%= link_to 'follow', '#', :class => 'btn btn--s btn-no-padding', :id => 'btnFollow' %>
     <% end %>
