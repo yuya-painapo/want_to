@@ -25,4 +25,14 @@ FactoryGirl.define do
       user.bookmarks << FactoryGirl.create(:bookmark_user2_sm13_2, user: user)
     end
   end
+
+  factory :editable_user, class: User do
+    nickname 'editable_test_user'
+    email 'bookmark_user@example.com'
+    password 'hogehoge'
+    encrypted_password '$2a$10$8fCNvyqJICPbHRptYKukfejPnEmwl9ISi7gaZ/s33E0nRnTIm4f7O'
+    after(:create) do |user|
+      user.bookmarks << FactoryGirl.create(:bookmark_user2_sm9_1, user: user)
+    end
+  end
 end

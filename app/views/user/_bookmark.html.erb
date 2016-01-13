@@ -1,9 +1,26 @@
 <% bookmarks.each do |bookmark| %>
-    <li>
-        <span>動画ID：</span>
+<tr id="no<%= bookmark.id.to_s %>">
+    <td>
         <%= link_to bookmark.smid, { :controller => 'home', :action => 'movie', :id => bookmark.smid, :fusen => 'no' + bookmark.id.to_s }, :data => { :'no-turbolink' => '1' }, :class => 'bookmark'  %>
-        <span>
-            , 再生位置：<%= vpos_to_h_mm_ss(bookmark.start_vpos) %>, コメント： <%= bookmark.comment %>
-        </span>
-    </li>
+    </td>
+    <%= form_tag({:controller => 'my_page', :action => 'update'}) do %>
+        <%= hidden_field_tag :id, bookmark.id %>
+        <td>
+            <%= text_field_tag :start_vpos, bookmark.start_vpos, :style => "display: none;", :class => "start_vpos"%>
+            <%= content_tag "span", vpos_to_h_mm_ss(bookmark.start_vpos), :class=> "start_vpos" %>
+        </td>
+        <td>
+            <%= text_field_tag :comment, bookmark.comment, :style => "display: none;", :class => "comment" %>
+            <%= content_tag "span", bookmark.comment, :class => "comment" %>
+        </td>
+        <% if request.path_info.start_with?('/my_page') %>
+            <td style="width: 250px;">
+                <%= submit_tag "更新", :style => "display: none;", :class => "btn btnGroup btn-no-padding" %>
+                <%= button_tag "キャンセル", :style => "display: none;", :type => "button", :class => "btn btnCancel btnGroup btn-no-padding", :data => { :no => bookmark.id } %>
+                <%= button_tag "編集", :type => "button", :class => "btn btnEdit btn-no-padding", :data => { :no => bookmark.id } %>
+                <%= button_tag "削除", :type => "button", :class => "btn btnDelete btn-no-padding", :data => { :no => bookmark.id } %>
+            </td>
+        <% end %>
+    <% end %>
+</tr>
 <% end %>

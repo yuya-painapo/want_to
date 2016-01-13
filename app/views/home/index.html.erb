@@ -33,22 +33,22 @@ $(function() {
 
             <div class="tab-content">
                 <div id="tag" role="tabpanel" class="tab-pane active">
-                    <table class="table table-hover table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Ranking</th>
-                                <th>Tag name</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <% for num in 1..10 do %>
-                            <tr id="TagRanking">
-                                <td><%=num%></td>
-                                <td><a href=<%="/home/search/#{@trendtag[num]}"%> data-no-turbolink="1"><%= @trendtag[num]%></a></td>
-                            </tr>
-                        <%end%>
-                        </tbody>
-                    </table>
+
+                <ul class="cbp_tmtimeline">
+					<% for num in 1..10 do %>
+                    <li>
+					<time class="cbp_tmtime"><span>Rank</span> <span><%=num%></span></time>
+					    <% if num == 1 %>
+                        <div class="cbp_tmicon"><%= image_tag("tree-leaf2g.png", :size => "30x30", :alt => "visualize", :class => ".img-thumbnail") %></div>
+						<%end%>
+                        <div class="cbp_tmlabel">
+							<h4><a href=<%="/home/search/#{@trendtag[num]["tag_name"]}"%> data-no-turbolink="1"><%=@trendtag[num]["tag_name"]%></a></h4>
+							<p><%=@trendtag[num]["caption"].html_safe%></p>
+                        </div>
+					<%end%>
+                    </li>
+                </ul>
+
                 </div>
                 <div id="new" role="tabpanel" class="tab-pane">
                     <table class="table table-hover table-striped table-bordered">

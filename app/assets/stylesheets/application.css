@@ -20,6 +20,7 @@
  *= require font-awesome
  *= require validationEngine.jquery
  *= require dataTables.bootstrap.min
+ *= require timeline
  */
 
 .introjs-helperNumberLayer {
