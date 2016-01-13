@@ -21,6 +21,8 @@
 //= require jquery.dataTables.min
 //= require dataTables.bootstrap.min
 //= require_tree .
+//= require jquery.validationEngine-zh_CN
+//= require jquery.validationEngine
 
 (function($) {
     $.extend({
@@ -63,3 +65,4 @@ function createDataTable(selector, pageLength, columns) {
         "columns": columns,
     });
 }
+
