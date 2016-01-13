@@ -253,7 +253,7 @@ var colors2 = d3.scale.linear()
 .transition() //アニメーション
     .delay(function(d, i){　
             //それぞれの棒を遅くれて表示
-            return i * 20;
+            return i * 1000 / <%= @m_division %>;
             })
 .duration(1000)
     .ease("bounce")
@@ -327,7 +327,7 @@ svg.append("g")
 <form id="div_num" action="" method="get" name="division" class="form-inline">
     <div class="form-group">
         <label class="control-label" for="number"> 分割数 :
-            <input style="width:75px;" type="text" value="<%= @m_division %>" name="num" maxlength="5" class="validate[required,custom[integer],min[1],max[<%= @vpos_video_length/100 %>]]"
+            <input style="width:75px;" type="text" value="<%= @m_division %>" name='num' maxlength="5" class="validate[required,custom[integer],min[1],max[<%= @vpos_video_length/100 %>]]"
                       data-errormessage-value-missing="入力されていません"
                       data-errormessage="整数値を入力してください"
                       data-errormessage-range-underflow="最小値は1です"
